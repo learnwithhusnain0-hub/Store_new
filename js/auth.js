@@ -1,75 +1,28 @@
-// Auth state observer
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        // User is signed in
-        showUserInfo(user);
-        checkAdminStatus(user);
-    } else {
-        // User is signed out
-        showLoginButtons();
-    }
-});
+// 👤 AUTHENTICATION JS
 
-// Google Login
+// Google Login Function - Direct provider yahan define karo
 async function googleLogin() {
     try {
-        console.log('Starting Google login...');
+        console.log("🔄 Starting Google login...");
+        
+        // Provider yahan define karo (firebase-config par depend mat raho)
         const provider = new firebase.auth.GoogleAuthProvider();
+        
+        // Sign in with popup
         const result = await auth.signInWithPopup(provider);
         const user = result.user;
         
-        console.log('Login successful:', user.email);
+        console.log("✅ Login successful:", user.email);
         
         // Save user to database
         await saveUserToDatabase(user);
         
-        return user;
+        // Page reload
+        window.location.reload();
         
     } catch (error) {
-        console.error('Login error:', error);
-        alert('Login failed: ' + error.message);
-    }
-}
-
-// Email/Password Signup
-async function emailSignup(email, password, name) {
-    try {
-        const result = await auth.createUserWithEmailAndPassword(email, password);
-        const user = result.user;
-        
-        // Update profile
-        await user.updateProfile({
-            displayName: name
-        });
-        
-        // Send verification email
-        await user.sendEmailVerification();
-        
-        alert('Verification email sent! Please check your inbox.');
-        
-    } catch (error) {
-        console.error('Signup error:', error);
-        alert('Signup failed: ' + error.message);
-    }
-}
-
-// Email/Password Login
-async function emailLogin(email, password) {
-    try {
-        const result = await auth.signInWithEmailAndPassword(email, password);
-        const user = result.user;
-        
-        if (!user.emailVerified) {
-            alert('Please verify your email first!');
-            await auth.signOut();
-            return;
-        }
-        
-        await saveUserToDatabase(user);
-        
-    } catch (error) {
-        console.error('Login error:', error);
-        alert('Login failed: ' + error.message);
+        console.error("❌ Login error:", error);
+        alert("Login failed: " + error.message);
     }
 }
 
@@ -96,21 +49,37 @@ async function saveUserToDatabase(user) {
 
 // Check if user is admin
 async function checkAdminStatus(user) {
-    const userDoc = await db.collection('users').doc(user.uid).get();
-    if (userDoc.exists && userDoc.data().role === 'admin') {
-        showAdminLink();
+    try {
+        const userDoc = await db.collection('users').doc(user.uid).get();
+        if (userDoc.exists && userDoc.data().role === 'admin') {
+            showAdminLink();
+        }
+    } catch (error) {
+        console.error("Error checking admin status:", error);
     }
 }
 
-// Logout
+// Logout function
 async function logout() {
     try {
         await auth.signOut();
         window.location.href = 'index.html';
     } catch (error) {
-        console.error('Logout error:', error);
+        console.error("Logout error:", error);
     }
 }
+
+// Auth state observer
+auth.onAuthStateChanged((user) => {
+    if (user) {
+        console.log("👤 User logged in:", user.email);
+        showUserInfo(user);
+        checkAdminStatus(user);
+    } else {
+        console.log("👤 No user logged in");
+        showLoginButtons();
+    }
+});
 
 // UI Functions
 function showUserInfo(user) {
