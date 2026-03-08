@@ -1,4 +1,4 @@
-// Firebase Configuration - UK Store
+// 🔥 FIREBASE CONFIGURATION
 const firebaseConfig = {
     apiKey: "AIzaSyDvpwrivywDoS4KrEKDjJfHvrVLTDHMHJQ",
     authDomain: "ukstore-147e3.firebaseapp.com",
@@ -12,13 +12,9 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Initialize services
+// Global variables
 const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-// ✅ Google Auth Provider - YAHAN DEFINE HUA HAI
-const googleProvider = new firebase.auth.GoogleAuthProvider();
-
-// Enable analytics
-const analytics = firebase.analytics();
+console.log("✅ Firebase initialized successfully");
