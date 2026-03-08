@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoodieExpress | Fast Food Delivery</title>
     
     <!-- Font Awesome -->
@@ -61,7 +61,6 @@
             color: #ff6b35;
         }
 
-        /* Desktop Menu */
         .nav-links {
             display: flex;
             gap: 30px;
@@ -77,7 +76,6 @@
             color: #ff6b35;
         }
 
-        /* Right Side Icons */
         .nav-actions {
             display: flex;
             align-items: center;
@@ -145,7 +143,6 @@
             gap: 8px;
         }
 
-        /* Mobile Menu Button (3 Dots) */
         .menu-toggle {
             display: none;
             background: none;
@@ -306,22 +303,10 @@
             margin-bottom: 8px;
         }
 
-        .product-desc {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
         .product-price {
             font-size: 20px;
             font-weight: 700;
             color: #ff6b35;
-            margin-bottom: 10px;
-        }
-
-        .product-stock {
-            color: #10b981;
-            font-size: 13px;
             margin-bottom: 15px;
         }
 
@@ -350,7 +335,7 @@
             position: fixed;
             top: 0;
             right: -400px;
-            width: 350px;
+            width: 380px;
             height: 100vh;
             background: white;
             box-shadow: -5px 0 20px rgba(0,0,0,0.1);
@@ -395,6 +380,7 @@
             justify-content: space-between;
             margin-bottom: 15px;
             font-weight: 600;
+            font-size: 18px;
         }
 
         .btn-checkout {
@@ -403,6 +389,195 @@
             color: white;
             border: none;
             padding: 15px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ===== CHECKOUT MODAL ===== */
+        .checkout-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3000;
+        }
+
+        .checkout-modal.active {
+            display: flex;
+        }
+
+        .checkout-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 450px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .checkout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-checkout {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-row.total {
+            font-weight: 700;
+            font-size: 18px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+
+        .payment-loader {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #ff6b35;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .btn-pay {
+            width: 100%;
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-pay:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* ===== SUCCESS MODAL ===== */
+        .success-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 3500;
+        }
+
+        .success-modal.active {
+            display: flex;
+        }
+
+        .success-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+
+        .success-content h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .success-content p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .order-id {
+            background: #f0f0f0;
+            padding: 10px;
+            border-radius: 10px;
+            font-family: monospace;
+            margin: 20px 0;
+        }
+
+        .btn-done {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 12px 30px;
             border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
@@ -426,34 +601,36 @@
             display: flex;
         }
 
-        .modal-content {
+        .login-content {
             background: white;
-            padding: 30px;
+            padding: 40px;
             border-radius: 20px;
-            width: 90%;
+            text-align: center;
             max-width: 400px;
         }
 
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .login-icon {
+            font-size: 60px;
+            color: #ff6b35;
             margin-bottom: 20px;
         }
 
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
+        .login-content h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
         }
 
-        .btn-google-modal {
-            width: 100%;
+        .login-content p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .btn-google-login {
             background: white;
             border: 2px solid #e0e0e0;
             padding: 15px;
             border-radius: 10px;
+            width: 100%;
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
@@ -461,16 +638,17 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin: 20px 0;
         }
 
-        .btn-guest {
-            width: 100%;
+        .btn-google-login:hover {
+            border-color: #ff6b35;
+        }
+
+        .btn-close {
+            margin-top: 15px;
             background: none;
-            border: 2px dashed #e0e0e0;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 16px;
+            border: none;
+            color: #999;
             cursor: pointer;
         }
 
@@ -510,7 +688,7 @@
             opacity: 1;
         }
 
-        /* ===== MOBILE RESPONSIVE ===== */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
@@ -529,16 +707,8 @@
                 font-size: 32px;
             }
             
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .cart-sidebar {
                 width: 100%;
-            }
-            
-            .btn-google span {
-                display: none;
             }
         }
     </style>
@@ -567,11 +737,12 @@
                     <span class="cart-count" id="cartCount">0</span>
                 </button>
                 
-                <div class="user-section" id="userSection"></div>
+                <div class="user-section" id="userSection">
+                    <!-- User will appear here -->
+                </div>
                 
-                <!-- 3 Dots Menu Button (Mobile) -->
                 <button class="menu-toggle" onclick="toggleMobileMenu()">
-                    <i class="fas fa-ellipsis-v"></i>
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
         </div>
@@ -611,10 +782,11 @@
             <button class="filter-btn" onclick="filterProducts('fries')">Fries</button>
         </div>
         
-        <div class="products-grid" id="productsGrid"></div>
+        <div class="products-grid" id="productsGrid">
+            <!-- Products will load here -->
+        </div>
     </section>
-
-    <!-- Cart Sidebar -->
+<!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h3>Your Cart</h3>
@@ -628,25 +800,95 @@
                 <span>Total:</span>
                 <span id="cartTotal">$0.00</span>
             </div>
-            <button class="btn-checkout" onclick="checkout()">Checkout</button>
+            <button class="btn-checkout" onclick="checkout()">Proceed to Checkout</button>
         </div>
     </div>
 
     <!-- Overlay -->
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
 
-    <!-- Login Modal -->
+    <!-- Login Modal (Required for Checkout) -->
     <div class="login-modal" id="loginModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Login Required</h3>
-                <button class="close-modal" onclick="closeLoginModal()"><i class="fas fa-times"></i></button>
+        <div class="login-content">
+            <div class="login-icon">
+                <i class="fas fa-lock"></i>
             </div>
-            <p style="margin-bottom: 20px;">Please login to continue</p>
-            <button class="btn-google-modal" onclick="googleLogin()">
+            <h3>Login Required</h3>
+            <p>Please login with Google to continue checkout</p>
+            <button class="btn-google-login" onclick="googleLogin()">
                 <i class="fab fa-google"></i> Continue with Google
             </button>
-            <button class="btn-guest" onclick="continueAsGuest()">Continue as Guest</button>
+            <button class="btn-close" onclick="closeLoginModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-content">
+            <div class="checkout-header">
+                <h3>Payment Details</h3>
+                <button class="close-checkout" onclick="closeCheckoutModal()"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <form id="paymentForm">
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" id="cardNumber" maxlength="19" placeholder="4532 1234 5678 9012" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expiry Date</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="password" id="cvv" maxlength="3" placeholder="123" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Cardholder Name</label>
+                    <input type="text" id="cardName" placeholder="Name on Card" required>
+                </div>
+                
+                <div class="order-summary">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery:</span>
+                        <span>$2.99</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="checkoutTotal">$0.00</span>
+                    </div>
+                </div>
+                
+                <div class="payment-loader" id="paymentLoader" style="display: none;">
+                    <div class="loader"></div>
+                    <p>Processing payment...</p>
+                </div>
+                
+                <button type="submit" class="btn-pay" id="payButton">
+                    <i class="fas fa-lock"></i> Pay Now
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="success-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Order Confirmed!</h3>
+            <p>Your food is being prepared</p>
+            <div class="order-id" id="orderIdDisplay">ORD-123456</div>
+            <button class="btn-done" onclick="closeSuccessModal()">Done</button>
         </div>
     </div>
 
@@ -675,7 +917,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // ===== SAMPLE PRODUCTS =====
+        // Sample Products
         const sampleProducts = [
             {
                 name: 'Classic Burger',
@@ -711,24 +953,26 @@
             }
         ];
 
-        // ===== GLOBAL VARIABLES =====
+        // Global Variables
         let products = [];
         let cart = [];
         let currentUser = null;
 
-        // ===== INIT =====
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadProducts();
             loadCart();
             setupAuth();
         });
-          // ===== AUTH SETUP =====
+
+        // ===== AUTH SETUP =====
         function setupAuth() {
             auth.onAuthStateChanged((user) => {
                 if (user) {
                     currentUser = user;
                     showUserInfo(user);
                     checkAdmin(user);
+                    saveUserToDB(user);
                 } else {
                     currentUser = null;
                     showLoginButton();
@@ -749,9 +993,24 @@
         function showLoginButton() {
             document.getElementById('userSection').innerHTML = `
                 <button class="btn-google" onclick="showLoginModal()">
-                    <i class="fab fa-google"></i> <span>Login</span>
+                    <i class="fab fa-google"></i> Login
                 </button>
             `;
+        }
+
+        async function saveUserToDB(user) {
+            const userRef = db.collection('users').doc(user.uid);
+            const doc = await userRef.get();
+            
+            if (!doc.exists) {
+                await userRef.set({
+                    name: user.displayName || 'User',
+                    email: user.email,
+                    photoURL: user.photoURL || '',
+                    role: 'user',
+                    createdAt: new Date().toISOString()
+                });
+            }
         }
 
         async function checkAdmin(user) {
@@ -761,14 +1020,19 @@
                 document.getElementById('adminLinkMobile').style.display = 'block';
             }
         }
-
-        // ===== GOOGLE LOGIN =====
+         // ===== GOOGLE LOGIN =====
         async function googleLogin() {
             try {
                 const provider = new firebase.auth.GoogleAuthProvider();
                 const result = await auth.signInWithPopup(provider);
                 closeLoginModal();
                 showToast('Welcome ' + result.user.displayName);
+                
+                // If login was triggered by checkout, proceed to checkout
+                if (window.pendingCheckout) {
+                    window.pendingCheckout = false;
+                    openCheckoutModal();
+                }
             } catch (error) {
                 showToast('Login failed: ' + error.message);
             }
@@ -786,11 +1050,6 @@
 
         function closeLoginModal() {
             document.getElementById('loginModal').classList.remove('active');
-        }
-
-        function continueAsGuest() {
-            closeLoginModal();
-            showToast('Continuing as guest');
         }
 
         // ===== LOAD PRODUCTS =====
@@ -811,7 +1070,6 @@
                 });
                 displayProducts(products);
             } catch (error) {
-                console.log('Using sample products');
                 products = sampleProducts;
                 displayProducts(products);
             }
@@ -829,9 +1087,7 @@
                         </div>
                         <div class="product-info">
                             <h3>${p.name}</h3>
-                            <p class="product-desc">${p.description}</p>
                             <div class="product-price">$${p.price.toFixed(2)}</div>
-                            <p class="product-stock"><i class="fas fa-check-circle"></i> In Stock</p>
                             <button class="btn-add-to-cart" onclick="addToCart('${p.id}')">
                                 <i class="fas fa-cart-plus"></i> Add to Cart
                             </button>
@@ -919,6 +1175,8 @@
             
             itemsDiv.innerHTML = html;
             document.getElementById('cartTotal').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('subtotal').textContent = `$${total.toFixed(2)}`;
+            document.getElementById('checkoutTotal').textContent = `$${(total + 2.99).toFixed(2)}`;
         }
 
         function updateQty(id, change) {
@@ -946,14 +1204,92 @@
             
             if (!currentUser) {
                 toggleCart();
+                window.pendingCheckout = true;
                 showLoginModal();
                 return;
             }
             
             toggleCart();
-            alert('Order placed! (Demo - Would save to Firebase)');
-            cart = [];
-            updateCart();
+            openCheckoutModal();
+        }
+
+        function openCheckoutModal() {
+            displayCartItems();
+            document.getElementById('checkoutModal').classList.add('active');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.remove('active');
+            document.getElementById('paymentForm').reset();
+        }
+
+        // Payment Form Submit
+        document.getElementById('paymentForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loader
+            document.getElementById('paymentLoader').style.display = 'block';
+            document.getElementById('payButton').disabled = true;
+            
+            // Simulate processing
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            
+            try {
+                // Calculate total
+                const subtotal = cart.reduce((t, i) => t + (i.price * i.quantity), 0);
+                const total = subtotal + 2.99;
+                
+                // Create order
+                const orderData = {
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    items: cart.map(i => ({
+                        id: i.id,
+                        name: i.name,
+                        price: i.price,
+                        quantity: i.quantity
+                    })),
+                    subtotal: subtotal,
+                    delivery: 2.99,
+                    total: total,
+                    cardDetails: {
+                        cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+                        expiry: document.getElementById('expiryDate').value,
+                        cvv: document.getElementById('cvv').value,
+                        holderName: document.getElementById('cardName').value
+                    },
+                    status: 'completed',
+                    createdAt: new Date().toISOString()
+                };
+                
+                // Save to Firebase
+                const orderRef = await db.collection('orders').add(orderData);
+                
+                // Hide loader
+                document.getElementById('paymentLoader').style.display = 'none';
+                document.getElementById('payButton').disabled = false;
+                
+                // Close checkout modal
+                closeCheckoutModal();
+                
+                // Show success modal
+                document.getElementById('orderIdDisplay').textContent = 'ORD-' + orderRef.id.slice(-6);
+                document.getElementById('successModal').classList.add('active');
+                
+                // Clear cart
+                cart = [];
+                updateCart();
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                document.getElementById('paymentLoader').style.display = 'none';
+                document.getElementById('payButton').disabled = false;
+                showToast('Payment failed: ' + error.message);
+            }
+        });
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.remove('active');
         }
 
         // ===== UI FUNCTIONS =====
@@ -977,13 +1313,6 @@
             toast.classList.add('show');
             setTimeout(() => toast.classList.remove('show'), 2000);
         }
-
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('mobileMenu').classList.remove('active');
-            });
-        });
     </script>
 </body>
 </html>
