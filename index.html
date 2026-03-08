@@ -30,7 +30,7 @@
             </div>
             
             <div class="right-section">
-                <button class="cart-icon" onclick="window.cartUI.toggleCart()">
+                <button class="cart-icon" onclick="toggleCart()">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count" id="cartCount">0</span>
                 </button>
@@ -78,7 +78,7 @@
         </div>
         
         <div class="products-grid" id="productsGrid">
-            <!-- Products will load from Firebase -->
+            <!-- Products will load here -->
         </div>
     </section>
 
@@ -86,7 +86,7 @@
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h3>Your Cart</h3>
-            <button class="close-cart" onclick="window.cartUI.toggleCart()"><i class="fas fa-times"></i></button>
+            <button class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></button>
         </div>
         <div class="cart-items" id="cartItems">
             <p style="text-align: center; color: #999;">Cart is empty</p>
@@ -96,12 +96,12 @@
                 <span>Total:</span>
                 <span id="cartTotal">$0.00</span>
             </div>
-            <button class="btn-checkout" onclick="window.cart.checkout()">Checkout</button>
+            <button class="btn-checkout" onclick="checkout()">Checkout</button>
         </div>
     </div>
 
     <!-- Overlay -->
-    <div class="overlay" id="overlay" onclick="window.cartUI.toggleCart()"></div>
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
 
     <!-- Toast -->
     <div class="toast" id="toast"><span id="toastMessage"></span></div>
@@ -111,10 +111,416 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
-    <!-- JavaScript Modules -->
-    <script src="js/firebase-config.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/store.js"></script>
+    <!-- All JavaScript in One File for Testing -->
+    <script>
+        // ============================================
+        // FIREBASE CONFIG
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDvpwrivywDoS4KrEKDjJfHvrVLTDHMHJQ",
+            authDomain: "ukstore-147e3.firebaseapp.com",
+            projectId: "ukstore-147e3",
+            storageBucket: "ukstore-147e3.firebasestorage.app",
+            messagingSenderId: "682218466479",
+            appId: "1:682218466479:web:2cf15486de7a18efb0b85a"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        console.log('✅ Firebase initialized');
+
+        // ============================================
+        // SAMPLE PRODUCTS (Direct Add to Firebase)
+        // ============================================
+        const sampleProducts = [
+            {
+                name: 'Classic Burger',
+                price: 8.99,
+                category: 'burger',
+                image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400',
+                stock: 15
+            },
+            {
+                name: 'Double Cheeseburger',
+                price: 12.99,
+                category: 'burger',
+                image: 'https://images.unsplash.com/photo-1553979459-d2229ba7431a?w=400',
+                stock: 10
+            },
+            {
+                name: 'Margherita Pizza',
+                price: 14.99,
+                category: 'pizza',
+                image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400',
+                stock: 8
+            },
+            {
+                name: 'French Fries',
+                price: 3.99,
+                category: 'fries',
+                image: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400',
+                stock: 50
+            },
+            {
+                name: 'Chicken Burger',
+                price: 10.99,
+                category: 'burger',
+                image: 'https://images.unsplash.com/photo-1606755962773-d324e0b630a6?w=400',
+                stock: 12
+            },
+            {
+                name: 'Pepperoni Pizza',
+                price: 16.99,
+                category: 'pizza',
+                image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400',
+                stock: 7
+            }
+        ];
+
+        // ============================================
+        // GLOBAL VARIABLES
+        // ============================================
+        let currentUser = null;
+        let cart = [];
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ Page loaded');
+            initializeProducts();
+            loadCart();
+            setupAuth();
+        });
+
+        // ============================================
+        // PRODUCTS FUNCTIONS
+        // ============================================
+        async function initializeProducts() {
+            try {
+                // Check if products exist
+                const snapshot = await db.collection('products').get();
+                
+                if (snapshot.empty) {
+                    console.log('📦 Adding sample products...');
+                    // Add sample products
+                    for (let product of sampleProducts) {
+                        await db.collection('products').add(product);
+                    }
+                    console.log('✅ Sample products added');
+                }
+                
+                // Load products
+                loadProducts();
+                
+            } catch (error) {
+                console.error('Error initializing products:', error);
+                // If Firebase fails, show sample products directly
+                displayProducts(sampleProducts);
+            }
+        }
+
+        async function loadProducts() {
+            try {
+                const snapshot = await db.collection('products').get();
+                const products = [];
+                
+                snapshot.forEach(doc => {
+                    products.push({ id: doc.id, ...doc.data() });
+                });
+                
+                console.log('📦 Products loaded:', products.length);
+                displayProducts(products);
+                
+            } catch (error) {
+                console.error('Error loading products:', error);
+                displayProducts(sampleProducts);
+            }
+        }
+
+        function displayProducts(products) {
+            const grid = document.getElementById('productsGrid');
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            
+            if (products.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; padding: 40px;">No products available</p>';
+                return;
+            }
+            
+            products.forEach(product => {
+                const price = product.price || 0;
+                const image = product.image || 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400';
+                
+                grid.innerHTML += `
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="${image}" alt="${product.name}" loading="lazy">
+                        </div>
+                        <div class="product-info">
+                            <h3>${product.name}</h3>
+                            <div class="product-price">$${price.toFixed(2)}</div>
+                            <button class="btn-add-to-cart" onclick="addToCart('${product.id}', '${product.name}', ${price}, '${image}')">
+                                <i class="fas fa-cart-plus"></i> Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        // ============================================
+        // CART FUNCTIONS
+        // ============================================
+        function addToCart(id, name, price, image) {
+            const existing = cart.find(item => item.id === id);
+            
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ id, name, price, image, quantity: 1 });
+            }
+            
+            saveCart();
+            displayCartItems();
+            showToast('Added to cart!');
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            saveCart();
+            displayCartItems();
+        }
+
+        function updateQuantity(id, change) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(id);
+                } else {
+                    saveCart();
+                    displayCartItems();
+                }
+            }
+        }
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+        }
+
+        function loadCart() {
+            const saved = localStorage.getItem('cart');
+            if (saved) {
+                cart = JSON.parse(saved);
+                updateCartCount();
+            }
+        }
+
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            const countElement = document.getElementById('cartCount');
+            if (countElement) countElement.textContent = count;
+        }
+
+        function calculateTotal() {
+            return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+
+        function displayCartItems() {
+            const container = document.getElementById('cartItems');
+            const totalElement = document.getElementById('cartTotal');
+            
+            if (!container || !totalElement) return;
+            
+            if (cart.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #999;">Cart is empty</p>';
+                totalElement.textContent = '$0.00';
+                return;
+            }
+            
+            let html = '';
+            cart.forEach(item => {
+                html += `
+                    <div style="display:flex; gap:10px; margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
+                        <img src="${item.image}" style="width:60px; height:60px; border-radius:8px; object-fit:cover;">
+                        <div style="flex:1">
+                            <h4 style="font-size:14px;">${item.name}</h4>
+                            <p style="color:#ff6b35; font-weight:600;">$${(item.price * item.quantity).toFixed(2)}</p>
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <button onclick="updateQuantity('${item.id}', -1)" style="background:#f0f0f0; border:none; width:25px; height:25px; border-radius:5px; cursor:pointer;">-</button>
+                                <span>${item.quantity}</span>
+                                <button onclick="updateQuantity('${item.id}', 1)" style="background:#f0f0f0; border:none; width:25px; height:25px; border-radius:5px; cursor:pointer;">+</button>
+                                <button onclick="removeFromCart('${item.id}')" style="background:none; border:none; color:red; cursor:pointer;">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+            totalElement.textContent = `$${calculateTotal().toFixed(2)}`;
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            const overlay = document.getElementById('overlay');
+            
+            if (sidebar && overlay) {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                displayCartItems();
+            }
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                showToast('Cart is empty!');
+                return;
+            }
+            
+            if (!currentUser) {
+                showToast('Please login first!');
+                googleLogin();
+                return;
+            }
+            
+            alert('Proceed to payment...');
+        }
+
+        // ============================================
+        // AUTH FUNCTIONS
+        // ============================================
+        function setupAuth() {
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    currentUser = user;
+                    document.getElementById('userNameDisplay').textContent = user.displayName?.split(' ')[0] || 'User';
+                    updateUserDropdown(user);
+                } else {
+                    currentUser = null;
+                    document.getElementById('userNameDisplay').textContent = 'Account';
+                    updateUserDropdown(null);
+                }
+            });
+        }
+
+        function updateUserDropdown(user) {
+            const dropdown = document.getElementById('userDropdown');
+            if (!dropdown) return;
+            
+            if (user) {
+                dropdown.innerHTML = `
+                    <div style="padding:15px; background:#ff6b35; color:white; display:flex; align-items:center; gap:10px;">
+                        <img src="${user.photoURL || 'https://ui-avatars.com/api/?name=' + user.displayName}" style="width:40px; height:40px; border-radius:50%;">
+                        <div>
+                            <div style="font-weight:600;">${user.displayName || 'User'}</div>
+                            <div style="font-size:12px;">${user.email}</div>
+                        </div>
+                    </div>
+                    <div style="padding:10px 0;">
+                        <a href="#" style="display:flex; align-items:center; gap:10px; padding:10px 15px; color:#333; text-decoration:none;">
+                            <i class="fas fa-user" style="width:20px; color:#ff6b35;"></i> My Profile
+                        </a>
+                        <a href="#" style="display:flex; align-items:center; gap:10px; padding:10px 15px; color:#333; text-decoration:none;">
+                            <i class="fas fa-shopping-bag" style="width:20px; color:#ff6b35;"></i> My Orders
+                        </a>
+                        <div style="height:1px; background:#eee; margin:8px 0;"></div>
+                        <button onclick="logout()" style="display:flex; align-items:center; gap:10px; padding:10px 15px; width:100%; border:none; background:none; cursor:pointer;">
+                            <i class="fas fa-sign-out-alt" style="width:20px; color:#ff6b35;"></i> Logout
+                        </button>
+                    </div>
+                `;
+            } else {
+                dropdown.innerHTML = `
+                    <div style="padding:10px 0;">
+                        <button onclick="googleLogin()" style="display:flex; align-items:center; gap:10px; padding:15px; width:100%; border:none; background:none; cursor:pointer;">
+                            <i class="fab fa-google" style="color:#ff6b35;"></i> Login with Google
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        async function googleLogin() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+                showToast('Login successful!');
+                toggleUserMenu();
+            } catch (error) {
+                showToast('Login failed: ' + error.message);
+            }
+        }
+
+        async function logout() {
+            try {
+                await auth.signOut();
+                cart = [];
+                saveCart();
+                showToast('Logged out');
+                toggleUserMenu();
+            } catch (error) {
+                showToast('Logout failed: ' + error.message);
+            }
+        }
+
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            if (dropdown) dropdown.classList.toggle('show');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', (e) => {
+            if (!e.target.closest('.user-menu')) {
+                const dropdown = document.getElementById('userDropdown');
+                if (dropdown) dropdown.classList.remove('show');
+            }
+        });
+
+        // ============================================
+        // UI FUNCTIONS
+        // ============================================
+        function scrollToMenu() {
+            document.getElementById('products').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            alert('Mobile menu - Add your links here');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            
+            if (toast && toastMessage) {
+                toastMessage.textContent = message;
+                toast.classList.add('show');
+                
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2000);
+            }
+        }
+
+        // Make functions global
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.updateQuantity = updateQuantity;
+        window.toggleCart = toggleCart;
+        window.checkout = checkout;
+        window.googleLogin = googleLogin;
+        window.logout = logout;
+        window.toggleUserMenu = toggleUserMenu;
+        window.scrollToMenu = scrollToMenu;
+        window.toggleMobileMenu = toggleMobileMenu;
+    </script>
 </body>
-                    </html>
+</html>
