@@ -9,7 +9,7 @@ const firebaseConfig = {
     measurementId: "G-7HKSC1GQNK"
 };
 
-// Initialize Firebase (using compat version for easier syntax)
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
 // Initialize services
@@ -17,8 +17,8 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const storage = firebase.storage();
 
-// Google Auth Provider
+// ✅ Google Auth Provider - YAHAN DEFINE HUA HAI
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-// Optional: Enable analytics
+// Enable analytics
 const analytics = firebase.analytics();
