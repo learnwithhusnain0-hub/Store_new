@@ -13,10 +13,58 @@ auth.onAuthStateChanged((user) => {
 // Google Login
 async function googleLogin() {
     try {
-        const result = await auth.signInWithPopup(googleProvider);
+        console.log('Starting Google login...');
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const result = await auth.signInWithPopup(provider);
         const user = result.user;
         
+        console.log('Login successful:', user.email);
+        
         // Save user to database
+        await saveUserToDatabase(user);
+        
+        return user;
+        
+    } catch (error) {
+        console.error('Login error:', error);
+        alert('Login failed: ' + error.message);
+    }
+}
+
+// Email/Password Signup
+async function emailSignup(email, password, name) {
+    try {
+        const result = await auth.createUserWithEmailAndPassword(email, password);
+        const user = result.user;
+        
+        // Update profile
+        await user.updateProfile({
+            displayName: name
+        });
+        
+        // Send verification email
+        await user.sendEmailVerification();
+        
+        alert('Verification email sent! Please check your inbox.');
+        
+    } catch (error) {
+        console.error('Signup error:', error);
+        alert('Signup failed: ' + error.message);
+    }
+}
+
+// Email/Password Login
+async function emailLogin(email, password) {
+    try {
+        const result = await auth.signInWithEmailAndPassword(email, password);
+        const user = result.user;
+        
+        if (!user.emailVerified) {
+            alert('Please verify your email first!');
+            await auth.signOut();
+            return;
+        }
+        
         await saveUserToDatabase(user);
         
     } catch (error) {
@@ -32,11 +80,16 @@ async function saveUserToDatabase(user) {
     
     if (!doc.exists) {
         await userRef.set({
-            name: user.displayName || 'User',
+            name: user.displayName || user.email.split('@')[0],
             email: user.email,
             photoURL: user.photoURL || '',
             role: 'user',
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString()
+        });
+    } else {
+        await userRef.update({
+            lastLogin: new Date().toISOString()
         });
     }
 }
@@ -45,7 +98,6 @@ async function saveUserToDatabase(user) {
 async function checkAdminStatus(user) {
     const userDoc = await db.collection('users').doc(user.uid).get();
     if (userDoc.exists && userDoc.data().role === 'admin') {
-        // Show admin link
         showAdminLink();
     }
 }
@@ -96,7 +148,6 @@ function showLoginButtons() {
 }
 
 function showAdminLink() {
-    // Add admin link to navbar
     const navLinks = document.querySelector('.nav-links');
     if (navLinks && !document.getElementById('adminLink')) {
         navLinks.innerHTML += `
