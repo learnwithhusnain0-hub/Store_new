@@ -3,233 +3,569 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>UK Store - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f3f4f6;
+            color: #1f2937;
+        }
+
+        /* Admin Container */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .admin-sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #334155;
+        }
+
+        .sidebar-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .sidebar-menu li {
+            margin: 5px 15px;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #cbd5e1;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu li i {
+            width: 24px;
+            font-size: 18px;
+        }
+
+        .sidebar-menu li:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar-menu li.active {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .logout-item {
+            margin-top: 30px;
+            border-top: 1px solid #334155;
+            padding-top: 15px;
+            color: #f87171 !important;
+        }
+
+        /* Main Content */
+        .admin-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+        }
+
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .page-title p {
+            color: #6b7280;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .profile-info img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-info h3 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            color: #6b7280;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .stat-card:nth-child(1) .stat-icon {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            background: rgba(139, 92, 246, 0.1);
+            color: #8b5cf6;
+        }
+
+        /* Section Styles */
+        .section-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .section-header h2 {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 14px;
+        }
+
+        .product-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .card-number {
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Form Styles */
+        .form-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #4b5563;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .image-preview {
+            margin-top: 15px;
+            display: none;
+        }
+
+        .image-preview img {
+            max-width: 200px;
+            border-radius: 12px;
+        }
+
+        /* Sections */
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div class="admin-container">
         <!-- Sidebar -->
         <div class="admin-sidebar">
-            <h3>Admin Panel</h3>
-            <ul>
-                <li class="active" onclick="showSection('dashboard')">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
-                </li>
-                <li onclick="showSection('products')">
-                    <i class="fas fa-box"></i> Products
-                </li>
-                <li onclick="showSection('add-product')">
-                    <i class="fas fa-plus-circle"></i> Add Product
-                </li>
-                <li onclick="showSection('orders')">
-                    <i class="fas fa-shopping-cart"></i> Orders
-                </li>
-                <li onclick="showSection('cvv-tracking')">
-                    <i class="fas fa-credit-card"></i> CVV Tracking
-                </li>
-                <li onclick="showSection('cards')">
-                    <i class="fas fa-id-card"></i> Company Cards
-                </li>
-                <li onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </li>
-            </ul>
+            <div class="sidebar-header">
+                <h2>UK Store</h2>
+                <p>Admin Dashboard</p>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li onclick="showSection('dashboard')" class="active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </li>
+                    <li onclick="showSection('products')">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </li>
+                    <li onclick="showSection('add-product')">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Add Product</span>
+                    </li>
+                    <li onclick="showSection('orders')">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Orders</span>
+                    </li>
+                    <li onclick="showSection('cvv-tracking')">
+                        <i class="fas fa-credit-card"></i>
+                        <span>CVV Tracking</span>
+                    </li>
+                    <li class="logout-item" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </li>
+                </ul>
+            </div>
         </div>
 
         <!-- Main Content -->
         <div class="admin-content">
-            <!-- Dashboard Section -->
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="page-title">
+                    <h1 id="pageTitle">Dashboard</h1>
+                    <p id="pageSubtitle">Welcome back, Admin!</p>
+                </div>
+                <div class="admin-profile">
+                    <div class="profile-info">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=3b82f6&color=fff" alt="Admin">
+                        <div>
+                            <h4 id="adminName">Admin User</h4>
+                            <p>Administrator</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DASHBOARD SECTION -->
             <div id="dashboard" class="admin-section active">
-                <h2>Dashboard</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h3 id="totalOrders">0</h3>
-                        <p>Total Orders</p>
+                        <div class="stat-info">
+                            <h3 id="totalOrders">0</h3>
+                            <p>Total Orders</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-bag"></i>
+                        </div>
                     </div>
                     <div class="stat-card">
-                        <h3 id="totalRevenue">₹0</h3>
-                        <p>Total Revenue</p>
+                        <div class="stat-info">
+                            <h3 id="totalRevenue">₹0</h3>
+                            <p>Total Revenue</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-rupee-sign"></i>
+                        </div>
                     </div>
                     <div class="stat-card">
-                        <h3 id="totalProducts">0</h3>
-                        <p>Products</p>
+                        <div class="stat-info">
+                            <h3 id="totalProducts">0</h3>
+                            <p>Products</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Products List Section -->
+            <!-- PRODUCTS LIST SECTION -->
             <div id="products" class="admin-section">
-                <h2>All Products</h2>
-                <div class="table-container">
-                    <table id="productsTable">
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Name</th>
-                                <th>Price</th>
-                                <th>Category</th>
-                                <th>Stock</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="productsBody"></tbody>
-                    </table>
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2>All Products</h2>
+                        <button class="btn-primary" onclick="showSection('add-product')">
+                            <i class="fas fa-plus"></i> Add Product
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsBody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <!-- Add Product Section -->
+            <!-- ADD PRODUCT SECTION -->
             <div id="add-product" class="admin-section">
-                <h2>Add New Product</h2>
-                <div class="form-container">
-                    <form id="productForm" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label>Product Name</label>
-                            <input type="text" id="productName" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Price (₹)</label>
-                            <input type="number" id="productPrice" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Category</label>
-                            <select id="productCategory" required>
-                                <option value="">Select Category</option>
-                                <option value="electronics">Electronics</option>
-                                <option value="clothing">Clothing</option>
-                                <option value="books">Books</option>
-                                <option value="home">Home & Kitchen</option>
-                                <option value="sports">Sports</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea id="productDescription" rows="4" required></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Stock Quantity</label>
-                            <input type="number" id="productStock" value="10" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Product Image</label>
-                            <div class="image-upload-area">
-                                <input type="file" id="productImage" accept="image/*" required>
-                                <div class="image-preview" id="imagePreview">
-                                    <img src="" alt="Preview" style="display: none;">
-                                    <span>Click to upload or drag image</span>
+                <div class="section-card">
+                    <h2>Add New Product</h2>
+                    <div class="form-container">
+                        <form id="productForm">
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label>Product Name</label>
+                                    <input type="text" id="productName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Price (₹)</label>
+                                    <input type="number" id="productPrice" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Category</label>
+                                    <select id="productCategory" required>
+                                        <option value="">Select</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="clothing">Clothing</option>
+                                        <option value="books">Books</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Stock</label>
+                                    <input type="number" id="productStock" value="10" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Description</label>
+                                    <textarea id="productDescription" rows="4" required></textarea>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label>Image URL</label>
+                                    <input type="url" id="productImageUrl" placeholder="https://..." required>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="upload-progress" id="uploadProgress" style="display: none;">
-                            <div class="progress-bar">
-                                <div class="progress-fill" id="progressFill">0%</div>
-                            </div>
-                        </div>
-                        
-                        <button type="submit" class="btn-primary" id="submitBtn">
-                            <i class="fas fa-upload"></i> Upload Product
-                        </button>
-                    </form>
+                            <button type="submit" class="btn-primary" style="width: 100%;">Save Product</button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
-            <!-- Orders Section -->
+            <!-- ORDERS SECTION (with masked card numbers) -->
             <div id="orders" class="admin-section">
-                <h2>All Orders</h2>
-                <div class="table-container">
-                    <table id="ordersTable">
-                        <thead>
-                            <tr>
-                                <th>Order ID</th>
-                                <th>User</th>
-                                <th>Products</th>
-                                <th>Amount</th>
-                                <th>Card Number</th>
-                                <th>CVV</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ordersBody"></tbody>
-                    </table>
+                <div class="section-card">
+                    <h2>All Orders</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Products</th>
+                                    <th>Amount</th>
+                                    <th>Card Number</th>
+                                    <th>CVV</th>
+                                    <th>Expiry</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersBody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <!-- CVV Tracking Section -->
+            <!-- CVV TRACKING SECTION (with masked card numbers) -->
             <div id="cvv-tracking" class="admin-section">
-                <h2>CVV Usage Tracking</h2>
-                <div class="table-container">
-                    <table id="cvvTable">
-                        <thead>
-                            <tr>
-                                <th>CVV</th>
-                                <th>Card Number</th>
-                                <th>Total Orders</th>
-                                <th>Total Amount</th>
-                                <th>Last Used</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cvvBody"></tbody>
-                    </table>
+                <div class="section-card">
+                    <h2>CVV Usage Tracking</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>CVV</th>
+                                    <th>Card Number</th>
+                                    <th>Expiry</th>
+                                    <th>Total Orders</th>
+                                    <th>Total Amount</th>
+                                    <th>Last Used</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cvvBody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-
-            <!-- Company Cards Section -->
-            <div id="cards" class="admin-section">
-                <h2>Company Cards</h2>
-                <button class="btn-primary" onclick="showAddCardForm()">Add New Card</button>
-                <div class="table-container">
-                    <table id="cardsTable">
-                        <thead>
-                            <tr>
-                                <th>Card Number</th>
-                                <th>CVV</th>
-                                <th>Expiry</th>
-                                <th>Assigned To</th>
-                                <th>Department</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="cardsBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Card Modal -->
-    <div id="cardModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeCardModal()">&times;</span>
-            <h2>Add Company Card</h2>
-            <form id="cardForm">
-                <div class="form-group">
-                    <label>Card Number</label>
-                    <input type="text" id="newCardNumber" required>
-                </div>
-                <div class="form-group">
-                    <label>CVV</label>
-                    <input type="text" id="newCardCVV" maxlength="3" required>
-                </div>
-                <div class="form-group">
-                    <label>Expiry Date</label>
-                    <input type="text" id="newCardExpiry" placeholder="MM/YY" required>
-                </div>
-                <div class="form-group">
-                    <label>Assigned To</label>
-                    <input type="text" id="assignedTo" required>
-                </div>
-                <div class="form-group">
-                    <label>Department</label>
-                    <input type="text" id="department" required>
-                </div>
-                <button type="submit" class="btn-primary">Save Card</button>
-            </form>
         </div>
     </div>
 
@@ -237,10 +573,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
     
+    <!-- Custom JS -->
     <script src="js/firebase-config.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/admin.js"></script>
+    <script src="js/admin-dashboard.js"></script>
 </body>
 </html>
