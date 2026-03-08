@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <h3>Admin Panel</h3>
+            <ul>
+                <li class="active" onclick="showSection('dashboard')">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </li>
+                <li onclick="showSection('orders')">
+                    <i class="fas fa-shopping-cart"></i> Orders
+                </li>
+                <li onclick="showSection('products')">
+                    <i class="fas fa-box"></i> Products
+                </li>
+                <li onclick="showSection('cvv-tracking')">
+                    <i class="fas fa-credit-card"></i> CVV Tracking
+                </li>
+                <li onclick="showSection('cards')">
+                    <i class="fas fa-id-card"></i> Company Cards
+                </li>
+                <li onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="admin-section active">
+                <h2>Dashboard</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3 id="totalOrders">0</h3>
+                        <p>Total Orders</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalRevenue">₹0</h3>
+                        <p>Total Revenue</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3 id="totalProducts">0</h3>
+                        <p>Products</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="orders" class="admin-section">
+                <h2>All Orders</h2>
+                <div class="table-container">
+                    <table id="ordersTable">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>User</th>
+                                <th>Amount</th>
+                                <th>Card Number</th>
+                                <th>CVV</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CVV Tracking Section -->
+            <div id="cvv-tracking" class="admin-section">
+                <h2>CVV Usage Tracking</h2>
+                <div class="table-container">
+                    <table id="cvvTable">
+                        <thead>
+                            <tr>
+                                <th>CVV</th>
+                                <th>Card Number</th>
+                                <th>Total Orders</th>
+                                <th>Total Amount</th>
+                                <th>Last Used</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cvvBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Company Cards Section -->
+            <div id="cards" class="admin-section">
+                <h2>Company Cards</h2>
+                <button class="btn-primary" onclick="showAddCardForm()">Add New Card</button>
+                <div class="table-container">
+                    <table id="cardsTable">
+                        <thead>
+                            <tr>
+                                <th>Card Number</th>
+                                <th>CVV</th>
+                                <th>Expiry</th>
+                                <th>Assigned To</th>
+                                <th>Department</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cardsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Card Modal -->
+    <div id="cardModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCardModal()">&times;</span>
+            <h2>Add Company Card</h2>
+            <form id="cardForm">
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" id="newCardNumber" required>
+                </div>
+                <div class="form-group">
+                    <label>CVV</label>
+                    <input type="text" id="newCardCVV" maxlength="3" required>
+                </div>
+                <div class="form-group">
+                    <label>Expiry Date</label>
+                    <input type="text" id="newCardExpiry" placeholder="MM/YY" required>
+                </div>
+                <div class="form-group">
+                    <label>Assigned To</label>
+                    <input type="text" id="assignedTo" required>
+                </div>
+                <div class="form-group">
+                    <label>Department</label>
+                    <input type="text" id="department" required>
+                </div>
+                <button type="submit" class="btn-primary">Save Card</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <script src="js/firebase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+          </html>
