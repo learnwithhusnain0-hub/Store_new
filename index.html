@@ -2,100 +2,222 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyStore - Best Products</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>FoodieExpress | Fast Food Delivery</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navbar -->
+    <!-- ===== NAVBAR ===== -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <h2>🛍️ MyStore</h2>
+                <i class="fas fa-utensils"></i>
+                <h2>Foodie<span>Express</span></h2>
             </div>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#products">Products</a>
+            
+            <div class="nav-links" id="navLinks">
+                <a href="#home" class="active">Home</a>
+                <a href="#products">Menu</a>
                 <a href="#contact">Contact</a>
+                <a href="#" id="adminLink" style="display: none;">Admin</a>
             </div>
+            
             <div class="nav-actions">
-                <div id="userInfo" class="user-info"></div>
-                <button class="cart-btn" onclick="openCart()">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span id="cartCount">0</span>
+                <button class="cart-icon" onclick="toggleCart()">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cartCount">0</span>
                 </button>
-                <div id="authButtons"></div>
+                
+                <div class="user-section" id="userSection">
+                    <!-- User will appear here -->
+                </div>
+                
+                <button class="menu-toggle" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- ===== HERO SECTION ===== -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <h1>Best Products at <span class="highlight">Best Prices</span></h1>
-            <p>Shop with confidence - Secure Payment</p>
-            <button class="btn-primary" onclick="scrollToProducts()">Shop Now</button>
+            <h1>Delicious <span class="highlight">Fast Food</span> Delivered Fast</h1>
+            <p>Fresh ingredients • Quick delivery • Best prices</p>
+            <button class="btn-primary" onclick="scrollToMenu()">
+                <i class="fas fa-chevron-down"></i> View Menu
+            </button>
+        </div>
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?w=500" alt="Burger">
         </div>
     </section>
 
-    <!-- Products Section -->
+    <!-- ===== PRODUCTS/MENU SECTION ===== -->
     <section class="products" id="products">
-        <h2>Our Products</h2>
+        <div class="section-header">
+            <h2>Our <span>Menu</span></h2>
+            <p>Freshly prepared just for you</p>
+        </div>
+        
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+            <button class="filter-btn" onclick="filterProducts('burger')">Burgers</button>
+            <button class="filter-btn" onclick="filterProducts('pizza')">Pizza</button>
+            <button class="filter-btn" onclick="filterProducts('fries')">Fries</button>
+            <button class="filter-btn" onclick="filterProducts('drinks')">Drinks</button>
+        </div>
+        
         <div class="products-grid" id="productsGrid">
             <!-- Products will load here -->
         </div>
     </section>
 
-    <!-- Cart Modal -->
-    <div id="cartModal" class="modal">
-        <div class="modal-content cart-modal">
-            <span class="close" onclick="closeCart()">&times;</span>
-            <h2>Your Cart</h2>
-            <div id="cartItems"></div>
+    <!-- ===== CART SIDEBAR (Morph Glass) ===== -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-bag"></i> Your Cart</h3>
+            <button class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will appear here -->
+        </div>
+        
+        <div class="cart-footer">
             <div class="cart-total">
-                <h3>Total: ₹<span id="cartTotal">0</span></h3>
+                <span>Total:</span>
+                <span class="total-amount" id="cartTotal">$0.00</span>
             </div>
-            <button class="btn-primary" onclick="checkout()">Proceed to Checkout</button>
+            <button class="btn-checkout" onclick="checkout()" id="checkoutBtn">
+                <i class="fas fa-arrow-right"></i> Checkout
+            </button>
+        </div>
+    </div>
+    
+    <!-- Overlay for cart -->
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <!-- ===== LOGIN MODAL (Morph Glass) ===== -->
+    <div class="login-modal" id="loginModal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3>Welcome Back!</h3>
+                <button class="close-modal" onclick="closeLoginModal()"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <div class="modal-body">
+                <p>Sign in to continue your order</p>
+                
+                <button class="btn-google" onclick="googleLogin()">
+                    <i class="fab fa-google"></i>
+                    Continue with Google
+                </button>
+                
+                <div class="divider">
+                    <span>or</span>
+                </div>
+                
+                <button class="btn-guest" onclick="continueAsGuest()">
+                    Continue as Guest
+                </button>
+            </div>
+            
+            <div class="modal-footer">
+                <p>By continuing, you agree to our Terms & Privacy</p>
+            </div>
         </div>
     </div>
 
-    <!-- Checkout Modal -->
-    <div id="checkoutModal" class="modal">
-        <div class="modal-content checkout-modal">
-            <span class="close" onclick="closeCheckout()">&times;</span>
-            <h2>Payment Details</h2>
+    <!-- ===== CHECKOUT MODAL ===== -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="modal-content glass">
+            <div class="modal-header">
+                <h3><i class="fas fa-credit-card"></i> Payment Details</h3>
+                <button class="close-modal" onclick="closeCheckoutModal()"><i class="fas fa-times"></i></button>
+            </div>
             
-            <form id="paymentForm">
-                <div class="form-group">
-                    <label>Card Number</label>
-                    <input type="text" id="cardNumber" maxlength="19" placeholder="1234 5678 9012 3456" required>
-                </div>
-                
-                <div class="form-row">
+            <div class="modal-body">
+                <form id="paymentForm">
                     <div class="form-group">
-                        <label>Expiry Date</label>
-                        <input type="text" id="expiryDate" placeholder="MM/YY" required>
+                        <label>Card Number</label>
+                        <input type="text" id="cardNumber" maxlength="19" placeholder="4532 1234 5678 9012" required>
                     </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry</label>
+                            <input type="text" id="expiryDate" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="text" id="cvv" maxlength="3" placeholder="123" required>
+                        </div>
+                    </div>
+                    
                     <div class="form-group">
-                        <label>CVV</label>
-                        <input type="text" id="cvv" maxlength="3" placeholder="123" required>
+                        <label>Cardholder Name</label>
+                        <input type="text" id="cardName" placeholder="Name on Card" required>
                     </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Cardholder Name</label>
-                    <input type="text" id="cardName" placeholder="Name on Card" required>
-                </div>
-
-                <div class="order-summary">
-                    <h3>Order Summary</h3>
-                    <p>Total Amount: ₹<span id="checkoutTotal">0</span></p>
-                </div>
-
-                <button type="submit" class="btn-primary">Pay Now</button>
-            </form>
+                    
+                    <div class="order-summary">
+                        <h4>Order Summary</h4>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="subtotal">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery:</span>
+                            <span>$2.99</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="checkoutTotal">$0.00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-loader" id="paymentLoader" style="display: none;">
+                        <div class="loader"></div>
+                        <p>Processing payment...</p>
+                    </div>
+                    
+                    <button type="submit" class="btn-pay" id="payButton">
+                        <i class="fas fa-lock"></i> Pay Now
+                    </button>
+                </form>
+            </div>
         </div>
+    </div>
+
+    <!-- ===== ORDER CONFIRMATION MODAL ===== -->
+    <div class="success-modal" id="successModal">
+        <div class="modal-content glass">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Order Confirmed!</h3>
+            <p>Your food is being prepared</p>
+            <div class="order-details" id="orderDetails">
+                <!-- Order details will show -->
+            </div>
+            <button class="btn-primary" onclick="closeSuccessModal()">
+                <i class="fas fa-utensils"></i> Track Order
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== TOAST NOTIFICATION ===== -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Item added to cart</span>
     </div>
 
     <!-- Firebase SDK -->
@@ -103,8 +225,9 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
+    <!-- Custom JS -->
     <script src="js/firebase-config.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/store.js"></script>
 </body>
-  </html>
+    </html>
