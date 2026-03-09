@@ -12,87 +12,323 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Previous styles remain same, add these new ones */
-        
-        .modal {
-            display: none;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #f5f5f5;
+        }
+
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .admin-sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1a1a1a, #2d2d2d);
+            color: white;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #404040;
+        }
+
+        .sidebar-header h2 {
+            color: #c49b63;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-header p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .sidebar-menu li {
+            padding: 15px 25px;
+            margin: 5px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ccc;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu li i {
+            width: 24px;
+            font-size: 18px;
+        }
+
+        .sidebar-menu li:hover {
+            background: #404040;
+            color: white;
+        }
+
+        .sidebar-menu li.active {
+            background: #c49b63;
+            color: white;
+        }
+
+        .logout-item {
+            margin-top: 30px;
+            border-top: 1px solid #404040;
+            color: #f87171 !important;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .admin-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 30px;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        /* ===== TOP BAR ===== */
+        .top-bar {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .admin-profile img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .admin-profile span {
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* ===== STATS CARDS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-info h3 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #c49b63;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            font-size: 28px;
+            background: #f0e6d8;
+            color: #c49b63;
         }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
+
+        /* ===== SECTION CARDS ===== */
+        .section-card {
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
         }
-        
-        .modal-header {
+
+        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
-        
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
         }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        
-        .btn-success {
-            background: #28a745;
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            background: #c49b63;
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
         }
-        
-        .btn-edit {
-            background: #ffc107;
-            color: black;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 3px;
-            margin-right: 5px;
-            cursor: pointer;
+
+        .btn-primary:hover {
+            background: #a17d4a;
+        }
+
+        /* ===== TABLES ===== */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            color: #333;
+        }
+
+        tr:hover td {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            background: #d4edda;
+            color: #155724;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .card-number {
+            font-family: monospace;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        /* ===== FORMS ===== */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #c49b63;
+        }
+
+        /* ===== ADMIN SECTIONS ===== */
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .admin-sidebar {
+                width: 0;
+                display: none;
+            }
+            .admin-content {
+                margin-left: 0;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
     <div class="admin-container">
-        <!-- Sidebar (same as before) -->
+        <!-- Sidebar -->
         <div class="admin-sidebar">
             <div class="sidebar-header">
                 <h2>Burger House</h2>
@@ -167,6 +403,7 @@
                     </div>
                 </div>
 
+                <!-- Recent Orders -->
                 <div class="section-card">
                     <div class="section-header">
                         <h2>Recent Orders</h2>
@@ -202,7 +439,7 @@
                                     <th>Customer</th>
                                     <th>Items</th>
                                     <th>Total</th>
-                                    <th>Card</th>
+                                    <th>Card Number</th>
                                     <th>CVV</th>
                                     <th>Expiry</th>
                                     <th>Date</th>
@@ -214,7 +451,7 @@
                 </div>
             </div>
 
-            <!-- Products Section (View Only) -->
+            <!-- Products Section -->
             <div id="products" class="admin-section">
                 <div class="section-card">
                     <div class="section-header">
@@ -235,9 +472,7 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="productsTable">
-                                <tr><td colspan="6" style="text-align:center;">Loading...</td></tr>
-                            </tbody>
+                            <tbody id="productsTable"></tbody>
                         </table>
                     </div>
                 </div>
@@ -261,26 +496,20 @@
                             
                             <div class="form-group">
                                 <label>Category</label>
-                                <input type="text" id="productCategory" placeholder="e.g., burgers, pizza, drinks" required>
+                                <input type="text" id="productCategory" required>
                             </div>
                             
                             <div class="form-group">
-                                <label>Stock Quantity</label>
+                                <label>Stock</label>
                                 <input type="number" id="productStock" value="10" required>
                             </div>
                             
                             <div class="form-group">
                                 <label>Image URL</label>
-                                <input type="url" id="productImage" placeholder="https://images.unsplash.com/..." required>
-                                <small style="color: #666;">Use Unsplash or any image URL</small>
+                                <input type="url" id="productImage" required>
                             </div>
                             
-                            <div class="form-group">
-                                <label>Description</label>
-                                <textarea id="productDescription" rows="3" placeholder="Product description"></textarea>
-                            </div>
-                            
-                            <button type="submit" class="btn-primary" style="width: 100%; padding: 15px;">
+                            <button type="submit" class="btn-primary" style="width: 100%;">
                                 <i class="fas fa-save"></i> Save Product
                             </button>
                         </form>
@@ -376,10 +605,7 @@
             };
             document.getElementById('pageTitle').textContent = titles[sectionId];
             
-            // Refresh data when switching to products
-            if (sectionId === 'products') {
-                loadProducts();
-            }
+            if (sectionId === 'products') loadProducts();
         }
 
         // Mask card number
@@ -412,16 +638,11 @@
                 const tbody = document.getElementById('recentOrders');
                 tbody.innerHTML = '';
 
-                if (recentSnap.empty) {
-                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No orders yet</td></tr>';
-                    return;
-                }
-
                 recentSnap.forEach(doc => {
                     const order = doc.data();
                     tbody.innerHTML += `
                         <tr>
-                            <td>#${doc.id.slice(-6)}</td>
+                            <td>${doc.id.slice(0, 5)}...</td>
                             <td>${order.userEmail || 'N/A'}</td>
                             <td>${order.items?.length || 0} items</td>
                             <td>$${order.total || 0}</td>
@@ -430,7 +651,7 @@
                     `;
                 });
             } catch (error) {
-                console.error('Error loading dashboard:', error);
+                console.error('Error:', error);
             }
         }
 
@@ -441,11 +662,6 @@
                 const tbody = document.getElementById('ordersTable');
                 tbody.innerHTML = '';
 
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">No orders found</td></tr>';
-                    return;
-                }
-
                 snapshot.forEach(doc => {
                     const order = doc.data();
                     const card = order.cardDetails || {};
@@ -454,11 +670,11 @@
 
                     tbody.innerHTML += `
                         <tr>
-                            <td>#${doc.id.slice(-6)}</td>
+                            <td>${doc.id.slice(0, 5)}...</td>
                             <td>${order.userEmail || 'N/A'}</td>
                             <td>${items}</td>
                             <td>$${order.total || 0}</td>
-                            <td class="card-number" title="Full: ${card.cardNumber || ''}">${maskedCard}</td>
+                            <td class="card-number">${maskedCard}</td>
                             <td>${card.cvv || 'N/A'}</td>
                             <td>${card.expiry || 'N/A'}</td>
                             <td>${new Date(order.createdAt).toLocaleDateString()}</td>
@@ -466,7 +682,7 @@
                     `;
                 });
             } catch (error) {
-                console.error('Error loading orders:', error);
+                console.error('Error:', error);
             }
         }
 
@@ -477,40 +693,27 @@
                 const tbody = document.getElementById('productsTable');
                 tbody.innerHTML = '';
 
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No products yet. Add your first product!</td></tr>';
-                    return;
-                }
-
                 snapshot.forEach(doc => {
                     const product = doc.data();
                     tbody.innerHTML += `
                         <tr>
-                            <td>
-                                <img src="${product.image || 'https://via.placeholder.com/50'}" 
-                                     style="width: 50px; height: 50px; border-radius: 5px; object-fit: cover;">
-                            </td>
+                            <td><img src="${product.image || 'https://via.placeholder.com/50'}" style="width:50px; height:50px; border-radius:5px;"></td>
                             <td>${product.name || 'N/A'}</td>
                             <td>$${product.price || 0}</td>
                             <td>${product.category || 'N/A'}</td>
                             <td>${product.stock || 0}</td>
                             <td>
-                                <button class="btn-edit" onclick="editProduct('${doc.id}')">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="deleteProduct('${doc.id}')" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:3px;">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <button onclick="deleteProduct('${doc.id}')" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:3px;">Delete</button>
                             </td>
                         </tr>
                     `;
                 });
             } catch (error) {
-                console.error('Error loading products:', error);
+                console.error('Error:', error);
             }
         }
 
-        // Add Product Form Submit
+        // Add Product
         document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
 
@@ -520,47 +723,26 @@
                 category: document.getElementById('productCategory').value,
                 stock: parseInt(document.getElementById('productStock').value),
                 image: document.getElementById('productImage').value,
-                description: document.getElementById('productDescription').value,
                 createdAt: new Date().toISOString()
             };
 
             try {
                 await db.collection('products').add(productData);
-                alert('✅ Product added successfully!');
-                
-                // Reset form
+                alert('✅ Product added!');
                 document.getElementById('addProductForm').reset();
-                
-                // Refresh products list
-                await loadProducts();
-                
-                // Switch to products view
+                loadProducts();
                 showSection('products');
-                
             } catch (error) {
-                console.error('Error adding product:', error);
-                alert('Error adding product: ' + error.message);
+                alert('Error: ' + error.message);
             }
         });
 
-        // Edit Product
-        async function editProduct(productId) {
-            alert('Edit functionality - will be implemented');
-            // You can add edit modal here
-        }
-
         // Delete Product
         async function deleteProduct(productId) {
-            if (confirm('Are you sure you want to delete this product?')) {
-                try {
-                    await db.collection('products').doc(productId).delete();
-                    await loadProducts();
-                    await loadDashboard();
-                    alert('Product deleted successfully');
-                } catch (error) {
-                    console.error('Error deleting product:', error);
-                    alert('Error deleting product');
-                }
+            if (confirm('Delete this product?')) {
+                await db.collection('products').doc(productId).delete();
+                loadProducts();
+                loadDashboard();
             }
         }
 
@@ -570,11 +752,6 @@
                 const snapshot = await db.collection('users').get();
                 const tbody = document.getElementById('usersTable');
                 tbody.innerHTML = '';
-
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No users found</td></tr>';
-                    return;
-                }
 
                 snapshot.forEach(doc => {
                     const user = doc.data();
@@ -588,23 +765,18 @@
                     `;
                 });
             } catch (error) {
-                console.error('Error loading users:', error);
+                console.error('Error:', error);
             }
         }
 
         // Logout
         async function logout() {
-            try {
-                await auth.signOut();
-                window.location.href = 'index.html';
-            } catch (error) {
-                console.error('Logout error:', error);
-            }
+            await auth.signOut();
+            window.location.href = 'index.html';
         }
 
         // Make functions global
         window.showSection = showSection;
-        window.editProduct = editProduct;
         window.deleteProduct = deleteProduct;
         window.logout = logout;
     </script>
