@@ -4,134 +4,424 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard | Burger House</title>
-    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
     <style>
-        /* Admin specific styles */
+        /* Admin Specific Styles */
         .admin-container {
             display: flex;
+            min-height: 100vh;
         }
-        .sidebar {
+
+        .admin-sidebar {
             width: 280px;
-            background: #1a1a1a;
+            background: linear-gradient(180deg, #1a1a1a, #2d2d2d);
             color: white;
-            height: 100vh;
             position: fixed;
-            padding: 30px;
+            height: 100vh;
+            overflow-y: auto;
         }
-        .sidebar h2 {
+
+        .sidebar-header {
+            padding: 30px 20px;
+            text-align: center;
+            border-bottom: 1px solid #404040;
+        }
+
+        .sidebar-header h2 {
             color: #c49b63;
-            margin-bottom: 40px;
+            font-size: 24px;
+            font-weight: 700;
         }
-        .sidebar li {
-            padding: 15px;
-            margin: 5px 0;
+
+        .sidebar-header p {
+            color: #999;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .sidebar-menu ul {
+            list-style: none;
+            padding: 20px 0;
+        }
+
+        .sidebar-menu li {
+            padding: 15px 25px;
+            margin: 5px 10px;
             border-radius: 10px;
             cursor: pointer;
-            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #ccc;
+            transition: all 0.3s;
         }
-        .sidebar li:hover {
+
+        .sidebar-menu li i {
+            width: 24px;
+            font-size: 18px;
+        }
+
+        .sidebar-menu li:hover {
+            background: #404040;
+            color: white;
+        }
+
+        .sidebar-menu li.active {
             background: #c49b63;
+            color: white;
         }
-        .content {
+
+        .logout-item {
+            margin-top: 30px;
+            border-top: 1px solid #404040;
+            color: #f87171 !important;
+        }
+
+        .admin-content {
+            flex: 1;
             margin-left: 280px;
             padding: 30px;
-            width: calc(100% - 280px);
+            background: #f5f5f5;
         }
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+
+        .top-bar {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 30px;
         }
+
+        .page-title h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .admin-profile img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
         .stat-card {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        table {
-            width: 100%;
+
+        .stat-info h3 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #c49b63;
+            margin-bottom: 5px;
+        }
+
+        .stat-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            background: #f0e6d8;
+            color: #c49b63;
+        }
+
+        .section-card {
             background: white;
-            border-radius: 10px;
-            overflow: hidden;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
         }
-        th {
-            background: #f5f5f5;
-            padding: 15px;
-            text-align: left;
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
         }
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #eee;
+
+        .section-header h2 {
+            font-size: 20px;
+            font-weight: 600;
         }
-        .btn-logout {
+
+        .btn-primary {
             background: #c49b63;
             color: white;
             border: none;
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #a17d4a;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #666;
+            background: #f8f9fa;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        .card-number {
+            font-family: monospace;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .status-badge {
+            background: #d4edda;
+            color: #155724;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
         }
     </style>
 </head>
 <body>
     <div class="admin-container">
-        <div class="sidebar">
-            <h2>Burger House</h2>
-            <ul>
-                <li onclick="showSection('orders')" class="active">
-                    <i class="fas fa-shopping-cart"></i> Orders
-                </li>
-                <li onclick="showSection('products')">
-                    <i class="fas fa-box"></i> Products
-                </li>
-                <li onclick="showSection('users')">
-                    <i class="fas fa-users"></i> Users
-                </li>
-                <li onclick="logout()" style="margin-top:50px; color:#ef4444;">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </li>
-            </ul>
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2>Burger House</h2>
+                <p>Admin Dashboard</p>
+            </div>
+            <div class="sidebar-menu">
+                <ul>
+                    <li onclick="showSection('dashboard')" class="active" id="menuDashboard">
+                        <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                    </li>
+                    <li onclick="showSection('orders')" id="menuOrders">
+                        <i class="fas fa-shopping-cart"></i> <span>Orders</span>
+                    </li>
+                    <li onclick="showSection('products')" id="menuProducts">
+                        <i class="fas fa-box"></i> <span>Products</span>
+                    </li>
+                    <li onclick="showSection('users')" id="menuUsers">
+                        <i class="fas fa-users"></i> <span>Users</span>
+                    </li>
+                    <li class="logout-item" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+                    </li>
+                </ul>
+            </div>
         </div>
-        
-        <div class="content">
-            <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                <h1>Dashboard</h1>
-                <button class="btn-logout" onclick="logout()">Logout</button>
-            </div>
-            
-            <div class="stats">
-                <div class="stat-card">
-                    <h3 id="totalOrders">0</h3>
-                    <p>Total Orders</p>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="page-title">
+                    <h1 id="pageTitle">Dashboard</h1>
                 </div>
-                <div class="stat-card">
-                    <h3 id="totalRevenue">$0</h3>
-                    <p>Revenue</p>
-                </div>
-                <div class="stat-card">
-                    <h3 id="totalProducts">0</h3>
-                    <p>Products</p>
+                <div class="admin-profile">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=c49b63&color=fff" alt="Admin">
+                    <span id="adminEmail">admin@burgerhouse.com</span>
                 </div>
             </div>
-            
-            <div id="orders-section">
-                <h2>Recent Orders</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer</th>
-                            <th>Items</th>
-                            <th>Total</th>
-                            <th>Card</th>
-                            <th>CVV</th>
-                            <th>Expiry</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ordersTable"></tbody>
-                </table>
+
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="admin-section active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3 id="totalOrders">0</h3>
+                            <p>Total Orders</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3 id="totalRevenue">$0</h3>
+                            <p>Total Revenue</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3 id="totalProducts">0</h3>
+                            <p>Products</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2>Recent Orders</h2>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentOrders">
+                                <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="orders" class="admin-section">
+                <div class="section-card">
+                    <h2>All Orders</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total</th>
+                                    <th>Card Number</th>
+                                    <th>CVV</th>
+                                    <th>Expiry</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTable">
+                                <tr><td colspan="8" style="text-align:center;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div id="products" class="admin-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2>Products</h2>
+                        <button class="btn-primary" onclick="showAddProduct()">
+                            <i class="fas fa-plus"></i> Add Product
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTable">
+                                <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Section -->
+            <div id="users" class="admin-section">
+                <div class="section-card">
+                    <h2>Users</h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTable">
+                                <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -140,10 +430,222 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    
-    <!-- Your JS files -->
-    <script src="js/firebase-config.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/admin-dashboard.js"></script>
+
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDvpwrivywDoS4KrEKDjJfHvrVLTDHMHJQ",
+            authDomain: "ukstore-147e3.firebaseapp.com",
+            projectId: "ukstore-147e3",
+            storageBucket: "ukstore-147e3.firebasestorage.app",
+            messagingSenderId: "682218466479",
+            appId: "1:682218466479:web:2cf15486de7a18efb0b85a"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Check admin access
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (!userDoc.exists || userDoc.data().role !== 'admin') {
+                    alert('Access Denied');
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                document.getElementById('adminEmail').textContent = user.email;
+                loadDashboard();
+                loadOrders();
+                loadProducts();
+                loadUsers();
+
+            } catch (error) {
+                console.error('Auth error:', error);
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Show different sections
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update sidebar
+            document.querySelectorAll('.sidebar-menu li').forEach(i => i.classList.remove('active'));
+            document.getElementById('menu' + sectionId.charAt(0).toUpperCase() + sectionId.slice(1)).classList.add('active');
+            
+            // Update title
+            document.getElementById('pageTitle').textContent = sectionId.charAt(0).toUpperCase() + sectionId.slice(1);
+        }
+
+        // Mask card number - last digit only hidden
+        function maskCardNumber(cardNumber) {
+            if (!cardNumber) return 'N/A';
+            const clean = cardNumber.replace(/\s/g, '');
+            if (clean.length >= 16) {
+                const first15 = clean.slice(0, 15);
+                const formatted = first15.match(/.{1,4}/g)?.join(' ') || first15;
+                return formatted + '*';
+            }
+            return cardNumber;
+        }
+
+        // Load Dashboard
+        async function loadDashboard() {
+            try {
+                const ordersSnap = await db.collection('orders').get();
+                document.getElementById('totalOrders').textContent = ordersSnap.size;
+
+                let revenue = 0;
+                ordersSnap.forEach(doc => revenue += doc.data().total || 0);
+                document.getElementById('totalRevenue').textContent = '$' + revenue.toFixed(2);
+
+                const productsSnap = await db.collection('products').get();
+                document.getElementById('totalProducts').textContent = productsSnap.size;
+
+                // Recent orders
+                const recentSnap = await db.collection('orders').orderBy('createdAt', 'desc').limit(5).get();
+                const tbody = document.getElementById('recentOrders');
+                tbody.innerHTML = '';
+
+                recentSnap.forEach(doc => {
+                    const order = doc.data();
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>#${doc.id.slice(-6)}</td>
+                            <td>${order.userEmail || 'N/A'}</td>
+                            <td>${order.items?.length || 0} items</td>
+                            <td>$${order.total || 0}</td>
+                            <td><span class="status-badge">Completed</span></td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+            }
+        }
+
+        // Load Orders
+        async function loadOrders() {
+            try {
+                const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').get();
+                const tbody = document.getElementById('ordersTable');
+                tbody.innerHTML = '';
+
+                snapshot.forEach(doc => {
+                    const order = doc.data();
+                    const card = order.cardDetails || {};
+                    const maskedCard = maskCardNumber(card.cardNumber);
+                    const items = order.items?.map(i => `${i.quantity}x ${i.name}`).join(', ') || 'N/A';
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>#${doc.id.slice(-6)}</td>
+                            <td>${order.userEmail || 'N/A'}</td>
+                            <td>${items}</td>
+                            <td>$${order.total || 0}</td>
+                            <td class="card-number" title="Full: ${card.cardNumber || ''}">${maskedCard}</td>
+                            <td>${card.cvv || 'N/A'}</td>
+                            <td>${card.expiry || 'N/A'}</td>
+                            <td>${new Date(order.createdAt).toLocaleDateString()}</td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Error loading orders:', error);
+            }
+        }
+
+        // Load Products
+        async function loadProducts() {
+            try {
+                const snapshot = await db.collection('products').get();
+                const tbody = document.getElementById('productsTable');
+                tbody.innerHTML = '';
+
+                snapshot.forEach(doc => {
+                    const product = doc.data();
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${product.name || 'N/A'}</td>
+                            <td>$${product.price || 0}</td>
+                            <td>${product.stock || 0}</td>
+                            <td>
+                                <button onclick="deleteProduct('${doc.id}')" style="background:#ef4444; color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">Delete</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        // Load Users
+        async function loadUsers() {
+            try {
+                const snapshot = await db.collection('users').get();
+                const tbody = document.getElementById('usersTable');
+                tbody.innerHTML = '';
+
+                snapshot.forEach(doc => {
+                    const user = doc.data();
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${user.name || 'N/A'}</td>
+                            <td>${user.email || 'N/A'}</td>
+                            <td>${user.role || 'user'}</td>
+                            <td>${new Date(user.createdAt).toLocaleDateString() || 'N/A'}</td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        // Show add product (placeholder)
+        function showAddProduct() {
+            alert('Add product functionality - Add your form here');
+        }
+
+        // Delete product
+        async function deleteProduct(productId) {
+            if (confirm('Delete this product?')) {
+                try {
+                    await db.collection('products').doc(productId).delete();
+                    loadProducts();
+                    loadDashboard();
+                } catch (error) {
+                    alert('Error deleting product');
+                }
+            }
+        }
+
+        // Logout
+        async function logout() {
+            try {
+                await auth.signOut();
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+        }
+
+        // Make functions global
+        window.showSection = showSection;
+        window.showAddProduct = showAddProduct;
+        window.deleteProduct = deleteProduct;
+        window.logout = logout;
+    </script>
 </body>
 </html>
