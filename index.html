@@ -11,6 +11,9 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
     <style>
         * {
             margin: 0;
@@ -27,6 +30,7 @@
             --text: #333333;
             --white: #ffffff;
             --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.1);
         }
 
         body {
@@ -40,6 +44,106 @@
             font-family: 'Playfair Display', serif;
         }
 
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes checkmark {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .animate-fadeInUp {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .animate-fadeInLeft {
+            animation: fadeInLeft 0.8s ease forwards;
+        }
+
+        .animate-fadeInRight {
+            animation: fadeInRight 0.8s ease forwards;
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .animate-pulse {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
         /* ===== ANNOUNCEMENT BAR ===== */
         .announcement-bar {
             background: var(--dark);
@@ -51,6 +155,12 @@
             letter-spacing: 0.5px;
             position: relative;
             z-index: 1001;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
         }
 
         .announcement-content {
@@ -66,6 +176,7 @@
         .announcement-content i {
             color: var(--primary);
             font-size: 16px;
+            animation: pulse 2s infinite;
         }
 
         .announcement-content span {
@@ -87,11 +198,13 @@
             display: none;
             align-items: center;
             gap: 5px;
+            transition: all 0.3s;
         }
 
         .edit-announcement:hover {
             background: var(--primary);
             color: var(--dark);
+            transform: scale(1.05);
         }
 
         .admin-logged-in .edit-announcement {
@@ -105,6 +218,7 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            animation: slideDown 0.5s ease;
         }
 
         .nav-container {
@@ -120,11 +234,17 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            animation: fadeInLeft 0.8s ease;
         }
 
         .logo i {
             font-size: 32px;
             color: var(--primary);
+            transition: transform 0.3s;
+        }
+
+        .logo:hover i {
+            transform: rotate(360deg);
         }
 
         .logo h2 {
@@ -148,6 +268,7 @@
             font-size: 15px;
             cursor: pointer;
             position: relative;
+            transition: color 0.3s;
         }
 
         .nav-links a::after {
@@ -169,6 +290,7 @@
             display: flex;
             align-items: center;
             gap: 25px;
+            animation: fadeInRight 0.8s ease;
         }
 
         .cart-icon {
@@ -178,6 +300,12 @@
             font-size: 22px;
             cursor: pointer;
             color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .cart-icon:hover {
+            color: var(--primary);
+            transform: scale(1.1);
         }
 
         .cart-count {
@@ -191,6 +319,7 @@
             border-radius: 50%;
             min-width: 18px;
             text-align: center;
+            animation: pulse 2s infinite;
         }
 
         .user-info {
@@ -217,6 +346,7 @@
         .user-info button:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(196, 155, 99, 0.3);
         }
 
         .admin-link {
@@ -224,17 +354,37 @@
             font-weight: 700 !important;
         }
 
-        /* ===== HERO SECTION - CLEAN ===== */
+        /* ===== HERO SECTION ===== */
         .hero {
             max-width: 1400px;
             margin: 40px auto;
             padding: 0 30px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(196,155,99,0.03) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         .hero-content h1 {
@@ -243,6 +393,7 @@
             line-height: 1.2;
             margin-bottom: 20px;
             color: var(--dark);
+            animation: fadeInUp 0.8s ease;
         }
 
         .hero-content .highlight {
@@ -260,6 +411,9 @@
             height: 8px;
             background: rgba(196, 155, 99, 0.2);
             z-index: -1;
+            animation: shimmer 3s infinite;
+            background: linear-gradient(90deg, transparent, rgba(196,155,99,0.2), transparent);
+            background-size: 1000px 100%;
         }
 
         .hero-content p {
@@ -267,6 +421,10 @@
             color: #666;
             margin-bottom: 30px;
             line-height: 1.8;
+            animation: fadeInUp 0.8s ease;
+            animation-delay: 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
         }
 
         .features {
@@ -283,11 +441,23 @@
             gap: 10px;
             font-size: 16px;
             color: var(--text);
+            animation: fadeInUp 0.8s ease;
+            animation-fill-mode: forwards;
+            opacity: 0;
         }
+
+        .feature-item:nth-child(1) { animation-delay: 0.3s; }
+        .feature-item:nth-child(2) { animation-delay: 0.4s; }
+        .feature-item:nth-child(3) { animation-delay: 0.5s; }
 
         .feature-item i {
             color: var(--primary);
             font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .feature-item:hover i {
+            transform: scale(1.2);
         }
 
         .btn-primary {
@@ -304,6 +474,30 @@
             gap: 10px;
             transition: all 0.3s;
             box-shadow: 0 10px 20px rgba(196, 155, 99, 0.2);
+            animation: fadeInUp 0.8s ease;
+            animation-delay: 0.6s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-primary:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary:hover {
@@ -329,15 +523,33 @@
             font-weight: 800;
             margin-bottom: 15px;
             color: var(--dark);
+            animation: fadeInUp 0.8s ease;
         }
 
         .section-header h2 span {
             color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2 span::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: rgba(196, 155, 99, 0.2);
+            z-index: -1;
         }
 
         .section-header p {
             color: #666;
             font-size: 16px;
+            animation: fadeInUp 0.8s ease;
+            animation-delay: 0.1s;
+            opacity: 0;
+            animation-fill-mode: forwards;
         }
 
         .products-grid {
@@ -352,16 +564,43 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: all 0.3s;
+            animation: fadeInUp 0.8s ease;
+            animation-fill-mode: forwards;
+            opacity: 0;
+            position: relative;
         }
 
+        .product-card:nth-child(1) { animation-delay: 0.1s; }
+        .product-card:nth-child(2) { animation-delay: 0.2s; }
+        .product-card:nth-child(3) { animation-delay: 0.3s; }
+        .product-card:nth-child(4) { animation-delay: 0.4s; }
+        .product-card:nth-child(5) { animation-delay: 0.5s; }
+        .product-card:nth-child(6) { animation-delay: 0.6s; }
+
         .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-hover);
         }
 
         .product-image {
             height: 220px;
             overflow: hidden;
+            position: relative;
+        }
+
+        .product-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .product-card:hover .product-image::after {
+            left: 100%;
         }
 
         .product-image img {
@@ -377,12 +616,18 @@
 
         .product-info {
             padding: 20px;
+            position: relative;
         }
 
         .product-info h3 {
             font-size: 20px;
             margin-bottom: 10px;
             color: var(--dark);
+            transition: color 0.3s;
+        }
+
+        .product-card:hover .product-info h3 {
+            color: var(--primary);
         }
 
         .product-price {
@@ -390,6 +635,11 @@
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 15px;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-price {
+            transform: scale(1.1);
         }
 
         .btn-add-to-cart {
@@ -407,6 +657,26 @@
             gap: 8px;
             transition: all 0.3s;
             color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-add-to-cart::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-add-to-cart:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-add-to-cart:hover {
@@ -424,7 +694,7 @@
             background: var(--white);
             box-shadow: -5px 0 30px rgba(0,0,0,0.1);
             z-index: 2000;
-            transition: right 0.3s;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             flex-direction: column;
         }
@@ -439,6 +709,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            animation: slideDown 0.3s ease;
         }
 
         .cart-header h3 {
@@ -458,6 +729,12 @@
             font-size: 20px;
             cursor: pointer;
             color: #999;
+            transition: all 0.3s;
+        }
+
+        .close-cart:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
         }
 
         .cart-items {
@@ -473,6 +750,13 @@
             padding: 15px;
             background: var(--light);
             border-radius: 12px;
+            animation: fadeInRight 0.3s ease;
+            transition: all 0.3s;
+        }
+
+        .cart-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .cart-item img {
@@ -511,11 +795,24 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .cart-item-actions button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
         }
 
         .cart-footer {
             padding: 20px;
             border-top: 1px solid var(--gray);
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
         }
 
         .cart-total {
@@ -539,6 +836,32 @@
             border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-checkout::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-checkout:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-checkout:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         /* ===== PAYMENT MODAL ===== */
@@ -553,6 +876,13 @@
             align-items: center;
             justify-content: center;
             z-index: 3000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .payment-modal.active {
@@ -565,16 +895,30 @@
             border-radius: 20px;
             width: 90%;
             max-width: 450px;
+            animation: scaleIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .payment-content h3 {
             font-size: 24px;
             margin-bottom: 20px;
+            animation: fadeInUp 0.3s ease;
         }
 
         .form-group {
             margin-bottom: 15px;
+            animation: fadeInUp 0.3s ease;
+            animation-fill-mode: forwards;
+            opacity: 0;
         }
+
+        .form-group:nth-child(1) { animation-delay: 0.1s; }
+        .form-group:nth-child(2) { animation-delay: 0.2s; }
+        .form-group:nth-child(3) { animation-delay: 0.3s; }
 
         .form-group label {
             display: block;
@@ -587,12 +931,133 @@
             padding: 12px;
             border: 2px solid var(--gray);
             border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(196, 155, 99, 0.1);
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 10px;
+        }
+
+        /* ===== PAYMENT LOADER / ANIMATION ===== */
+        .payment-loader {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+
+        .payment-loader.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .loader-animation {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+        }
+
+        .loader-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loader-circle:nth-child(2) {
+            width: 70%;
+            height: 70%;
+            top: 15%;
+            left: 15%;
+            border-top-color: var(--primary-dark);
+            animation: spin 1.5s linear infinite reverse;
+        }
+
+        .loader-circle:nth-child(3) {
+            width: 40%;
+            height: 40%;
+            top: 30%;
+            left: 30%;
+            border-top-color: #ffd700;
+            animation: spin 2s linear infinite;
+        }
+
+        .loader-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-top: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .loader-dots {
+            display: inline-block;
+        }
+
+        .loader-dots::after {
+            content: '...';
+            animation: dots 1.5s steps(4, end) infinite;
+            width: 24px;
+            display: inline-block;
+            text-align: left;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+
+        .payment-success {
+            text-align: center;
+            padding: 30px;
+            display: none;
+        }
+
+        .payment-success.active {
+            display: block;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #10b981;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: checkmark 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .success-icon i {
+            color: white;
+            font-size: 40px;
+        }
+
+        .success-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .success-message {
+            color: #666;
+            margin-bottom: 20px;
         }
 
         .btn-pay {
@@ -604,34 +1069,36 @@
             border-radius: 8px;
             font-weight: 600;
             margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .loader {
-            display: none;
-            text-align: center;
-            padding: 15px;
-        }
-
-        .loader.active {
-            display: block;
-        }
-
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary);
+        .btn-pay::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .btn-pay:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
-        /* ===== LOGIN MODAL - SIMPLE ===== */
+        .btn-pay:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* ===== LOGIN MODAL ===== */
         .login-modal {
             position: fixed;
             top: 0;
@@ -657,12 +1124,14 @@
             width: 90%;
             max-width: 400px;
             text-align: center;
+            animation: scaleIn 0.3s ease;
         }
 
         .login-content i {
             font-size: 50px;
             color: var(--primary);
             margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
         }
 
         .login-content h2 {
@@ -694,12 +1163,15 @@
         .btn-google:hover {
             border-color: var(--primary);
             background: #fafafa;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
         .btn-google i {
             font-size: 20px;
             color: #4285f4;
             margin: 0;
+            animation: none;
         }
 
         .close-login {
@@ -708,6 +1180,11 @@
             border: none;
             color: #999;
             cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-login:hover {
+            color: var(--primary);
         }
 
         /* ===== OVERLAY ===== */
@@ -737,8 +1214,9 @@
             padding: 12px 25px;
             border-radius: 50px;
             z-index: 4000;
-            transition: transform 0.3s;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             opacity: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .toast.show {
@@ -807,7 +1285,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section - Clean -->
+    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
             <h1>Where Every <span class="highlight">Bite</span> Tells a Story</h1>
@@ -888,17 +1366,34 @@
                     <input type="text" id="cardName" required>
                 </div>
                 
-                <div class="loader" id="paymentLoader">
-                    <div class="spinner"></div>
-                    <p>Processing...</p>
+                <!-- Payment Loader Animation -->
+                <div class="payment-loader" id="paymentLoader">
+                    <div class="loader-animation">
+                        <div class="loader-circle"></div>
+                        <div class="loader-circle"></div>
+                        <div class="loader-circle"></div>
+                    </div>
+                    <div class="loader-text">
+                        Processing Payment
+                        <span class="loader-dots"></span>
+                    </div>
+                </div>
+
+                <!-- Success Animation -->
+                <div class="payment-success" id="paymentSuccess">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="success-text">Payment Successful!</div>
+                    <div class="success-message">Your order has been placed</div>
                 </div>
                 
-                <button type="submit" class="btn-pay">Pay Now</button>
+                <button type="submit" class="btn-pay" id="payButton">Pay Now</button>
             </form>
         </div>
     </div>
 
-    <!-- Login Modal - Simple Google Only -->
+    <!-- Login Modal -->
     <div class="login-modal" id="loginModal">
         <div class="login-content">
             <i class="fas fa-utensils"></i>
@@ -1198,10 +1693,13 @@
         document.getElementById('paymentForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // Hide form, show loader
+            document.querySelectorAll('.form-group').forEach(el => el.style.display = 'none');
+            document.getElementById('payButton').style.display = 'none';
             document.getElementById('paymentLoader').classList.add('active');
-            document.getElementById('payButton').disabled = true;
             
-            await new Promise(r => setTimeout(r, 2000));
+            // Simulate processing
+            await new Promise(r => setTimeout(r, 3000));
             
             try {
                 const total = cart.reduce((t, i) => t + (i.price * i.quantity), 0);
@@ -1222,19 +1720,29 @@
                 
                 await db.collection('orders').add(orderData);
                 
+                // Show success
                 document.getElementById('paymentLoader').classList.remove('active');
-                document.getElementById('payButton').disabled = false;
+                document.getElementById('paymentSuccess').classList.add('active');
+                
+                // Close modal after 2 seconds
+                setTimeout(() => {
+                    document.getElementById('paymentModal').classList.remove('active');
+                    document.getElementById('paymentSuccess').classList.remove('active');
+                    document.querySelectorAll('.form-group').forEach(el => el.style.display = 'block');
+                    document.getElementById('payButton').style.display = 'block';
+                    document.getElementById('paymentForm').reset();
+                }, 2000);
                 
                 showToast('Order placed successfully!');
                 cart = [];
                 saveCart();
                 displayCart();
-                document.getElementById('paymentModal').classList.remove('active');
                 
             } catch (error) {
                 showToast('Payment failed');
                 document.getElementById('paymentLoader').classList.remove('active');
-                document.getElementById('payButton').disabled = false;
+                document.querySelectorAll('.form-group').forEach(el => el.style.display = 'block');
+                document.getElementById('payButton').style.display = 'block';
             }
         });
 
