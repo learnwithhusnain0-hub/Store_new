@@ -12,7 +12,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* (apna existing CSS yahan rahega) */
         * {
             margin: 0;
             padding: 0;
@@ -34,18 +33,21 @@
             font-family: 'Montserrat', sans-serif;
             background: var(--light);
             color: var(--text);
+            overflow-x: hidden;
         }
 
         h1, h2, h3, h4 {
             font-family: 'Playfair Display', serif;
         }
 
+        /* ===== NAVBAR ===== */
         .navbar {
             background: var(--white);
             box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 1000;
+            width: 100%;
         }
 
         .nav-container {
@@ -86,6 +88,7 @@
             text-decoration: none;
             color: var(--text);
             font-weight: 600;
+            font-size: 15px;
             cursor: pointer;
             position: relative;
         }
@@ -129,6 +132,8 @@
             font-size: 11px;
             padding: 3px 6px;
             border-radius: 50%;
+            min-width: 18px;
+            text-align: center;
         }
 
         .user-info {
@@ -149,6 +154,12 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .user-info button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         .admin-link {
@@ -156,6 +167,7 @@
             font-weight: 700 !important;
         }
 
+        /* ===== HERO SECTION ===== */
         .hero {
             max-width: 1400px;
             margin: 50px auto;
@@ -167,6 +179,7 @@
             background: var(--white);
             border-radius: 40px;
             overflow: hidden;
+            box-shadow: var(--shadow);
         }
 
         .hero-content {
@@ -178,21 +191,26 @@
             font-weight: 800;
             line-height: 1.1;
             margin-bottom: 20px;
+            color: var(--dark);
         }
 
         .hero-content .highlight {
             color: var(--primary);
+            position: relative;
+            display: inline-block;
         }
 
         .hero-content p {
             font-size: 18px;
             color: #666;
             margin-bottom: 30px;
+            line-height: 1.8;
         }
 
         .hero-content p i {
             color: var(--primary);
             margin-right: 10px;
+            width: 24px;
         }
 
         .btn-primary {
@@ -207,6 +225,14 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(196, 155, 99, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(196, 155, 99, 0.4);
         }
 
         .hero-image {
@@ -219,6 +245,7 @@
             object-fit: cover;
         }
 
+        /* ===== PRODUCTS SECTION ===== */
         .products {
             max-width: 1400px;
             margin: 80px auto;
@@ -234,10 +261,16 @@
             font-size: 42px;
             font-weight: 800;
             margin-bottom: 15px;
+            color: var(--dark);
         }
 
         .section-header h2 span {
             color: var(--primary);
+        }
+
+        .section-header p {
+            color: #666;
+            font-size: 16px;
         }
 
         .products-grid {
@@ -282,6 +315,7 @@
         .product-info h3 {
             font-size: 22px;
             margin-bottom: 10px;
+            color: var(--dark);
         }
 
         .product-price {
@@ -304,6 +338,8 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: all 0.3s;
+            color: var(--text);
         }
 
         .btn-add-to-cart:hover {
@@ -311,6 +347,7 @@
             color: white;
         }
 
+        /* ===== CART SIDEBAR ===== */
         .cart-sidebar {
             position: fixed;
             top: 0;
@@ -337,9 +374,16 @@
             align-items: center;
         }
 
+        .cart-header h3 {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .cart-header h3 i {
             color: var(--primary);
-            margin-right: 10px;
         }
 
         .close-cart {
@@ -350,6 +394,16 @@
             border-radius: 50%;
             font-size: 20px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .close-cart:hover {
+            background: var(--primary);
+            color: white;
+            transform: rotate(90deg);
         }
 
         .cart-items {
@@ -381,6 +435,7 @@
         .cart-item-details h4 {
             font-size: 18px;
             margin-bottom: 8px;
+            color: var(--dark);
         }
 
         .cart-item-price {
@@ -404,6 +459,8 @@
             border-radius: 10px;
             cursor: pointer;
             font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s;
         }
 
         .cart-item-actions button:hover {
@@ -411,9 +468,21 @@
             color: white;
         }
 
+        .cart-item-actions span {
+            font-weight: 700;
+            font-size: 16px;
+            min-width: 25px;
+            text-align: center;
+        }
+
         .remove-btn {
             background: none !important;
-            color: #ef4444;
+            color: #ef4444 !important;
+        }
+
+        .remove-btn:hover {
+            background: #fee2e2 !important;
+            color: #ef4444 !important;
         }
 
         .cart-footer {
@@ -432,6 +501,7 @@
         .cart-total span:last-child {
             color: var(--primary);
             font-size: 28px;
+            font-weight: 800;
         }
 
         .btn-checkout {
@@ -444,8 +514,16 @@
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
+            transition: all 0.3s;
         }
 
+        .btn-checkout:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(196, 155, 99, 0.3);
+        }
+
+        /* ===== PAYMENT MODAL ===== */
         .payment-modal {
             position: fixed;
             top: 0;
@@ -457,6 +535,7 @@
             align-items: center;
             justify-content: center;
             z-index: 3000;
+            backdrop-filter: blur(5px);
         }
 
         .payment-modal.active {
@@ -469,11 +548,13 @@
             border-radius: 30px;
             width: 90%;
             max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
 
         .payment-content h3 {
             font-size: 28px;
             margin-bottom: 30px;
+            color: var(--dark);
         }
 
         .form-group {
@@ -485,6 +566,7 @@
             margin-bottom: 8px;
             font-weight: 600;
             font-size: 14px;
+            color: var(--text);
         }
 
         .form-group input {
@@ -493,6 +575,7 @@
             border: 2px solid var(--gray);
             border-radius: 12px;
             font-size: 16px;
+            transition: all 0.3s;
         }
 
         .form-group input:focus {
@@ -517,6 +600,12 @@
             font-weight: 700;
             cursor: pointer;
             margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .btn-pay:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
         }
 
         .loader {
@@ -544,6 +633,213 @@
             100% { transform: rotate(360deg); }
         }
 
+        /* ===== AUTH MODAL ===== */
+        .auth-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 5000;
+            backdrop-filter: blur(5px);
+        }
+
+        .auth-modal.active {
+            display: flex;
+        }
+
+        .auth-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-header h2 {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .auth-header p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--gray);
+            padding-bottom: 10px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .btn-auth {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+        }
+
+        .btn-auth:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-google-auth {
+            width: 100%;
+            background: white;
+            color: #333;
+            border: 2px solid var(--gray);
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn-google-auth:hover {
+            background: #f5f5f5;
+            border-color: var(--primary);
+        }
+
+        .divider {
+            text-align: center;
+            position: relative;
+            margin: 25px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: var(--gray);
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 15px;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .close-auth {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.3s;
+        }
+
+        .close-auth:hover {
+            color: var(--primary);
+            transform: rotate(90deg);
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .forgot-password a {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .verification-message {
+            text-align: center;
+            padding: 20px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .verification-message.show {
+            display: block;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f8d7da;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* ===== OVERLAY ===== */
         .overlay {
             position: fixed;
             top: 0;
@@ -559,6 +855,7 @@
             display: block;
         }
 
+        /* ===== TOAST ===== */
         .toast {
             position: fixed;
             bottom: 40px;
@@ -568,9 +865,12 @@
             color: white;
             padding: 16px 35px;
             border-radius: 60px;
+            font-size: 15px;
+            font-weight: 500;
             z-index: 4000;
-            transition: transform 0.3s;
+            transition: transform 0.3s, opacity 0.3s;
             opacity: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .toast.show {
@@ -583,17 +883,44 @@
             padding: 60px;
             color: #999;
             font-size: 18px;
+            grid-column: 1 / -1;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-content h1 {
+                font-size: 48px;
+            }
         }
 
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
             }
+            
             .hero {
                 grid-template-columns: 1fr;
+                text-align: center;
             }
+            
+            .hero-content h1 {
+                font-size: 40px;
+            }
+            
+            .hero-image {
+                height: 400px;
+            }
+            
             .cart-sidebar {
                 width: 100%;
+            }
+            
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .auth-content {
+                padding: 30px 20px;
             }
         }
     </style>
@@ -619,8 +946,8 @@
                 </button>
                 
                 <div class="user-info" id="userInfo">
-                    <button onclick="googleLogin()">
-                        <i class="fab fa-google"></i> Login
+                    <button onclick="showAuthModal()">
+                        <i class="fas fa-user"></i> Sign In
                     </button>
                 </div>
             </div>
@@ -655,13 +982,14 @@
         </div>
     </section>
 
+    <!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
             <h3><i class="fas fa-shopping-bag"></i> Your Cart</h3>
             <button class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></button>
         </div>
         <div class="cart-items" id="cartItems">
-            <p style="text-align:center; color:#999;">Cart is empty</p>
+            <p style="text-align:center; color:#999; padding:40px;">Cart is empty</p>
         </div>
         <div class="cart-footer">
             <div class="cart-total">
@@ -672,6 +1000,7 @@
         </div>
     </div>
 
+    <!-- Payment Modal -->
     <div class="payment-modal" id="paymentModal">
         <div class="payment-content">
             <h3>Payment Details</h3>
@@ -706,6 +1035,104 @@
         </div>
     </div>
 
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-content">
+            <button class="close-auth" onclick="closeAuthModal()"><i class="fas fa-times"></i></button>
+            
+            <div class="auth-header">
+                <h2>Welcome to Burger House</h2>
+                <p>Sign in to continue or create new account</p>
+            </div>
+
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
+                <div class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form active" id="loginForm">
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                    </div>
+                    <div class="forgot-password">
+                        <a onclick="showForgotPassword()">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn-auth">Login</button>
+                </form>
+                
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                
+                <button class="btn-google-auth" onclick="googleLogin()">
+                    <i class="fab fa-google" style="color: #4285f4;"></i>
+                    Continue with Google
+                </button>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="auth-form" id="signupForm">
+                <form onsubmit="handleSignup(event)">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="signupName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="signupEmail" placeholder="your@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="signupPassword" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-auth">Create Account</button>
+                </form>
+                
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                
+                <button class="btn-google-auth" onclick="googleLogin()">
+                    <i class="fab fa-google" style="color: #4285f4;"></i>
+                    Continue with Google
+                </button>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div class="auth-form" id="forgotForm">
+                <form onsubmit="handleForgotPassword(event)">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="forgotEmail" placeholder="your@email.com" required>
+                    </div>
+                    <button type="submit" class="btn-auth">Send Reset Link</button>
+                    <button type="button" class="btn-google-auth" onclick="switchAuthTab('login')" style="margin-top: 10px;">
+                        Back to Login
+                    </button>
+                </form>
+            </div>
+
+            <!-- Verification Message -->
+            <div class="verification-message" id="verificationMessage">
+                <i class="fas fa-envelope"></i>
+                <p>Verification email sent! Please check your inbox.</p>
+            </div>
+
+            <div class="error-message" id="authError"></div>
+        </div>
+    </div>
+
     <div class="overlay" id="overlay" onclick="toggleCart()"></div>
     <div class="toast" id="toast"></div>
 
@@ -735,40 +1162,12 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('✅ Burger House loaded');
             loadProducts();
             loadCart();
             displayCart();
             setupAuth();
         });
-
-         // ===== SAVE USER TO DATABASE =====
-        async function saveUserToDatabase(user) {
-            try {
-                const userRef = db.collection('users').doc(user.uid);
-                const doc = await userRef.get();
-                
-                if (!doc.exists) {
-                    // New user - save all details
-                    await userRef.set({
-                        name: user.displayName || 'User',
-                        email: user.email,
-                        photoURL: user.photoURL || '',
-                        role: 'user',  // Default role
-                        createdAt: new Date().toISOString(),
-                        lastLogin: new Date().toISOString()
-                    });
-                    console.log('✅ New user saved:', user.email);
-                } else {
-                    // Existing user - update last login
-                    await userRef.update({
-                        lastLogin: new Date().toISOString()
-                    });
-                    console.log('✅ User login updated:', user.email);
-                }
-            } catch (error) {
-                console.error('Error saving user:', error);
-            }
-        }
 
         // ===== AUTH SETUP =====
         function setupAuth() {
@@ -776,44 +1175,163 @@
                 if (user) {
                     currentUser = user;
                     
-                    // Save/update user in database
                     await saveUserToDatabase(user);
                     
                     document.getElementById('userInfo').innerHTML = `
-                        <span>${user.displayName?.split(' ')[0] || 'User'}</span>
+                        <span>${user.displayName?.split(' ')[0] || user.email?.split('@')[0] || 'User'}</span>
                         <button onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
                     `;
                     
-                    // Check if admin
                     const userDoc = await db.collection('users').doc(user.uid).get();
                     if (userDoc.exists && userDoc.data().role === 'admin') {
                         document.getElementById('adminLink').style.display = 'inline';
                     }
+                    
+                    closeAuthModal();
                 } else {
                     currentUser = null;
                     document.getElementById('userInfo').innerHTML = `
-                        <button onclick="googleLogin()"><i class="fab fa-google"></i> Login</button>
+                        <button onclick="showAuthModal()">
+                            <i class="fas fa-user"></i> Sign In
+                        </button>
                     `;
                     document.getElementById('adminLink').style.display = 'none';
                 }
             });
         }
 
+        async function saveUserToDatabase(user) {
+            try {
+                const userRef = db.collection('users').doc(user.uid);
+                const doc = await userRef.get();
+                
+                if (!doc.exists) {
+                    await userRef.set({
+                        name: user.displayName || user.email?.split('@')[0] || 'User',
+                        email: user.email,
+                        photoURL: user.photoURL || '',
+                        role: 'user',
+                        emailVerified: user.emailVerified,
+                        createdAt: new Date().toISOString(),
+                        lastLogin: new Date().toISOString()
+                    });
+                } else {
+                    await userRef.update({
+                        lastLogin: new Date().toISOString(),
+                        emailVerified: user.emailVerified
+                    });
+                }
+            } catch (error) {
+                console.error('Error saving user:', error);
+            }
+        }
+
+        // ===== EMAIL/PASSWORD SIGNUP =====
+        async function handleSignup(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showError('Passwords do not match');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters');
+                return;
+            }
+            
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                await user.updateProfile({
+                    displayName: name
+                });
+                
+                await user.sendEmailVerification();
+                
+                document.getElementById('verificationMessage').classList.add('show');
+                
+                await saveUserToDatabase(user);
+                
+                showToast('Verification email sent! Please check your inbox.');
+                
+                setTimeout(() => {
+                    switchAuthTab('login');
+                    document.getElementById('verificationMessage').classList.remove('show');
+                }, 3000);
+                
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+
+        // ===== EMAIL/PASSWORD LOGIN =====
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                if (!user.emailVerified) {
+                    await user.sendEmailVerification();
+                    showToast('Please verify your email. A new verification email has been sent.');
+                    await auth.signOut();
+                } else {
+                    showToast('Login successful!');
+                }
+                
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+
+        // ===== GOOGLE LOGIN =====
         async function googleLogin() {
             try {
                 const provider = new firebase.auth.GoogleAuthProvider();
                 const result = await auth.signInWithPopup(provider);
                 const user = result.user;
                 
-                // Save user to database
                 await saveUserToDatabase(user);
-                
                 showToast('Login successful!');
+                
             } catch (error) {
-                showToast('Login failed: ' + error.message);
+                showError(error.message);
             }
         }
 
+        // ===== FORGOT PASSWORD =====
+        async function handleForgotPassword(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('forgotEmail').value;
+            
+            try {
+                await auth.sendPasswordResetEmail(email);
+                showToast('Password reset email sent!');
+                switchAuthTab('login');
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+
+        function showForgotPassword() {
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById('forgotForm').classList.add('active');
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+        }
+
+        // ===== LOGOUT =====
         async function logout() {
             try {
                 await auth.signOut();
@@ -823,6 +1341,43 @@
             } catch (error) {
                 showToast('Logout failed');
             }
+        }
+
+        // ===== AUTH MODAL UI =====
+        function showAuthModal() {
+            document.getElementById('authModal').classList.add('active');
+            switchAuthTab('login');
+            hideError();
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+            document.getElementById('verificationMessage').classList.remove('show');
+        }
+
+        function switchAuthTab(tab) {
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'login') {
+                document.getElementById('loginForm').classList.add('active');
+                document.querySelectorAll('.auth-tab')[0].classList.add('active');
+            } else {
+                document.getElementById('signupForm').classList.add('active');
+                document.querySelectorAll('.auth-tab')[1].classList.add('active');
+            }
+            
+            hideError();
+        }
+
+        function showError(message) {
+            const errorEl = document.getElementById('authError');
+            errorEl.textContent = message;
+            errorEl.classList.add('show');
+        }
+
+        function hideError() {
+            document.getElementById('authError').classList.remove('show');
         }
 
         // ===== PRODUCTS =====
@@ -904,7 +1459,7 @@
             const totalEl = document.getElementById('cartTotal');
             
             if (cart.length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding:40px;">Cart is empty</div>';
+                container.innerHTML = '<div style="text-align:center; padding:40px; color:#999;">Cart is empty</div>';
                 totalEl.textContent = '$0.00';
                 return;
             }
@@ -948,7 +1503,11 @@
             }
             if (!currentUser) {
                 showToast('Please login first');
-                googleLogin();
+                showAuthModal();
+                return;
+            }
+            if (!currentUser.emailVerified) {
+                showToast('Please verify your email first');
                 return;
             }
             toggleCart();
@@ -1023,7 +1582,14 @@
         window.updateQuantity = updateQuantity;
         window.proceedToPayment = proceedToPayment;
         window.closePaymentModal = closePaymentModal;
+        window.showAuthModal = showAuthModal;
+        window.closeAuthModal = closeAuthModal;
+        window.switchAuthTab = switchAuthTab;
+        window.handleLogin = handleLogin;
+        window.handleSignup = handleSignup;
         window.googleLogin = googleLogin;
+        window.showForgotPassword = showForgotPassword;
+        window.handleForgotPassword = handleForgotPassword;
         window.logout = logout;
     </script>
 </body>
