@@ -31,6 +31,7 @@
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
+            --info: #3b82f6;
             --shadow: 0 10px 30px rgba(0,0,0,0.05);
             --shadow-hover: 0 20px 40px rgba(0,0,0,0.1);
         }
@@ -86,20 +87,9 @@
             100% { transform: scale(1); }
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -1000px 0; }
-            100% { background-position: 1000px 0; }
         }
 
         @keyframes scrollText {
@@ -115,35 +105,9 @@
             animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
 
-        .animate-fadeInLeft {
-            animation: fadeInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .animate-fadeInRight {
-            animation: fadeInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .animate-scaleIn {
-            animation: scaleIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .animate-slideBlur {
-            animation: slideInBlur 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .animate-pulse {
-            animation: pulse 2s ease-in-out infinite;
-        }
-
         .delay-1 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; }
         .delay-2 { animation-delay: 0.4s; opacity: 0; animation-fill-mode: forwards; }
         .delay-3 { animation-delay: 0.6s; opacity: 0; animation-fill-mode: forwards; }
-        .delay-4 { animation-delay: 0.8s; opacity: 0; animation-fill-mode: forwards; }
-        .delay-5 { animation-delay: 1s; opacity: 0; animation-fill-mode: forwards; }
 
         /* ===== SCROLLING ANNOUNCEMENT BAR ===== */
         .announcement-bar {
@@ -154,7 +118,6 @@
             z-index: 1001;
             overflow: hidden;
             white-space: nowrap;
-            animation: fadeInDown 0.5s ease;
         }
 
         .announcement-content {
@@ -162,16 +125,11 @@
             animation: scrollText 25s linear infinite;
             padding-left: 100%;
             font-weight: 500;
-            letter-spacing: 1px;
         }
 
         .announcement-content i {
             margin: 0 15px;
             color: var(--secondary);
-        }
-
-        .announcement-content span {
-            margin: 0 20px;
         }
 
         .edit-announcement {
@@ -196,11 +154,6 @@
             gap: 5px;
         }
 
-        .edit-announcement:hover {
-            background: var(--secondary);
-            color: var(--dark);
-        }
-
         /* ===== NAVBAR ===== */
         .navbar {
             background: var(--white);
@@ -208,7 +161,6 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            animation: fadeInDown 0.5s ease;
         }
 
         .nav-container {
@@ -252,7 +204,6 @@
             font-weight: 600;
             font-size: 15px;
             cursor: pointer;
-            position: relative;
         }
 
         .nav-links a::after {
@@ -283,12 +234,6 @@
             font-size: 22px;
             cursor: pointer;
             color: var(--dark);
-            transition: all 0.3s;
-        }
-
-        .cart-icon:hover {
-            color: var(--primary);
-            transform: scale(1.1);
         }
 
         .cart-count {
@@ -300,14 +245,11 @@
             font-size: 11px;
             padding: 3px 6px;
             border-radius: 50%;
-            min-width: 18px;
-            text-align: center;
         }
 
         /* ===== 3-LINE DROPDOWN MENU ===== */
         .menu-dropdown {
             position: relative;
-            display: inline-block;
         }
 
         .menu-btn {
@@ -322,12 +264,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
-        }
-
-        .menu-btn:hover {
-            background: var(--primary-dark);
-            transform: rotate(90deg);
         }
 
         .dropdown-content {
@@ -345,7 +281,6 @@
 
         .dropdown-content.show {
             display: block;
-            animation: scaleIn 0.3s ease;
         }
 
         .user-info-dropdown {
@@ -364,16 +299,6 @@
             border: 2px solid white;
         }
 
-        .user-info-dropdown h4 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .user-info-dropdown p {
-            font-size: 12px;
-            opacity: 0.9;
-        }
-
         .dropdown-items {
             padding: 10px 0;
         }
@@ -384,7 +309,6 @@
             align-items: center;
             gap: 15px;
             cursor: pointer;
-            transition: background 0.3s;
             color: var(--text);
         }
 
@@ -395,7 +319,6 @@
         .dropdown-item i {
             width: 25px;
             color: var(--primary);
-            font-size: 18px;
         }
 
         .dropdown-divider {
@@ -412,45 +335,15 @@
             text-align: center;
         }
 
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
         .hero-content h1 {
             font-size: 56px;
             font-weight: 800;
-            line-height: 1.2;
             margin-bottom: 20px;
             color: var(--dark);
-            animation: slideInBlur 0.8s ease;
         }
 
         .hero-content .highlight {
             color: var(--primary);
-            position: relative;
-            display: inline-block;
-        }
-
-        .hero-content .highlight::after {
-            content: '';
-            position: absolute;
-            bottom: 5px;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: rgba(218, 41, 28, 0.2);
-            z-index: -1;
-        }
-
-        .hero-content p {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 30px;
-            animation: fadeInUp 0.8s ease;
-            animation-delay: 0.2s;
-            opacity: 0;
-            animation-fill-mode: forwards;
         }
 
         .features {
@@ -465,19 +358,10 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 16px;
-            animation: fadeInUp 0.8s ease;
-            animation-fill-mode: forwards;
-            opacity: 0;
         }
-
-        .feature-item:nth-child(1) { animation-delay: 0.3s; }
-        .feature-item:nth-child(2) { animation-delay: 0.4s; }
-        .feature-item:nth-child(3) { animation-delay: 0.5s; }
 
         .feature-item i {
             color: var(--primary);
-            font-size: 20px;
         }
 
         .btn-primary {
@@ -492,18 +376,6 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s;
-            box-shadow: 0 10px 20px rgba(218, 41, 28, 0.2);
-            animation: fadeInUp 0.8s ease;
-            animation-delay: 0.6s;
-            opacity: 0;
-            animation-fill-mode: forwards;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 15px 30px rgba(218, 41, 28, 0.3);
         }
 
         /* ===== PRODUCTS SECTION ===== */
@@ -522,21 +394,10 @@
             font-size: 42px;
             font-weight: 800;
             margin-bottom: 15px;
-            color: var(--dark);
-            animation: fadeInDown 0.8s ease;
         }
 
         .section-header h2 span {
             color: var(--primary);
-        }
-
-        .section-header p {
-            color: #666;
-            font-size: 16px;
-            animation: fadeInUp 0.8s ease;
-            animation-delay: 0.1s;
-            opacity: 0;
-            animation-fill-mode: forwards;
         }
 
         .products-grid {
@@ -551,21 +412,10 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: all 0.3s;
-            animation: scaleIn 0.6s ease;
-            animation-fill-mode: forwards;
-            opacity: 0;
-            position: relative;
         }
 
-        .product-card:nth-child(1) { animation-delay: 0.1s; }
-        .product-card:nth-child(2) { animation-delay: 0.2s; }
-        .product-card:nth-child(3) { animation-delay: 0.3s; }
-        .product-card:nth-child(4) { animation-delay: 0.4s; }
-        .product-card:nth-child(5) { animation-delay: 0.5s; }
-        .product-card:nth-child(6) { animation-delay: 0.6s; }
-
         .product-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-hover);
         }
 
@@ -578,11 +428,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s;
-        }
-
-        .product-card:hover .product-image img {
-            transform: scale(1.1);
         }
 
         .product-info {
@@ -592,14 +437,12 @@
         .product-info h3 {
             font-size: 20px;
             margin-bottom: 10px;
-            color: var(--dark);
         }
 
         .product-description {
             color: #666;
             font-size: 14px;
             margin-bottom: 10px;
-            line-height: 1.5;
         }
 
         .product-price {
@@ -615,7 +458,6 @@
             padding: 5px 10px;
             border-radius: 20px;
             font-size: 12px;
-            font-weight: 600;
             display: inline-block;
             margin-bottom: 15px;
         }
@@ -629,11 +471,6 @@
             font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s;
         }
 
         .btn-add-to-cart:hover {
@@ -651,7 +488,7 @@
             background: var(--white);
             box-shadow: -5px 0 30px rgba(0,0,0,0.1);
             z-index: 2000;
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: right 0.3s;
             display: flex;
             flex-direction: column;
         }
@@ -666,11 +503,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        .cart-header h3 i {
-            color: var(--primary);
-            margin-right: 10px;
         }
 
         .close-cart {
@@ -702,27 +534,6 @@
             object-fit: cover;
         }
 
-        .cart-item-details {
-            flex: 1;
-        }
-
-        .cart-item-details h4 {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .cart-item-price {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .cart-item-actions {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 8px;
-        }
-
         .cart-item-actions button {
             background: white;
             border: 1px solid var(--gray);
@@ -741,12 +552,7 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 15px;
-            font-size: 18px;
             font-weight: 600;
-        }
-
-        .cart-total span:last-child {
-            color: var(--primary);
         }
 
         .btn-checkout {
@@ -762,61 +568,37 @@
 
         /* ===== BEVERAGES SECTION ===== */
         .beverages-section {
-            margin: 30px 20px;
+            margin: 20px;
             padding: 20px;
             background: var(--light-gray);
             border-radius: 12px;
         }
 
-        .beverages-section h4 {
-            font-size: 18px;
-            margin-bottom: 15px;
-            color: var(--dark);
-        }
-
         .beverages-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px;
+            gap: 10px;
         }
 
         .beverage-item {
             background: white;
-            padding: 15px;
-            border-radius: 10px;
+            padding: 10px;
+            border-radius: 8px;
             text-align: center;
             cursor: pointer;
             border: 2px solid transparent;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .beverage-item:hover {
-            border-color: var(--primary);
-            transform: translateY(-5px);
         }
 
         .beverage-item.selected {
             border-color: var(--primary);
-            background: rgba(218, 41, 28, 0.05);
         }
 
         .beverage-item .discount-tag {
-            position: absolute;
-            top: -10px;
-            right: -10px;
             background: var(--secondary);
             color: var(--dark);
-            padding: 5px 10px;
-            border-radius: 20px;
+            padding: 2px 5px;
+            border-radius: 10px;
             font-size: 10px;
-            font-weight: 700;
-        }
-
-        .beverage-item i {
-            font-size: 24px;
-            color: var(--primary);
-            margin-bottom: 8px;
         }
 
         /* ===== CHECKOUT MODAL ===== */
@@ -839,12 +621,31 @@
 
         .checkout-content {
             background: white;
-            padding: 40px;
+            padding: 30px;
             border-radius: 20px;
             width: 90%;
-            max-width: 600px;
+            max-width: 500px;
             max-height: 90vh;
             overflow-y: auto;
+        }
+
+        .payment-options {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-option {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid var(--gray);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary);
         }
 
         .form-group {
@@ -861,16 +662,15 @@
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 2px solid var(--gray);
             border-radius: 8px;
-            font-size: 14px;
         }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 10px;
         }
 
         /* ===== ORDERS PAGE ===== */
@@ -889,28 +689,27 @@
 
         .order-card {
             background: white;
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 15px;
+            padding: 20px;
             box-shadow: var(--shadow);
-            border-left: 5px solid var(--primary);
+            border-left: 4px solid var(--primary);
         }
 
         .order-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
             margin-bottom: 15px;
         }
 
         .order-id {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--primary);
         }
 
         .order-status {
-            padding: 5px 15px;
-            border-radius: 20px;
+            padding: 3px 10px;
+            border-radius: 15px;
             font-size: 12px;
             font-weight: 600;
         }
@@ -928,7 +727,7 @@
         .countdown-timer {
             background: var(--light-gray);
             padding: 15px;
-            border-radius: 12px;
+            border-radius: 10px;
             margin: 15px 0;
             text-align: center;
         }
@@ -938,26 +737,6 @@
             font-weight: 700;
             color: var(--primary);
             font-family: monospace;
-        }
-
-        .timer-label {
-            font-size: 12px;
-            color: #666;
-            margin-top: 5px;
-        }
-
-        .order-items {
-            margin: 15px 0;
-            padding: 15px 0;
-            border-top: 1px solid var(--gray);
-            border-bottom: 1px solid var(--gray);
-        }
-
-        .order-total {
-            display: flex;
-            justify-content: space-between;
-            font-weight: 700;
-            margin-top: 15px;
         }
 
         /* ===== REVIEWS SECTION ===== */
@@ -972,30 +751,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 40px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .reviews-header h2 {
-            font-size: 36px;
-            font-weight: 800;
-        }
-
-        .reviews-header h2 span {
-            color: var(--primary);
-        }
-
-        .btn-write-review {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .reviews-grid {
@@ -1006,66 +761,21 @@
 
         .review-card {
             background: white;
-            border-radius: 20px;
-            padding: 25px;
+            border-radius: 15px;
+            padding: 20px;
             box-shadow: var(--shadow);
             position: relative;
         }
 
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .reviewer-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .reviewer-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: 700;
-        }
-
-        .reviewer-name {
-            font-weight: 600;
-        }
-
-        .review-date {
-            font-size: 12px;
-            color: #666;
-        }
-
         .rating {
             color: var(--secondary);
-            margin-bottom: 15px;
-        }
-
-        .rating i {
-            margin-right: 3px;
-        }
-
-        .review-text {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 15px;
+            margin: 10px 0;
         }
 
         .delete-review {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             background: none;
             border: none;
             color: var(--danger);
@@ -1096,7 +806,6 @@
 
         .footer-section h3 {
             color: var(--primary);
-            font-size: 18px;
             margin-bottom: 20px;
         }
 
@@ -1110,7 +819,6 @@
 
         .footer-section i {
             color: var(--primary);
-            width: 20px;
         }
 
         .footer-bottom {
@@ -1122,7 +830,6 @@
             color: #999;
         }
 
-        /* ===== MODAL ===== */
         .modal {
             position: fixed;
             top: 0;
@@ -1142,10 +849,10 @@
 
         .modal-content {
             background: white;
-            padding: 40px;
-            border-radius: 20px;
+            padding: 30px;
+            border-radius: 15px;
             width: 90%;
-            max-width: 500px;
+            max-width: 400px;
         }
 
         .rating-input {
@@ -1159,11 +866,9 @@
             font-size: 30px;
             color: var(--gray);
             cursor: pointer;
-            transition: color 0.3s;
         }
 
-        .rating-input i.active,
-        .rating-input i:hover {
+        .rating-input i.active {
             color: var(--secondary);
         }
 
@@ -1201,37 +906,11 @@
             opacity: 1;
         }
 
-        /* UK Cities Dropdown */
-        .cities-dropdown {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid var(--gray);
-            border-radius: 8px;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .hero-content h1 {
-                font-size: 40px;
-            }
-            
-            .cart-sidebar {
-                width: 100%;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .reviews-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            .nav-links { display: none; }
+            .hero-content h1 { font-size: 40px; }
+            .cart-sidebar { width: 100%; }
+            .footer-content { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -1240,9 +919,6 @@
     <div class="announcement-bar" id="announcementBar">
         <div class="announcement-content" id="announcementContent">
             <i class="fas fa-tags"></i> <span id="announcementText">Free Delivery on Orders Over £20</span> <i class="fas fa-tags"></i>
-            <span>🔥 New: McSpicy Now Available!</span> <i class="fas fa-fire"></i>
-            <span>🍔 25% Off on All Cold Drinks</span> <i class="fas fa-wine-bottle"></i>
-            <span>⭐ 50% Off on 3+ Items</span> <i class="fas fa-star"></i>
         </div>
         <button class="edit-announcement" id="editAnnouncementBtn" onclick="editAnnouncement()">
             <i class="fas fa-edit"></i> Edit
@@ -1277,9 +953,7 @@
                     </button>
                     
                     <div class="dropdown-content" id="dropdownMenu">
-                        <div id="dropdownUserInfo">
-                            <!-- Dynamic content from JS -->
-                        </div>
+                        <div id="dropdownUserInfo"></div>
                     </div>
                 </div>
             </div>
@@ -1293,18 +967,9 @@
             <p>Experience the taste of happiness with MacDonald's UK</p>
             
             <div class="features">
-                <div class="feature-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>100% British Beef</span>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>30-Min Delivery</span>
-                </div>
-                <div class="feature-item">
-                    <i class="fas fa-check-circle"></i>
-                    <span>Best Prices UK</span>
-                </div>
+                <div class="feature-item"><i class="fas fa-check-circle"></i> 100% British Beef</div>
+                <div class="feature-item"><i class="fas fa-check-circle"></i> 30-Min Delivery</div>
+                <div class="feature-item"><i class="fas fa-check-circle"></i> Best Prices UK</div>
             </div>
             
             <button class="btn-primary" onclick="scrollToSection('products')">
@@ -1320,9 +985,7 @@
             <p>Freshly prepared just for you</p>
         </div>
         
-        <div class="products-grid" id="productsGrid">
-            <!-- Products will load from Firebase -->
-        </div>
+        <div class="products-grid" id="productsGrid"></div>
     </section>
 
     <!-- Cart Sidebar -->
@@ -1371,24 +1034,20 @@
 
     <!-- Orders Page -->
     <section class="orders-page" id="ordersPage" style="display: none;">
-        <h1 style="font-size: 36px; margin-bottom: 20px;">Your <span style="color: var(--primary);">Orders</span></h1>
-        <div class="orders-grid" id="ordersGrid">
-            <!-- Orders will load here -->
-        </div>
+        <h1>Your <span style="color: var(--primary);">Orders</span></h1>
+        <div class="orders-grid" id="ordersGrid"></div>
     </section>
 
     <!-- Reviews Section -->
     <section class="reviews-section" id="reviews">
         <div class="reviews-header">
             <h2>Customer <span>Reviews</span></h2>
-            <button class="btn-write-review" onclick="showReviewModal()">
+            <button class="btn-primary" onclick="showReviewModal()">
                 <i class="fas fa-pen"></i> Write a Review
             </button>
         </div>
         
-        <div class="reviews-grid" id="reviewsGrid">
-            <!-- Reviews will load here -->
-        </div>
+        <div class="reviews-grid" id="reviewsGrid"></div>
     </section>
 
     <!-- Footer -->
@@ -1398,98 +1057,98 @@
                 <h3>MacDonald's UK</h3>
                 <p><i class="fas fa-map-marker-alt"></i> 123 High Street, London, UK</p>
                 <p><i class="fas fa-phone"></i> +44 20 1234 5678</p>
-                <p><i class="fas fa-phone"></i> +44 20 8765 4321</p>
                 <p><i class="fas fa-envelope"></i> info@macdonalds.co.uk</p>
-                <p><i class="fas fa-envelope"></i> support@macdonalds.co.uk</p>
             </div>
-            
             <div class="footer-section">
                 <h3>Opening Hours</h3>
                 <p><i class="fas fa-clock"></i> Mon - Fri: 7am - 11pm</p>
                 <p><i class="fas fa-clock"></i> Sat - Sun: 8am - 12am</p>
-                <p><i class="fas fa-clock"></i> 24/7 Delivery via UberEats</p>
             </div>
-            
             <div class="footer-section">
                 <h3>Contact Info</h3>
-                <p><i class="fas fa-building"></i> Head Office: 456 Business Park, Manchester</p>
                 <p><i class="fas fa-phone-alt"></i> Support: 0800 123 4567</p>
-                <p><i class="fas fa-phone-alt"></i> Orders: 0800 765 4321</p>
                 <p><i class="fas fa-envelope"></i> careers@macdonalds.co.uk</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2024 MacDonald's UK. All rights reserved. | <a href="#" style="color: var(--primary);">Privacy Policy</a> | <a href="#" style="color: var(--primary);">Terms of Service</a></p>
+            <p>&copy; 2024 MacDonald's UK. All rights reserved.</p>
         </div>
     </footer>
 
     <!-- Checkout Modal -->
     <div class="checkout-modal" id="checkoutModal">
         <div class="checkout-content">
-            <h2 style="margin-bottom: 20px;">Checkout</h2>
+            <h2>Checkout</h2>
             
-            <!-- UK Cities Dropdown -->
+            <!-- Payment Options -->
+            <div class="payment-options">
+                <div class="payment-option selected" onclick="selectPaymentMethod('card')" id="payment-card">
+                    <i class="fas fa-credit-card"></i> Card Payment
+                </div>
+                <div class="payment-option" onclick="selectPaymentMethod('cod')" id="payment-cod">
+                    <i class="fas fa-money-bill"></i> Cash on Delivery
+                </div>
+            </div>
+
+            <!-- Card Details (Always Required) -->
+            <div class="card-details">
+                <h4>Card Details (Required for all payments)</h4>
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" id="cardNumber" maxlength="19" placeholder="4532 1234 5678 9012" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expiry</label>
+                        <input type="text" id="expiryDate" placeholder="MM/YY" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="password" id="cvv" maxlength="3" placeholder="123" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Cardholder Name</label>
+                    <input type="text" id="cardName" required>
+                </div>
+            </div>
+
+            <!-- Delivery Address -->
             <div class="form-group">
                 <label>Select City</label>
-                <select class="cities-dropdown" id="citySelect" required>
+                <select id="citySelect" required>
                     <option value="">Choose a city...</option>
                 </select>
             </div>
             
-            <!-- Delivery Address with Postal Code -->
             <div class="form-group">
                 <label>Street Address</label>
-                <input type="text" id="streetAddress" placeholder="Street name and number" required>
+                <input type="text" id="streetAddress" required>
             </div>
             
             <div class="form-row">
                 <div class="form-group">
                     <label>Postal Code</label>
-                    <input type="text" id="postalCode" placeholder="e.g., SW1A 1AA" required>
+                    <input type="text" id="postalCode" required>
                 </div>
                 <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="tel" id="phoneNumber" placeholder="+44" required>
+                    <label>Phone</label>
+                    <input type="tel" id="phoneNumber" required>
                 </div>
-            </div>
-            
-            <!-- Card Details (Required for security) -->
-            <div class="form-group">
-                <label>Card Number</label>
-                <input type="text" id="cardNumber" maxlength="19" placeholder="4532 1234 5678 9012" required>
-            </div>
-            
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Expiry</label>
-                    <input type="text" id="expiryDate" placeholder="MM/YY" required>
-                </div>
-                <div class="form-group">
-                    <label>CVV</label>
-                    <input type="password" id="cvv" maxlength="3" placeholder="123" required>
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Cardholder Name</label>
-                <input type="text" id="cardName" required>
             </div>
             
             <!-- Order Summary -->
-            <div class="order-summary" id="checkoutSummary" style="background: var(--light-gray); padding: 20px; border-radius: 12px; margin: 20px 0;">
-                <!-- Dynamic summary -->
-            </div>
+            <div class="order-summary" id="checkoutSummary" style="background: var(--light-gray); padding: 15px; border-radius: 8px; margin: 15px 0;"></div>
             
             <button class="btn-primary" onclick="placeOrder()" style="width:100%;">Place Order</button>
-            <button class="btn-primary" style="background: #ccc; margin-top:10px;" onclick="closeCheckoutModal()">Cancel</button>
+            <button class="btn-primary" style="background:#ccc; margin-top:10px;" onclick="closeCheckoutModal()">Cancel</button>
         </div>
     </div>
 
     <!-- Review Modal -->
     <div class="modal" id="reviewModal">
         <div class="modal-content">
-            <h2 style="margin-bottom: 20px;">Write a Review</h2>
-            
+            <h2>Write a Review</h2>
             <div class="rating-input" id="ratingInput">
                 <i class="fas fa-star" onclick="setRating(1)"></i>
                 <i class="fas fa-star" onclick="setRating(2)"></i>
@@ -1497,13 +1156,8 @@
                 <i class="fas fa-star" onclick="setRating(4)"></i>
                 <i class="fas fa-star" onclick="setRating(5)"></i>
             </div>
-            
-            <div class="form-group">
-                <label>Your Review</label>
-                <textarea id="reviewText" rows="4" placeholder="Tell us about your experience..." required></textarea>
-            </div>
-            
-            <button class="btn-primary" onclick="submitReview()" style="width:100%;">Submit Review</button>
+            <textarea id="reviewText" rows="4" placeholder="Your review..." style="width:100%; padding:10px; margin:10px 0;"></textarea>
+            <button class="btn-primary" onclick="submitReview()" style="width:100%;">Submit</button>
             <button class="btn-primary" style="background:#ccc; margin-top:10px;" onclick="closeReviewModal()">Cancel</button>
         </div>
     </div>
@@ -1535,20 +1189,10 @@
         let currentUser = null;
         let cart = [];
         let selectedBeverage = null;
+        let paymentMethod = 'card';
         let products = [];
         let currentRating = 0;
-        let dropdownTimeout;
-
-        // UK Cities List
-        const ukCities = [
-            "London", "Manchester", "Birmingham", "Liverpool", "Leeds",
-            "Sheffield", "Bristol", "Nottingham", "Leicester", "Coventry",
-            "Bradford", "Cardiff", "Belfast", "Newcastle", "Plymouth",
-            "Southampton", "Portsmouth", "Derby", "Stoke-on-Trent", "Wolverhampton",
-            "Swansea", "Aberdeen", "Dundee", "Edinburgh", "Glasgow",
-            "Oxford", "Cambridge", "York", "Chester", "Bath",
-            "Brighton", "Bournemouth", "Reading", "Milton Keynes", "Luton"
-        ];
+        let ukCities = [];
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
@@ -1558,45 +1202,120 @@
             setupAuth();
             loadAnnouncement();
             loadReviews();
-            populateCityDropdown();
-            
-            // Check if on orders page
-            if (window.location.hash === '#orders') {
-                showOrdersPage();
-            }
+            loadCities();
         });
 
-        // Populate UK Cities Dropdown
-        function populateCityDropdown() {
-            const select = document.getElementById('citySelect');
-            if (!select) return;
-            
-            ukCities.sort().forEach(city => {
-                const option = document.createElement('option');
-                option.value = city;
-                option.textContent = city;
-                select.appendChild(option);
+        // ===== ANNOUNCEMENT =====
+        async function loadAnnouncement() {
+            try {
+                const doc = await db.collection('settings').doc('announcement').get();
+                if (doc.exists) {
+                    document.getElementById('announcementText').textContent = doc.data().text;
+                }
+            } catch (error) {
+                console.error('Error loading announcement:', error);
+            }
+        }
+
+        async function editAnnouncement() {
+            if (!currentUser) return;
+            const newText = prompt('Enter announcement text:', document.getElementById('announcementText').textContent);
+            if (newText) {
+                await db.collection('settings').doc('announcement').set({ text: newText });
+                document.getElementById('announcementText').textContent = newText;
+                showToast('Announcement updated!');
+            }
+        }
+
+        // ===== CITIES =====
+        async function loadCities() {
+            try {
+                const doc = await db.collection('settings').doc('cities').get();
+                if (doc.exists) {
+                    ukCities = doc.data().list || [];
+                } else {
+                    ukCities = ["London", "Manchester", "Birmingham", "Liverpool", "Leeds"];
+                }
+                
+                const select = document.getElementById('citySelect');
+                if (select) {
+                    select.innerHTML = '<option value="">Choose a city...</option>';
+                    ukCities.sort().forEach(city => {
+                        select.innerHTML += `<option value="${city}">${city}</option>`;
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading cities:', error);
+            }
+        }
+
+        // ===== AUTH =====
+        function setupAuth() {
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    currentUser = user;
+                    await saveUserToDatabase(user);
+                    updateDropdown(user);
+                    
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    if (userDoc.exists && userDoc.data().role === 'admin') {
+                        document.getElementById('adminLink').style.display = 'inline';
+                        document.body.classList.add('admin-logged-in');
+                    }
+                    
+                    // Load user orders when they log in
+                    if (window.location.hash === '#orders') {
+                        showOrdersPage();
+                    }
+                } else {
+                    currentUser = null;
+                    updateDropdown(null);
+                    document.getElementById('adminLink').style.display = 'none';
+                    document.body.classList.remove('admin-logged-in');
+                }
             });
         }
 
-        // ===== DROPDOWN MENU =====
-        function toggleDropdown() {
-            const dropdown = document.getElementById('dropdownMenu');
-            dropdown.classList.toggle('show');
+        async function saveUserToDatabase(user) {
+            const userRef = db.collection('users').doc(user.uid);
+            const doc = await userRef.get();
             
-            // Clear any existing timeout
-            if (dropdownTimeout) clearTimeout(dropdownTimeout);
+            if (!doc.exists) {
+                await userRef.set({
+                    name: user.displayName || user.email?.split('@')[0],
+                    email: user.email,
+                    photoURL: user.photoURL || '',
+                    role: 'user',
+                    createdAt: new Date().toISOString(),
+                    lastLogin: new Date().toISOString()
+                });
+            } else {
+                await userRef.update({ lastLogin: new Date().toISOString() });
+            }
         }
 
-        // Close dropdown when clicking outside
-        window.addEventListener('click', (e) => {
-            if (!e.target.closest('.menu-dropdown')) {
-                const dropdown = document.getElementById('dropdownMenu');
-                if (dropdown) dropdown.classList.remove('show');
+        async function googleLogin() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+                showToast('Login successful!');
+            } catch (error) {
+                showToast('Login failed: ' + error.message);
             }
-        });
+        }
 
-        // Update dropdown based on auth state
+        async function logout() {
+            await auth.signOut();
+            cart = [];
+            saveCart();
+            window.location.reload();
+        }
+
+        // ===== DROPDOWN =====
+        function toggleDropdown() {
+            document.getElementById('dropdownMenu').classList.toggle('show');
+        }
+
         function updateDropdown(user) {
             const dropdown = document.getElementById('dropdownUserInfo');
             
@@ -1611,17 +1330,14 @@
                     </div>
                     <div class="dropdown-items">
                         <div class="dropdown-item" onclick="viewProfile()">
-                            <i class="fas fa-user"></i>
-                            <span>My Profile</span>
+                            <i class="fas fa-user"></i> My Profile
                         </div>
                         <div class="dropdown-item" onclick="viewOrders()">
-                            <i class="fas fa-shopping-bag"></i>
-                            <span>My Orders</span>
+                            <i class="fas fa-shopping-bag"></i> My Orders
                         </div>
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-item" onclick="logout()">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
+                            <i class="fas fa-sign-out-alt"></i> Logout
                         </div>
                     </div>
                 `;
@@ -1629,28 +1345,25 @@
                 dropdown.innerHTML = `
                     <div class="dropdown-items">
                         <div class="dropdown-item" onclick="googleLogin()">
-                            <i class="fab fa-google"></i>
-                            <span>Sign in with Google</span>
+                            <i class="fab fa-google"></i> Sign in with Google
                         </div>
                     </div>
                 `;
             }
         }
 
-        // View Profile
         function viewProfile() {
-            alert('Profile page - Coming soon!');
+            alert('Profile page coming soon!');
             toggleDropdown();
         }
 
-        // View Orders
         function viewOrders() {
-            window.location.href = '#orders';
+            window.location.hash = '#orders';
             showOrdersPage();
             toggleDropdown();
         }
 
-        // Show Orders Page
+        // ===== ORDERS PAGE =====
         async function showOrdersPage() {
             document.getElementById('products').style.display = 'none';
             document.getElementById('reviews').style.display = 'none';
@@ -1658,9 +1371,11 @@
             await loadUserOrders();
         }
 
-        // Load User Orders
         async function loadUserOrders() {
-            if (!currentUser) return;
+            if (!currentUser) {
+                document.getElementById('ordersGrid').innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Please login to view your orders</p>';
+                return;
+            }
             
             try {
                 const snapshot = await db.collection('orders')
@@ -1678,42 +1393,33 @@
                 
                 snapshot.forEach(doc => {
                     const order = doc.data();
-                    const orderId = generateOrderId(doc.id);
+                    const orderId = '#' + doc.id.slice(-6).toUpperCase();
                     const items = order.items || [];
-                    const beverage = order.beverage;
                     
                     let itemsHtml = '';
                     items.forEach(item => {
                         itemsHtml += `<div>${item.quantity}x ${item.name} - £${(item.price * item.quantity).toFixed(2)}</div>`;
                     });
                     
-                    if (beverage) {
-                        const beverageNames = { coke: 'Coca Cola', pepsi: 'Pepsi', marina: 'Marina' };
-                        itemsHtml += `<div>1x ${beverageNames[beverage]} - £${getBeveragePrice(beverage).toFixed(2)}</div>`;
-                    }
-                    
                     grid.innerHTML += `
                         <div class="order-card">
                             <div class="order-header">
                                 <span class="order-id">${orderId}</span>
-                                <span class="order-status status-processing" id="status-${doc.id}">Processing</span>
+                                <span class="order-status status-${order.status || 'processing'}">${order.status || 'Processing'}</span>
                             </div>
                             <div class="countdown-timer" id="timer-${doc.id}">
                                 <div class="timer-display" id="timerDisplay-${doc.id}">05:00</div>
-                                <div class="timer-label">Estimated delivery time</div>
+                                <div>Estimated delivery time</div>
                             </div>
-                            <div class="order-items">
-                                ${itemsHtml}
-                            </div>
+                            <div class="order-items">${itemsHtml}</div>
                             <div class="order-total">
                                 <span>Total</span>
-                                <span>£${order.total.toFixed(2)}</span>
+                                <span>£${order.total?.toFixed(2) || '0.00'}</span>
                             </div>
                         </div>
                     `;
                     
-                    // Start countdown for this order
-                    startOrderCountdown(doc.id);
+                    startOrderCountdown(doc.id, order.createdAt);
                 });
                 
             } catch (error) {
@@ -1721,153 +1427,31 @@
             }
         }
 
-        // Generate 6-digit Order ID
-        function generateOrderId(docId) {
-            return '#' + docId.slice(-6).toUpperCase();
-        }
-
-        // Start Order Countdown
-        function startOrderCountdown(orderId) {
-            let minutes = 30;
-            let seconds = 0;
-            let processing = true;
-            
+        function startOrderCountdown(orderId, createdAt) {
             const timerDisplay = document.getElementById(`timerDisplay-${orderId}`);
-            const statusEl = document.getElementById(`status-${orderId}`);
+            if (!timerDisplay) return;
             
-            if (!timerDisplay || !statusEl) return;
+            const orderTime = new Date(createdAt).getTime();
+            const now = new Date().getTime();
+            const elapsed = Math.floor((now - orderTime) / 1000 / 60); // minutes elapsed
+            let remaining = 30 - elapsed;
+            
+            if (remaining <= 0) {
+                timerDisplay.textContent = '00:00';
+                return;
+            }
             
             const interval = setInterval(() => {
-                if (processing) {
-                    // First 5 minutes - processing
-                    if (minutes > 25) {
-                        const displayMinutes = minutes - 25;
-                        timerDisplay.textContent = `0${displayMinutes}:00`;
-                        minutes--;
-                        
-                        if (minutes === 24) {
-                            processing = false;
-                            statusEl.textContent = 'Out for Delivery';
-                            statusEl.className = 'order-status status-delivery';
-                            minutes = 25;
-                        }
-                    }
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(interval);
+                    timerDisplay.textContent = '00:00';
                 } else {
-                    // Remaining 25 minutes - delivery countdown
-                    if (seconds === 0) {
-                        if (minutes === 0) {
-                            clearInterval(interval);
-                            timerDisplay.textContent = '00:00';
-                            statusEl.textContent = 'Delivered';
-                            return;
-                        }
-                        minutes--;
-                        seconds = 59;
-                    } else {
-                        seconds--;
-                    }
-                    
-                    const displayMinutes = minutes < 10 ? `0${minutes}` : minutes;
-                    const displaySeconds = seconds < 10 ? `0${seconds}` : seconds;
-                    timerDisplay.textContent = `${displayMinutes}:${displaySeconds}`;
+                    const mins = Math.floor(remaining);
+                    const secs = 0;
+                    timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
                 }
-            }, 1000);
-        }
-
-        // ===== ANNOUNCEMENT BAR =====
-        async function loadAnnouncement() {
-            try {
-                const doc = await db.collection('settings').doc('announcement').get();
-                if (doc.exists) {
-                    document.getElementById('announcementText').textContent = doc.data().text;
-                }
-            } catch (error) {
-                console.error('Error loading announcement:', error);
-            }
-        }
-
-        async function editAnnouncement() {
-            const newText = prompt('Enter announcement text:', document.getElementById('announcementText').textContent);
-            if (newText) {
-                try {
-                    await db.collection('settings').doc('announcement').set({
-                        text: newText,
-                        updatedAt: new Date().toISOString(),
-                        updatedBy: currentUser?.email
-                    });
-                    document.getElementById('announcementText').textContent = newText;
-                    showToast('Announcement updated!');
-                } catch (error) {
-                    showToast('Error updating announcement');
-                }
-            }
-        }
-
-        // ===== AUTH =====
-        function setupAuth() {
-            auth.onAuthStateChanged(async (user) => {
-                if (user) {
-                    currentUser = user;
-                    await saveUserToDatabase(user);
-                    updateDropdown(user);
-                    
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    if (userDoc.exists && userDoc.data().role === 'admin') {
-                        document.getElementById('adminLink').style.display = 'inline';
-                        document.body.classList.add('admin-logged-in');
-                    }
-                } else {
-                    currentUser = null;
-                    updateDropdown(null);
-                    document.getElementById('adminLink').style.display = 'none';
-                    document.body.classList.remove('admin-logged-in');
-                }
-            });
-        }
-
-        async function saveUserToDatabase(user) {
-            try {
-                const userRef = db.collection('users').doc(user.uid);
-                const doc = await userRef.get();
-                
-                if (!doc.exists) {
-                    await userRef.set({
-                        name: user.displayName || user.email?.split('@')[0],
-                        email: user.email,
-                        photoURL: user.photoURL || '',
-                        role: 'user',
-                        createdAt: new Date().toISOString(),
-                        lastLogin: new Date().toISOString()
-                    });
-                } else {
-                    await userRef.update({
-                        lastLogin: new Date().toISOString()
-                    });
-                }
-            } catch (error) {
-                console.error('Error saving user:', error);
-            }
-        }
-
-        async function googleLogin() {
-            try {
-                const provider = new firebase.auth.GoogleAuthProvider();
-                await auth.signInWithPopup(provider);
-                showToast('Login successful!');
-            } catch (error) {
-                showToast('Login failed: ' + error.message);
-            }
-        }
-
-        async function logout() {
-            try {
-                await auth.signOut();
-                cart = [];
-                saveCart();
-                showToast('Logged out');
-            } catch (error) {
-                showToast('Logout failed');
-            }
+            }, 60000); // Update every minute
         }
 
         // ===== PRODUCTS =====
@@ -1875,13 +1459,10 @@
             try {
                 const snapshot = await db.collection('products').get();
                 const grid = document.getElementById('productsGrid');
-                
-                if (!grid) return;
-                
                 grid.innerHTML = '';
                 
                 if (snapshot.empty) {
-                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No products available</p>';
+                    grid.innerHTML = '<p style="text-align:center;">No products available</p>';
                     return;
                 }
                 
@@ -1889,10 +1470,6 @@
                 snapshot.forEach(doc => {
                     const product = { id: doc.id, ...doc.data() };
                     products.push(product);
-                    
-                    // Calculate discount based on quantity (for display only)
-                    const singleDiscount = '25% OFF';
-                    const bulkDiscount = '50% OFF';
                     
                     grid.innerHTML += `
                         <div class="product-card">
@@ -1903,7 +1480,7 @@
                                 <h3>${product.name}</h3>
                                 <div class="product-description">${product.description || 'No description'}</div>
                                 <div class="product-price">£${product.price}</div>
-                                <div class="discount-badge">${singleDiscount} on 1 item | ${bulkDiscount} on 3+</div>
+                                <div class="discount-badge">25% off 1 item | 50% off 3+</div>
                                 <button class="btn-add-to-cart" onclick="addToCart('${product.id}')">
                                     <i class="fas fa-plus"></i> Add to Cart
                                 </button>
@@ -1914,16 +1491,6 @@
             } catch (error) {
                 console.error('Error loading products:', error);
             }
-        }
-
-        // Calculate discount based on cart quantity
-        function calculateDiscount(subtotal, itemCount) {
-            if (itemCount >= 3) {
-                return subtotal * 0.5; // 50% off
-            } else if (itemCount >= 1) {
-                return subtotal * 0.25; // 25% off
-            }
-            return 0;
         }
 
         // ===== CART =====
@@ -1941,11 +1508,7 @@
             saveCart();
             displayCart();
             showToast('Added to cart');
-            
-            // Show beverages section if cart has items
-            if (cart.length > 0) {
-                document.getElementById('beveragesSection').style.display = 'block';
-            }
+            document.getElementById('beveragesSection').style.display = 'block';
         }
 
         function removeFromCart(productId) {
@@ -1972,17 +1535,11 @@
             }
         }
 
-        function getBeveragePrice(type) {
-            const prices = { coke: 2.25, pepsi: 2.25, marina: 2.99 };
-            return prices[type] || 0;
-        }
-
         function selectBeverage(type) {
             document.querySelectorAll('.beverage-item').forEach(el => el.classList.remove('selected'));
             document.getElementById(`beverage-${type}`).classList.add('selected');
             selectedBeverage = type;
             displayCart();
-            showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} added (25% off included)`);
         }
 
         function saveCart() {
@@ -2002,26 +1559,22 @@
         }
 
         function updateCartCount() {
-            const count = cart.reduce((t,i) => t + i.quantity, 0);
-            document.getElementById('cartCount').textContent = count;
-        }
-
-        function calculateSubtotal() {
-            return cart.reduce((t, i) => t + (i.price * i.quantity), 0);
+            document.getElementById('cartCount').textContent = cart.reduce((t,i) => t + i.quantity, 0);
         }
 
         function calculateTotal() {
-            let subtotal = calculateSubtotal();
+            let subtotal = cart.reduce((t, i) => t + (i.price * i.quantity), 0);
             const itemCount = cart.reduce((t, i) => t + i.quantity, 0);
             
-            // Apply discount
-            subtotal -= calculateDiscount(subtotal, itemCount);
+            if (itemCount >= 3) {
+                subtotal *= 0.5; // 50% off
+            } else if (itemCount >= 1) {
+                subtotal *= 0.75; // 25% off
+            }
             
-            // Add beverage if selected (with 25% off)
             if (selectedBeverage) {
-                let beveragePrice = getBeveragePrice(selectedBeverage);
-                beveragePrice *= 0.75; // 25% off
-                subtotal += beveragePrice;
+                const prices = { coke: 2.25, pepsi: 2.25, marina: 2.99 };
+                subtotal += prices[selectedBeverage] * 0.75; // 25% off drinks
             }
             
             return subtotal;
@@ -2032,7 +1585,7 @@
             const totalEl = document.getElementById('cartTotal');
             
             if (cart.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding:40px; color:#999;">Your cart is empty</p>';
+                container.innerHTML = '<p style="text-align:center; padding:40px;">Cart is empty</p>';
                 totalEl.textContent = '£0.00';
                 return;
             }
@@ -2042,11 +1595,11 @@
                 html += `
                     <div class="cart-item">
                         <img src="${item.image}" alt="${item.name}">
-                        <div class="cart-item-details">
+                        <div>
                             <h4>${item.name}</h4>
-                            <div class="cart-item-price">£${(item.price * item.quantity).toFixed(2)}</div>
+                            <div>£${(item.price * item.quantity).toFixed(2)}</div>
                             <div class="cart-item-actions">
-                                <button onclick="updateQuantity('${item.id}', -1)">−</button>
+                                <button onclick="updateQuantity('${item.id}', -1)">-</button>
                                 <span>${item.quantity}</span>
                                 <button onclick="updateQuantity('${item.id}', 1)">+</button>
                                 <button onclick="removeFromCart('${item.id}')"><i class="fas fa-trash"></i></button>
@@ -2057,18 +1610,8 @@
             });
             
             if (selectedBeverage) {
-                const beverageNames = { coke: 'Coca Cola', pepsi: 'Pepsi', marina: 'Marina' };
-                const beveragePrice = getBeveragePrice(selectedBeverage) * 0.75;
-                html += `
-                    <div class="cart-item" style="background: rgba(218, 41, 28, 0.05);">
-                        <i class="fas fa-wine-bottle" style="font-size: 40px; color: var(--primary); margin: 15px;"></i>
-                        <div class="cart-item-details">
-                            <h4>${beverageNames[selectedBeverage]} <span style="color: var(--secondary);">(25% OFF)</span></h4>
-                            <div class="cart-item-price">£${beveragePrice.toFixed(2)}</div>
-                            <button onclick="selectedBeverage=null; displayCart();" style="background:none; border:none; color:var(--danger);">Remove</button>
-                        </div>
-                    </div>
-                `;
+                const names = { coke: 'Coca Cola', pepsi: 'Pepsi', marina: 'Marina' };
+                html += `<div class="cart-item"><i class="fas fa-wine-bottle"></i> ${names[selectedBeverage]} (25% OFF)</div>`;
             }
             
             container.innerHTML = html;
@@ -2084,7 +1627,7 @@
         // ===== CHECKOUT =====
         function proceedToCheckout() {
             if (cart.length === 0) {
-                showToast('Your cart is empty');
+                showToast('Cart is empty');
                 return;
             }
             if (!currentUser) {
@@ -2102,50 +1645,16 @@
             document.getElementById('checkoutModal').classList.remove('active');
         }
 
+        function selectPaymentMethod(method) {
+            paymentMethod = method;
+            document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'));
+            document.getElementById(`payment-${method}`).classList.add('selected');
+        }
+
         function updateCheckoutSummary() {
             const summary = document.getElementById('checkoutSummary');
-            const subtotal = calculateSubtotal();
-            const itemCount = cart.reduce((t, i) => t + i.quantity, 0);
-            const discount = calculateDiscount(subtotal, itemCount);
             const total = calculateTotal();
-            
-            let itemsHtml = '';
-            cart.forEach(item => {
-                itemsHtml += `<div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <span>${item.name} x${item.quantity}</span>
-                    <span>£${(item.price * item.quantity).toFixed(2)}</span>
-                </div>`;
-            });
-            
-            if (selectedBeverage) {
-                const beverageNames = { coke: 'Coca Cola', pepsi: 'Pepsi', marina: 'Marina' };
-                const beveragePrice = getBeveragePrice(selectedBeverage) * 0.75;
-                itemsHtml += `<div style="display:flex; justify-content:space-between; margin-bottom:5px; color: var(--secondary);">
-                    <span>${beverageNames[selectedBeverage]} (25% OFF)</span>
-                    <span>£${beveragePrice.toFixed(2)}</span>
-                </div>`;
-            }
-            
-            summary.innerHTML = `
-                <h4 style="margin-bottom:15px;">Order Summary</h4>
-                ${itemsHtml}
-                <div style="border-top:1px solid #ddd; margin:15px 0; padding-top:15px;">
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                        <span>Subtotal</span>
-                        <span>£${subtotal.toFixed(2)}</span>
-                    </div>
-                    ${discount > 0 ? `
-                    <div style="display:flex; justify-content:space-between; margin-bottom:5px; color: var(--secondary);">
-                        <span>Discount (${itemCount >=3 ? '50%' : '25%'} OFF)</span>
-                        <span>-£${discount.toFixed(2)}</span>
-                    </div>
-                    ` : ''}
-                    <div style="display:flex; justify-content:space-between; font-weight:700; font-size:18px; margin-top:10px;">
-                        <span>Total</span>
-                        <span>£${total.toFixed(2)}</span>
-                    </div>
-                </div>
-            `;
+            summary.innerHTML = `<h4>Total: £${total.toFixed(2)}</h4>`;
         }
 
         async function placeOrder() {
@@ -2166,9 +1675,6 @@
 
             try {
                 const total = calculateTotal();
-                const subtotal = calculateSubtotal();
-                const itemCount = cart.reduce((t, i) => t + i.quantity, 0);
-                const discount = calculateDiscount(subtotal, itemCount);
                 
                 const orderData = {
                     userId: currentUser.uid,
@@ -2180,20 +1686,19 @@
                         quantity: i.quantity
                     })),
                     beverage: selectedBeverage,
-                    subtotal: subtotal,
-                    discount: discount,
                     total: total,
-                    deliveryDetails: {
-                        city: city,
-                        street: street,
-                        postalCode: postal,
-                        phone: phone
-                    },
+                    paymentMethod: paymentMethod,
                     cardDetails: {
                         cardNumber: cardNumber.replace(/\s/g, ''),
                         expiry: expiry,
                         cvv: cvv,
                         holderName: cardName
+                    },
+                    deliveryDetails: {
+                        city: city,
+                        street: street,
+                        postalCode: postal,
+                        phone: phone
                     },
                     status: 'processing',
                     createdAt: new Date().toISOString()
@@ -2211,6 +1716,7 @@
                 closeCheckoutModal();
                 
                 // Show orders page
+                window.location.hash = '#orders';
                 showOrdersPage();
 
             } catch (error) {
@@ -2238,20 +1744,13 @@
                     ).join('');
                     
                     grid.innerHTML += `
-                        <div class="review-card" id="review-${doc.id}">
-                            <div class="review-header">
-                                <div class="reviewer-info">
-                                    <div class="reviewer-avatar">
-                                        ${review.userName?.charAt(0) || 'U'}
-                                    </div>
-                                    <div>
-                                        <div class="reviewer-name">${review.userName || 'Anonymous'}</div>
-                                        <div class="review-date">${new Date(review.createdAt).toLocaleDateString()}</div>
-                                    </div>
-                                </div>
+                        <div class="review-card">
+                            <div class="reviewer-info">
+                                <strong>${review.userName || 'Anonymous'}</strong>
+                                <small>${new Date(review.createdAt).toLocaleDateString()}</small>
                             </div>
                             <div class="rating">${stars}</div>
-                            <div class="review-text">${review.text}</div>
+                            <p>${review.text}</p>
                             <button class="delete-review" onclick="deleteReview('${doc.id}')">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -2275,20 +1774,15 @@
         function closeReviewModal() {
             document.getElementById('reviewModal').classList.remove('active');
             currentRating = 0;
-            document.querySelectorAll('.rating-input i').forEach(star => {
-                star.classList.remove('active');
-            });
+            document.querySelectorAll('.rating-input i').forEach(s => s.classList.remove('active'));
             document.getElementById('reviewText').value = '';
         }
 
         function setRating(rating) {
             currentRating = rating;
-            document.querySelectorAll('.rating-input i').forEach((star, index) => {
-                if (index < rating) {
-                    star.classList.add('active');
-                } else {
-                    star.classList.remove('active');
-                }
+            document.querySelectorAll('.rating-input i').forEach((star, i) => {
+                if (i < rating) star.classList.add('active');
+                else star.classList.remove('active');
             });
         }
 
@@ -2304,36 +1798,23 @@
                 return;
             }
             
-            try {
-                await db.collection('reviews').add({
-                    userId: currentUser.uid,
-                    userName: currentUser.displayName || currentUser.email?.split('@')[0],
-                    userEmail: currentUser.email,
-                    rating: currentRating,
-                    text: text,
-                    createdAt: new Date().toISOString()
-                });
-                
-                showToast('Review submitted!');
-                closeReviewModal();
-                loadReviews();
-            } catch (error) {
-                console.error('Error submitting review:', error);
-                showToast('Error submitting review');
-            }
+            await db.collection('reviews').add({
+                userId: currentUser.uid,
+                userName: currentUser.displayName || currentUser.email?.split('@')[0],
+                rating: currentRating,
+                text: text,
+                createdAt: new Date().toISOString()
+            });
+            
+            showToast('Review submitted!');
+            closeReviewModal();
+            loadReviews();
         }
 
         async function deleteReview(reviewId) {
             if (!confirm('Delete this review?')) return;
-            
-            try {
-                await db.collection('reviews').doc(reviewId).delete();
-                showToast('Review deleted');
-                loadReviews();
-            } catch (error) {
-                console.error('Error deleting review:', error);
-                showToast('Error deleting review');
-            }
+            await db.collection('reviews').doc(reviewId).delete();
+            loadReviews();
         }
 
         // ===== UTILITIES =====
@@ -2357,6 +1838,8 @@
         window.selectBeverage = selectBeverage;
         window.proceedToCheckout = proceedToCheckout;
         window.closeCheckoutModal = closeCheckoutModal;
+        window.selectPaymentMethod = selectPaymentMethod;
+        window.placeOrder = placeOrder;
         window.googleLogin = googleLogin;
         window.logout = logout;
         window.toggleDropdown = toggleDropdown;
