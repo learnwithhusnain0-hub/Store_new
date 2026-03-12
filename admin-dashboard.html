@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Burger House</title>
+    <title>MacDonald's | Admin Dashboard</title>
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -22,24 +22,31 @@
         }
 
         :root {
-            --primary: #c49b63;
-            --primary-dark: #a17d4a;
+            --primary: #DA291C;        /* MacDonald's Red */
+            --primary-dark: #B22214;    /* Darker Red */
+            --secondary: #FFC72C;       /* MacDonald's Yellow */
+            --secondary-dark: #E6B422;  /* Darker Yellow */
+            --white: #FFFFFF;
+            --light-gray: #F5F5F5;
+            --dark: #27251F;            /* Dark Brown/Black */
+            --gray: #DDDDDD;
+            --text: #333333;
             --success: #10b981;
             --danger: #ef4444;
             --warning: #f59e0b;
-            --dark: #1a1a1a;
-            --light: #f3f4f6;
-            --gray: #9ca3af;
-            --white: #ffffff;
-            --sidebar-width: 280px;
+            --info: #3b82f6;
+            --shadow: 0 10px 30px rgba(0,0,0,0.05);
+            --shadow-hover: 0 20px 40px rgba(0,0,0,0.1);
         }
 
         body {
             font-family: 'Montserrat', sans-serif;
-            background: var(--light);
-            color: var(--dark);
+            background: var(--light-gray);
+            color: var(--text);
+            overflow-x: hidden;
         }
 
+        /* ===== ADMIN CONTAINER ===== */
         .admin-container {
             display: flex;
             min-height: 100vh;
@@ -47,8 +54,8 @@
 
         /* ===== SIDEBAR ===== */
         .sidebar {
-            width: var(--sidebar-width);
-            background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
+            width: 280px;
+            background: var(--dark);
             color: white;
             position: fixed;
             height: 100vh;
@@ -68,6 +75,10 @@
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 5px;
+        }
+
+        .sidebar-header h2 span {
+            color: var(--secondary);
         }
 
         .sidebar-header p {
@@ -124,9 +135,9 @@
         /* ===== MAIN CONTENT ===== */
         .main-content {
             flex: 1;
-            margin-left: var(--sidebar-width);
+            margin-left: 280px;
             padding: 30px;
-            background: var(--light);
+            background: var(--light-gray);
         }
 
         /* ===== TOP BAR ===== */
@@ -173,7 +184,7 @@
         /* ===== STATS CARDS ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 25px;
             margin-bottom: 30px;
         }
@@ -187,23 +198,12 @@
             align-items: center;
             justify-content: space-between;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary);
+            border-left: 4px solid var(--primary);
         }
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-hover);
         }
 
         .stat-info h3 {
@@ -216,7 +216,6 @@
         .stat-info p {
             color: var(--gray);
             font-size: 14px;
-            font-weight: 500;
         }
 
         .stat-icon {
@@ -227,82 +226,8 @@
             align-items: center;
             justify-content: center;
             font-size: 28px;
-            background: rgba(196, 155, 99, 0.1);
+            background: rgba(218, 41, 28, 0.1);
             color: var(--primary);
-        }
-
-        .stat-actions {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            display: flex;
-            gap: 5px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .stat-card:hover .stat-actions {
-            opacity: 1;
-        }
-
-        .stat-action-btn {
-            background: white;
-            border: 1px solid #e5e7eb;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: var(--gray);
-        }
-
-        .stat-action-btn:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .stat-action-btn.delete:hover {
-            background: var(--danger);
-            color: white;
-        }
-
-        /* ===== CHARTS SECTION ===== */
-        .charts-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        .chart-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .chart-header h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .chart-header select {
-            padding: 8px 12px;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 13px;
         }
 
         /* ===== SECTION CARDS ===== */
@@ -319,6 +244,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .section-header h2 {
@@ -327,9 +254,15 @@
             color: var(--dark);
         }
 
+        .section-header h2 i {
+            color: var(--primary);
+            margin-right: 10px;
+        }
+
         .section-actions {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         /* ===== BUTTONS ===== */
@@ -351,7 +284,27 @@
         .btn-primary:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(196, 155, 99, 0.3);
+            box-shadow: 0 5px 15px rgba(218, 41, 28, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-2px);
         }
 
         .btn-danger {
@@ -400,7 +353,7 @@
         }
 
         .btn-icon:hover {
-            background: #f3f4f6;
+            background: var(--light-gray);
             color: var(--primary);
         }
 
@@ -421,7 +374,7 @@
             font-size: 13px;
             font-weight: 600;
             color: var(--gray);
-            background: #f9fafb;
+            background: var(--light-gray);
             border-bottom: 2px solid #e5e7eb;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -435,7 +388,7 @@
         }
 
         tr:hover td {
-            background: #f9fafb;
+            background: var(--light-gray);
         }
 
         .product-image {
@@ -453,14 +406,19 @@
             display: inline-block;
         }
 
+        .status-processing {
+            background: rgba(255, 199, 44, 0.2);
+            color: #856404;
+        }
+
+        .status-delivery {
+            background: rgba(218, 41, 28, 0.1);
+            color: var(--primary);
+        }
+
         .status-completed {
             background: rgba(16, 185, 129, 0.1);
             color: var(--success);
-        }
-
-        .status-pending {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning);
         }
 
         .card-number {
@@ -498,7 +456,7 @@
         .form-group textarea {
             width: 100%;
             padding: 12px 15px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid var(--gray);
             border-radius: 8px;
             font-size: 14px;
             transition: all 0.3s;
@@ -510,7 +468,7 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(196, 155, 99, 0.1);
+            box-shadow: 0 0 0 3px rgba(218, 41, 28, 0.1);
         }
 
         .form-group textarea {
@@ -574,6 +532,30 @@
             margin-top: 20px;
         }
 
+        /* ===== CITY LIST ===== */
+        .city-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .city-item {
+            background: var(--light-gray);
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .city-item button {
+            background: none;
+            border: none;
+            color: var(--danger);
+            cursor: pointer;
+        }
+
         /* ===== ADMIN SECTIONS ===== */
         .admin-section {
             display: none;
@@ -583,12 +565,34 @@
             display: block;
         }
 
+        /* ===== LOADER ===== */
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loader.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid var(--light-gray);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 1024px) {
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-            
             .form-grid {
                 grid-template-columns: 1fr;
             }
@@ -611,6 +615,11 @@
             .stats-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
@@ -619,7 +628,7 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <h2>Burger House</h2>
+                <h2>MAC<span>DONALD'S</span></h2>
                 <p>Admin Dashboard</p>
             </div>
             <div class="sidebar-menu">
@@ -627,20 +636,29 @@
                     <li onclick="showSection('dashboard')" class="active" id="menuDashboard">
                         <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
                     </li>
-                    <li onclick="showSection('orders')" id="menuOrders">
-                        <i class="fas fa-shopping-cart"></i> <span>Orders</span>
-                    </li>
                     <li onclick="showSection('products')" id="menuProducts">
                         <i class="fas fa-box"></i> <span>Products</span>
                     </li>
                     <li onclick="showSection('add-product')" id="menuAddProduct">
                         <i class="fas fa-plus-circle"></i> <span>Add Product</span>
                     </li>
-                    <li onclick="showSection('users')" id="menuUsers">
-                        <i class="fas fa-users"></i> <span>Users</span>
+                    <li onclick="showSection('orders')" id="menuOrders">
+                        <i class="fas fa-shopping-cart"></i> <span>Orders</span>
+                    </li>
+                    <li onclick="showSection('reviews')" id="menuReviews">
+                        <i class="fas fa-star"></i> <span>Reviews</span>
+                    </li>
+                    <li onclick="showSection('cities')" id="menuCities">
+                        <i class="fas fa-city"></i> <span>UK Cities</span>
+                    </li>
+                    <li onclick="showSection('beverages')" id="menuBeverages">
+                        <i class="fas fa-wine-bottle"></i> <span>Beverages</span>
                     </li>
                     <li onclick="showSection('settings')" id="menuSettings">
                         <i class="fas fa-cog"></i> <span>Settings</span>
+                    </li>
+                    <li onclick="showSection('users')" id="menuUsers">
+                        <i class="fas fa-users"></i> <span>Users</span>
                     </li>
                     <li class="logout-item" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
@@ -658,14 +676,14 @@
                     <p id="pageSubtitle">Welcome back, Admin</p>
                 </div>
                 <div class="admin-profile">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=c49b63&color=fff" alt="Admin">
-                    <span id="adminEmail">admin@burgerhouse.com</span>
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=DA291C&color=fff" alt="Admin">
+                    <span id="adminEmail">admin@macdonalds.co.uk</span>
                 </div>
             </div>
 
             <!-- Dashboard Section -->
             <div id="dashboard" class="admin-section active">
-                <!-- Stats Cards with Clean Options -->
+                <!-- Stats Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-info">
@@ -675,31 +693,15 @@
                         <div class="stat-icon">
                             <i class="fas fa-shopping-cart"></i>
                         </div>
-                        <div class="stat-actions">
-                            <div class="stat-action-btn" onclick="showResetModal('orders')" title="Reset Orders">
-                                <i class="fas fa-sync-alt"></i>
-                            </div>
-                            <div class="stat-action-btn delete" onclick="showDeleteModal('orders')" title="Delete All">
-                                <i class="fas fa-trash"></i>
-                            </div>
-                        </div>
                     </div>
                     
                     <div class="stat-card">
                         <div class="stat-info">
-                            <h3 id="totalRevenue">$0</h3>
+                            <h3 id="totalRevenue">£0</h3>
                             <p>Total Revenue</p>
                         </div>
                         <div class="stat-icon">
-                            <i class="fas fa-dollar-sign"></i>
-                        </div>
-                        <div class="stat-actions">
-                            <div class="stat-action-btn" onclick="showResetModal('revenue')" title="Reset Revenue">
-                                <i class="fas fa-sync-alt"></i>
-                            </div>
-                            <div class="stat-action-btn delete" onclick="showDeleteModal('revenue')" title="Delete All">
-                                <i class="fas fa-trash"></i>
-                            </div>
+                            <i class="fas fa-pound-sign"></i>
                         </div>
                     </div>
                     
@@ -711,45 +713,26 @@
                         <div class="stat-icon">
                             <i class="fas fa-box"></i>
                         </div>
-                        <div class="stat-actions">
-                            <div class="stat-action-btn" onclick="showResetModal('products')" title="Reset Products">
-                                <i class="fas fa-sync-alt"></i>
-                            </div>
-                            <div class="stat-action-btn delete" onclick="showDeleteModal('products')" title="Delete All">
-                                <i class="fas fa-trash"></i>
-                            </div>
-                        </div>
                     </div>
-                </div>
-
-                <!-- Charts -->
-                <div class="charts-grid">
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Revenue Overview</h3>
-                            <select id="revenuePeriod">
-                                <option>Last 7 days</option>
-                                <option>Last 30 days</option>
-                                <option>Last 3 months</option>
-                            </select>
+                    
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3 id="totalReviews">0</h3>
+                            <p>Total Reviews</p>
                         </div>
-                        <canvas id="revenueChart" style="height: 250px;"></canvas>
-                    </div>
-                    <div class="chart-card">
-                        <div class="chart-header">
-                            <h3>Orders by Status</h3>
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
                         </div>
-                        <canvas id="ordersChart" style="height: 250px;"></canvas>
                     </div>
                 </div>
 
                 <!-- Recent Orders -->
                 <div class="section-card">
                     <div class="section-header">
-                        <h2>Recent Orders</h2>
+                        <h2><i class="fas fa-clock"></i> Recent Orders</h2>
                         <div class="section-actions">
-                            <button class="btn-danger" onclick="showDeleteModal('recent-orders')">
-                                <i class="fas fa-trash"></i> Clear Recent
+                            <button class="btn-secondary" onclick="showSection('orders')">
+                                View All <i class="fas fa-arrow-right"></i>
                             </button>
                         </div>
                     </div>
@@ -762,7 +745,7 @@
                                     <th>Items</th>
                                     <th>Total</th>
                                     <th>Status</th>
-                                    <th>Actions</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody id="recentOrders">
@@ -771,16 +754,14 @@
                         </table>
                     </div>
                 </div>
-            </div>
 
-            <!-- Orders Section -->
-            <div id="orders" class="admin-section">
+                <!-- Recent Reviews -->
                 <div class="section-card">
                     <div class="section-header">
-                        <h2>All Orders</h2>
+                        <h2><i class="fas fa-star"></i> Recent Reviews</h2>
                         <div class="section-actions">
-                            <button class="btn-danger" onclick="showDeleteModal('all-orders')">
-                                <i class="fas fa-trash"></i> Delete All
+                            <button class="btn-secondary" onclick="showSection('reviews')">
+                                View All <i class="fas fa-arrow-right"></i>
                             </button>
                         </div>
                     </div>
@@ -788,18 +769,16 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Order ID</th>
-                                    <th>Customer</th>
-                                    <th>Items</th>
-                                    <th>Total</th>
-                                    <th>Card Number</th>
-                                    <th>CVV</th>
-                                    <th>Expiry</th>
+                                    <th>User</th>
+                                    <th>Rating</th>
+                                    <th>Review</th>
                                     <th>Date</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="ordersTable"></tbody>
+                            <tbody id="recentReviews">
+                                <tr><td colspan="5" style="text-align:center;">Loading...</td></tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -809,13 +788,10 @@
             <div id="products" class="admin-section">
                 <div class="section-card">
                     <div class="section-header">
-                        <h2>All Products</h2>
+                        <h2><i class="fas fa-box"></i> All Products</h2>
                         <div class="section-actions">
                             <button class="btn-primary" onclick="showSection('add-product')">
                                 <i class="fas fa-plus"></i> Add New
-                            </button>
-                            <button class="btn-danger" onclick="showDeleteModal('all-products')">
-                                <i class="fas fa-trash"></i> Delete All
                             </button>
                         </div>
                     </div>
@@ -826,7 +802,7 @@
                                     <th>Image</th>
                                     <th>Name</th>
                                     <th>Description</th>
-                                    <th>Price</th>
+                                    <th>Price (£)</th>
                                     <th>Category</th>
                                     <th>Stock</th>
                                     <th>Actions</th>
@@ -838,21 +814,21 @@
                 </div>
             </div>
 
-            <!-- Add Product Section with Description -->
+            <!-- Add Product Section -->
             <div id="add-product" class="admin-section">
                 <div class="section-card">
-                    <h2>Add New Product</h2>
+                    <h2><i class="fas fa-plus-circle"></i> Add New Product</h2>
                     <div class="form-container">
                         <form id="addProductForm">
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label>Product Name</label>
-                                    <input type="text" id="productName" placeholder="e.g., Classic Burger" required>
+                                    <input type="text" id="productName" placeholder="e.g., Big Mac" required>
                                 </div>
                                 
                                 <div class="form-group">
-                                    <label>Price ($)</label>
-                                    <input type="number" id="productPrice" step="0.01" placeholder="12.99" required>
+                                    <label>Price (£)</label>
+                                    <input type="number" id="productPrice" step="0.01" placeholder="5.99" required>
                                 </div>
                                 
                                 <div class="form-group">
@@ -860,22 +836,21 @@
                                     <select id="productCategory" required>
                                         <option value="">Select Category</option>
                                         <option value="Burgers">🍔 Burgers</option>
-                                        <option value="Pizza">🍕 Pizza</option>
+                                        <option value="Chicken">🍗 Chicken</option>
                                         <option value="Fries">🍟 Fries</option>
-                                        <option value="Drinks">🥤 Drinks</option>
+                                        <option value="Breakfast">🥚 Breakfast</option>
                                         <option value="Desserts">🍰 Desserts</option>
                                     </select>
                                 </div>
                                 
                                 <div class="form-group">
                                     <label>Stock Quantity</label>
-                                    <input type="number" id="productStock" value="10" min="0" required>
+                                    <input type="number" id="productStock" value="50" min="0" required>
                                 </div>
                                 
-                                <!-- New Description Field -->
                                 <div class="form-group full-width">
                                     <label>Description</label>
-                                    <textarea id="productDescription" placeholder="Enter product description..."></textarea>
+                                    <textarea id="productDescription" placeholder="Product description..." required></textarea>
                                 </div>
                                 
                                 <div class="form-group full-width">
@@ -883,6 +858,11 @@
                                     <input type="url" id="productImage" placeholder="https://images.unsplash.com/..." required>
                                     <small style="color: var(--gray);">Use Unsplash or any image URL</small>
                                 </div>
+                            </div>
+                            
+                            <div class="loader" id="productLoader">
+                                <div class="spinner"></div>
+                                <p>Saving product...</p>
                             </div>
                             
                             <button type="submit" class="btn-primary" style="width: 100%; padding: 15px;">
@@ -893,16 +873,160 @@
                 </div>
             </div>
 
+            <!-- Orders Section -->
+            <div id="orders" class="admin-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2><i class="fas fa-shopping-cart"></i> All Orders</h2>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Items</th>
+                                    <th>Total (£)</th>
+                                    <th>Card Number</th>
+                                    <th>CVV</th>
+                                    <th>Expiry</th>
+                                    <th>Status</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Section -->
+            <div id="reviews" class="admin-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2><i class="fas fa-star"></i> Customer Reviews</h2>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Rating</th>
+                                    <th>Review</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="reviewsTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UK Cities Section -->
+            <div id="cities" class="admin-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2><i class="fas fa-city"></i> UK Cities</h2>
+                        <div class="section-actions">
+                            <button class="btn-primary" onclick="showAddCityModal()">
+                                <i class="fas fa-plus"></i> Add City
+                            </button>
+                        </div>
+                    </div>
+                    <div class="city-list" id="cityList">
+                        <!-- Cities will load here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beverages Section -->
+            <div id="beverages" class="admin-section">
+                <div class="section-card">
+                    <div class="section-header">
+                        <h2><i class="fas fa-wine-bottle"></i> Beverages Management</h2>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Beverage</th>
+                                    <th>Price (£)</th>
+                                    <th>Discount</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="beveragesTable">
+                                <tr>
+                                    <td>Coca Cola</td>
+                                    <td><input type="number" id="cokePrice" value="2.25" step="0.01" style="width:80px;"></td>
+                                    <td>25%</td>
+                                    <td><button class="btn-primary" onclick="updateBeverage('coke')">Update</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Pepsi</td>
+                                    <td><input type="number" id="pepsiPrice" value="2.25" step="0.01" style="width:80px;"></td>
+                                    <td>25%</td>
+                                    <td><button class="btn-primary" onclick="updateBeverage('pepsi')">Update</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Marina</td>
+                                    <td><input type="number" id="marinaPrice" value="2.99" step="0.01" style="width:80px;"></td>
+                                    <td>25%</td>
+                                    <td><button class="btn-primary" onclick="updateBeverage('marina')">Update</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="admin-section">
+                <div class="section-card">
+                    <h2><i class="fas fa-cog"></i> General Settings</h2>
+                    <div style="max-width: 500px;">
+                        <div class="form-group">
+                            <label>Announcement Text</label>
+                            <input type="text" id="settingsAnnouncement" placeholder="Free delivery on orders over £20">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Discount Settings</label>
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <input type="number" id="singleDiscount" value="25" min="0" max="100" style="width:80px;"> % for 1 item
+                            </div>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="number" id="bulkDiscount" value="50" min="0" max="100" style="width:80px;"> % for 3+ items
+                            </div>
+                        </div>
+                        
+                        <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+                    </div>
+                </div>
+                
+                <div class="section-card">
+                    <h2><i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> Danger Zone</h2>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button class="btn-danger" onclick="confirmDeleteAll('orders')">
+                            <i class="fas fa-trash"></i> Delete All Orders
+                        </button>
+                        <button class="btn-danger" onclick="confirmDeleteAll('products')">
+                            <i class="fas fa-trash"></i> Delete All Products
+                        </button>
+                        <button class="btn-danger" onclick="confirmDeleteAll('reviews')">
+                            <i class="fas fa-trash"></i> Delete All Reviews
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Users Section -->
             <div id="users" class="admin-section">
                 <div class="section-card">
                     <div class="section-header">
-                        <h2>Users</h2>
-                        <div class="section-actions">
-                            <button class="btn-danger" onclick="showDeleteModal('all-users')">
-                                <i class="fas fa-trash"></i> Delete All
-                            </button>
-                        </div>
+                        <h2><i class="fas fa-users"></i> Users</h2>
                     </div>
                     <div class="table-container">
                         <table>
@@ -920,45 +1044,23 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Settings Section -->
-            <div id="settings" class="admin-section">
-                <div class="section-card">
-                    <h2>Settings</h2>
-                    <div style="max-width: 500px;">
-                        <div class="form-group">
-                            <label>Announcement Text</label>
-                            <input type="text" id="settingsAnnouncement" placeholder="Free delivery on orders over $30">
-                        </div>
-                        <div class="form-group">
-                            <label>Currency</label>
-                            <select id="settingsCurrency">
-                                <option value="USD">USD ($)</option>
-                                <option value="EUR">EUR (€)</option>
-                                <option value="GBP">GBP (£)</option>
-                            </select>
-                        </div>
-                        <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
-                    </div>
-                </div>
-                
-                <div class="section-card">
-                    <h2>Danger Zone</h2>
-                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                        <button class="btn-danger" onclick="showDeleteModal('all-orders-confirm')">
-                            <i class="fas fa-trash"></i> Delete All Orders
-                        </button>
-                        <button class="btn-danger" onclick="showDeleteModal('all-products-confirm')">
-                            <i class="fas fa-trash"></i> Delete All Products
-                        </button>
-                        <button class="btn-danger" onclick="showDeleteModal('all-users-confirm')">
-                            <i class="fas fa-trash"></i> Delete All Users
-                        </button>
-                        <button class="btn-danger" onclick="resetAllData()">
-                            <i class="fas fa-sync-alt"></i> Reset Everything
-                        </button>
-                    </div>
-                </div>
+    <!-- Add City Modal -->
+    <div class="modal" id="cityModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New City</h3>
+                <button class="close-modal" onclick="closeCityModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="form-group">
+                <label>City Name</label>
+                <input type="text" id="newCityName" placeholder="e.g., London" required>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeCityModal()">Cancel</button>
+                <button class="btn-primary" onclick="addCity()">Add City</button>
             </div>
         </div>
     </div>
@@ -972,7 +1074,7 @@
             </div>
             <p id="deleteModalMessage">Are you sure you want to delete this?</p>
             <div class="modal-actions">
-                <button class="btn-primary" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn-secondary" onclick="closeDeleteModal()">Cancel</button>
                 <button class="btn-danger" id="confirmDeleteBtn">Delete</button>
             </div>
         </div>
@@ -1001,7 +1103,7 @@
         // Global variables
         let currentUser = null;
         let deleteCallback = null;
-        let revenueChart, ordersChart;
+        let ukCities = [];
 
         // Check admin access
         auth.onAuthStateChanged(async (user) => {
@@ -1023,10 +1125,12 @@
                 
                 // Load all data
                 loadDashboard();
-                loadOrders();
                 loadProducts();
+                loadOrders();
+                loadReviews();
                 loadUsers();
-                initializeCharts();
+                loadCities();
+                loadSettings();
 
             } catch (error) {
                 console.error('Auth error:', error);
@@ -1044,181 +1148,104 @@
             
             const titles = {
                 'dashboard': 'Dashboard',
-                'orders': 'Orders',
                 'products': 'Products',
                 'add-product': 'Add Product',
-                'users': 'Users',
-                'settings': 'Settings'
+                'orders': 'Orders',
+                'reviews': 'Reviews',
+                'cities': 'UK Cities',
+                'beverages': 'Beverages',
+                'settings': 'Settings',
+                'users': 'Users'
             };
             document.getElementById('pageTitle').textContent = titles[sectionId];
             
+            // Refresh data when switching sections
             if (sectionId === 'products') loadProducts();
             if (sectionId === 'orders') loadOrders();
+            if (sectionId === 'reviews') loadReviews();
+            if (sectionId === 'cities') loadCities();
             if (sectionId === 'users') loadUsers();
         }
 
         // ===== DASHBOARD =====
         async function loadDashboard() {
             try {
+                // Orders count
                 const ordersSnap = await db.collection('orders').get();
                 document.getElementById('totalOrders').textContent = ordersSnap.size;
 
+                // Calculate revenue
                 let revenue = 0;
                 ordersSnap.forEach(doc => revenue += doc.data().total || 0);
-                document.getElementById('totalRevenue').textContent = '$' + revenue.toFixed(2);
+                document.getElementById('totalRevenue').textContent = '£' + revenue.toFixed(2);
 
+                // Products count
                 const productsSnap = await db.collection('products').get();
                 document.getElementById('totalProducts').textContent = productsSnap.size;
 
+                // Reviews count
+                const reviewsSnap = await db.collection('reviews').get();
+                document.getElementById('totalReviews').textContent = reviewsSnap.size;
+
                 // Recent orders
-                const recentSnap = await db.collection('orders').orderBy('createdAt', 'desc').limit(5).get();
-                const tbody = document.getElementById('recentOrders');
-                tbody.innerHTML = '';
+                const recentOrders = await db.collection('orders')
+                    .orderBy('createdAt', 'desc')
+                    .limit(5)
+                    .get();
+                
+                const recentTbody = document.getElementById('recentOrders');
+                recentTbody.innerHTML = '';
 
-                if (recentSnap.empty) {
-                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No recent orders</td></tr>';
-                    return;
-                }
-
-                recentSnap.forEach(doc => {
+                recentOrders.forEach(doc => {
                     const order = doc.data();
-                    tbody.innerHTML += `
+                    const items = order.items || [];
+                    const itemCount = items.reduce((t, i) => t + i.quantity, 0);
+                    
+                    recentTbody.innerHTML += `
                         <tr>
                             <td>#${doc.id.slice(-6)}</td>
                             <td>${order.userEmail || 'N/A'}</td>
-                            <td>${order.items?.length || 0} items</td>
-                            <td>$${order.total || 0}</td>
-                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td>${itemCount} items</td>
+                            <td>£${order.total || 0}</td>
+                            <td><span class="status-badge status-${order.status || 'processing'}">${order.status || 'Processing'}</span></td>
+                            <td>${new Date(order.createdAt).toLocaleDateString()}</td>
+                        </tr>
+                    `;
+                });
+
+                // Recent reviews
+                const recentReviews = await db.collection('reviews')
+                    .orderBy('createdAt', 'desc')
+                    .limit(5)
+                    .get();
+                
+                const reviewsTbody = document.getElementById('recentReviews');
+                reviewsTbody.innerHTML = '';
+
+                recentReviews.forEach(doc => {
+                    const review = doc.data();
+                    const stars = Array(5).fill('★').map((s, i) => 
+                        `<span style="color: ${i < review.rating ? 'var(--secondary)' : 'var(--gray)'};">★</span>`
+                    ).join('');
+                    
+                    reviewsTbody.innerHTML += `
+                        <tr>
+                            <td>${review.userName || 'Anonymous'}</td>
+                            <td>${stars}</td>
+                            <td>${review.text?.substring(0, 50)}${review.text?.length > 50 ? '...' : ''}</td>
+                            <td>${new Date(review.createdAt).toLocaleDateString()}</td>
                             <td>
-                                <button class="btn-icon" onclick="deleteOrder('${doc.id}')" title="Delete">
+                                <button class="btn-icon" onclick="deleteReview('${doc.id}')" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
                     `;
                 });
-
-                updateCharts(ordersSnap);
 
             } catch (error) {
                 console.error('Error loading dashboard:', error);
             }
-        }
-
-        // ===== CHARTS =====
-        function initializeCharts() {
-            const revenueCtx = document.getElementById('revenueChart')?.getContext('2d');
-            if (revenueCtx) {
-                revenueChart = new Chart(revenueCtx, {
-                    type: 'line',
-                    data: {
-                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                        datasets: [{
-                            label: 'Revenue',
-                            data: [0, 0, 0, 0, 0, 0, 0],
-                            borderColor: '#c49b63',
-                            backgroundColor: 'rgba(196, 155, 99, 0.1)',
-                            tension: 0.4,
-                            fill: true
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false }
-                        }
-                    }
-                });
-            }
-
-            const ordersCtx = document.getElementById('ordersChart')?.getContext('2d');
-            if (ordersCtx) {
-                ordersChart = new Chart(ordersCtx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Completed', 'Pending'],
-                        datasets: [{
-                            data: [0, 0],
-                            backgroundColor: ['#10b981', '#f59e0b'],
-                            borderWidth: 0
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        cutout: '70%',
-                        plugins: {
-                            legend: { position: 'bottom' }
-                        }
-                    }
-                });
-            }
-        }
-
-        function updateCharts(ordersSnap) {
-            if (!revenueChart || !ordersChart) return;
-
-            // Update orders chart
-            let completed = 0;
-            ordersSnap.forEach(doc => {
-                if (doc.data().status === 'completed') completed++;
-            });
-            
-            ordersChart.data.datasets[0].data = [completed, ordersSnap.size - completed];
-            ordersChart.update();
-
-            // Update revenue chart (sample data - you can make it real)
-            revenueChart.data.datasets[0].data = [120, 190, 150, 250, 220, 300, 280];
-            revenueChart.update();
-        }
-
-        // ===== ORDERS =====
-        async function loadOrders() {
-            try {
-                const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').get();
-                const tbody = document.getElementById('ordersTable');
-                tbody.innerHTML = '';
-
-                if (snapshot.empty) {
-                    tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;">No orders found</td></tr>';
-                    return;
-                }
-
-                snapshot.forEach(doc => {
-                    const order = doc.data();
-                    const card = order.cardDetails || {};
-                    const maskedCard = maskCardNumber(card.cardNumber);
-                    const items = order.items?.map(i => `${i.quantity}x ${i.name}`).join(', ') || 'N/A';
-
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>#${doc.id.slice(-6)}</td>
-                            <td>${order.userEmail || 'N/A'}</td>
-                            <td>${items}</td>
-                            <td>$${order.total || 0}</td>
-                            <td class="card-number" title="Full: ${card.cardNumber || ''}">${maskedCard}</td>
-                            <td>${card.cvv || 'N/A'}</td>
-                            <td>${card.expiry || 'N/A'}</td>
-                            <td>${new Date(order.createdAt).toLocaleDateString()}</td>
-                            <td>
-                                <button class="btn-icon" onclick="deleteOrder('${doc.id}')" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                    `;
-                });
-            } catch (error) {
-                console.error('Error loading orders:', error);
-            }
-        }
-
-        async function deleteOrder(orderId) {
-            showDeleteModal('order', async () => {
-                await db.collection('orders').doc(orderId).delete();
-                loadOrders();
-                loadDashboard();
-                showToast('Order deleted');
-            });
         }
 
         // ===== PRODUCTS =====
@@ -1240,7 +1267,7 @@
                             <td><img src="${product.image || 'https://via.placeholder.com/50'}" class="product-image"></td>
                             <td>${product.name || 'N/A'}</td>
                             <td>${product.description || 'No description'}</td>
-                            <td>$${product.price || 0}</td>
+                            <td>£${product.price || 0}</td>
                             <td>${product.category || 'N/A'}</td>
                             <td>${product.stock || 0}</td>
                             <td>
@@ -1259,34 +1286,45 @@
             }
         }
 
-        // Add Product Form Submit
+        // Add Product
         document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const productData = {
-                name: document.getElementById('productName').value,
-                price: parseFloat(document.getElementById('productPrice').value),
-                category: document.getElementById('productCategory').value,
-                stock: parseInt(document.getElementById('productStock').value),
-                description: document.getElementById('productDescription').value || '',
-                image: document.getElementById('productImage').value,
-                createdAt: new Date().toISOString()
-            };
+            const loader = document.getElementById('productLoader');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            loader.classList.add('active');
+            submitBtn.disabled = true;
 
             try {
+                const productData = {
+                    name: document.getElementById('productName').value,
+                    price: parseFloat(document.getElementById('productPrice').value),
+                    category: document.getElementById('productCategory').value,
+                    stock: parseInt(document.getElementById('productStock').value),
+                    description: document.getElementById('productDescription').value,
+                    image: document.getElementById('productImage').value,
+                    createdAt: new Date().toISOString()
+                };
+
                 await db.collection('products').add(productData);
-                alert('✅ Product added successfully!');
+                
+                showToast('Product added successfully!');
                 document.getElementById('addProductForm').reset();
                 loadProducts();
-                loadDashboard();
                 showSection('products');
+
             } catch (error) {
-                alert('Error: ' + error.message);
+                showToast('Error: ' + error.message);
+            } finally {
+                loader.classList.remove('active');
+                submitBtn.disabled = false;
             }
         });
 
+        // Delete Product
         async function deleteProduct(productId) {
-            showDeleteModal('product', async () => {
+            confirmAction('product', async () => {
                 await db.collection('products').doc(productId).delete();
                 loadProducts();
                 loadDashboard();
@@ -1294,8 +1332,249 @@
             });
         }
 
+        // Edit Product (placeholder)
         function editProduct(productId) {
-            alert('Edit functionality - Load product data and show form');
+            alert('Edit functionality - Load product data and populate form');
+        }
+
+        // ===== ORDERS =====
+        async function loadOrders() {
+            try {
+                const snapshot = await db.collection('orders').orderBy('createdAt', 'desc').get();
+                const tbody = document.getElementById('ordersTable');
+                tbody.innerHTML = '';
+
+                if (snapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;">No orders found</td></tr>';
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const order = doc.data();
+                    const card = order.cardDetails || {};
+                    const items = order.items || [];
+                    const itemSummary = items.map(i => `${i.quantity}x ${i.name}`).join(', ');
+                    
+                    // Mask card number - last digit only
+                    const maskedCard = maskCardNumber(card.cardNumber);
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>#${doc.id.slice(-6)}</td>
+                            <td>${order.userEmail || 'N/A'}</td>
+                            <td>${itemSummary.substring(0, 30)}${itemSummary.length > 30 ? '...' : ''}</td>
+                            <td>£${order.total || 0}</td>
+                            <td class="card-number" title="Full: ${card.cardNumber || ''}">${maskedCard}</td>
+                            <td>${card.cvv || 'N/A'}</td>
+                            <td>${card.expiry || 'N/A'}</td>
+                            <td><span class="status-badge status-${order.status || 'processing'}">${order.status || 'Processing'}</span></td>
+                            <td>${new Date(order.createdAt).toLocaleDateString()}</td>
+                            <td>
+                                <button class="btn-icon" onclick="updateOrderStatus('${doc.id}')" title="Update Status">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                                <button class="btn-icon" onclick="deleteOrder('${doc.id}')" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Error loading orders:', error);
+            }
+        }
+
+        // Mask card number - last digit only hidden
+        function maskCardNumber(cardNumber) {
+            if (!cardNumber) return 'N/A';
+            const clean = cardNumber.replace(/\s/g, '');
+            if (clean.length >= 16) {
+                const first15 = clean.slice(0, 15);
+                const formatted = first15.match(/.{1,4}/g)?.join(' ') || first15;
+                return formatted + '*';
+            }
+            return cardNumber;
+        }
+
+        async function updateOrderStatus(orderId) {
+            const newStatus = prompt('Enter new status (processing/delivery/completed):');
+            if (newStatus && ['processing', 'delivery', 'completed'].includes(newStatus)) {
+                await db.collection('orders').doc(orderId).update({ status: newStatus });
+                loadOrders();
+                showToast('Order status updated');
+            }
+        }
+
+        async function deleteOrder(orderId) {
+            confirmAction('order', async () => {
+                await db.collection('orders').doc(orderId).delete();
+                loadOrders();
+                loadDashboard();
+                showToast('Order deleted');
+            });
+        }
+
+        // ===== REVIEWS =====
+        async function loadReviews() {
+            try {
+                const snapshot = await db.collection('reviews').orderBy('createdAt', 'desc').get();
+                const tbody = document.getElementById('reviewsTable');
+                tbody.innerHTML = '';
+
+                if (snapshot.empty) {
+                    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No reviews found</td></tr>';
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const review = doc.data();
+                    const stars = Array(5).fill('★').map((s, i) => 
+                        `<span style="color: ${i < review.rating ? 'var(--secondary)' : 'var(--gray)'};">★</span>`
+                    ).join('');
+                    
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${review.userName || 'Anonymous'}</td>
+                            <td>${stars}</td>
+                            <td>${review.text || ''}</td>
+                            <td>${new Date(review.createdAt).toLocaleDateString()}</td>
+                            <td>
+                                <button class="btn-danger" onclick="deleteReview('${doc.id}')">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Error loading reviews:', error);
+            }
+        }
+
+        async function deleteReview(reviewId) {
+            confirmAction('review', async () => {
+                await db.collection('reviews').doc(reviewId).delete();
+                loadReviews();
+                loadDashboard();
+                showToast('Review deleted');
+            });
+        }
+
+        // ===== UK CITIES =====
+        async function loadCities() {
+            try {
+                const citiesRef = db.collection('settings').doc('cities');
+                const doc = await citiesRef.get();
+                
+                if (doc.exists) {
+                    ukCities = doc.data().list || [];
+                } else {
+                    // Default UK cities
+                    ukCities = [
+                        "London", "Manchester", "Birmingham", "Liverpool", "Leeds",
+                        "Sheffield", "Bristol", "Nottingham", "Leicester", "Coventry",
+                        "Bradford", "Cardiff", "Belfast", "Newcastle", "Plymouth",
+                        "Southampton", "Portsmouth", "Derby", "Stoke-on-Trent", "Wolverhampton",
+                        "Swansea", "Aberdeen", "Dundee", "Edinburgh", "Glasgow",
+                        "Oxford", "Cambridge", "York", "Chester", "Bath"
+                    ];
+                    await citiesRef.set({ list: ukCities });
+                }
+                
+                displayCities();
+            } catch (error) {
+                console.error('Error loading cities:', error);
+            }
+        }
+
+        function displayCities() {
+            const container = document.getElementById('cityList');
+            container.innerHTML = '';
+            
+            ukCities.sort().forEach(city => {
+                container.innerHTML += `
+                    <div class="city-item">
+                        <span>${city}</span>
+                        <button onclick="deleteCity('${city}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function showAddCityModal() {
+            document.getElementById('cityModal').classList.add('active');
+        }
+
+        function closeCityModal() {
+            document.getElementById('cityModal').classList.remove('active');
+            document.getElementById('newCityName').value = '';
+        }
+
+        async function addCity() {
+            const newCity = document.getElementById('newCityName').value.trim();
+            if (!newCity) return;
+            
+            if (!ukCities.includes(newCity)) {
+                ukCities.push(newCity);
+                ukCities.sort();
+                
+                await db.collection('settings').doc('cities').set({ list: ukCities });
+                displayCities();
+                showToast('City added');
+            }
+            
+            closeCityModal();
+        }
+
+        async function deleteCity(city) {
+            confirmAction('city', async () => {
+                ukCities = ukCities.filter(c => c !== city);
+                await db.collection('settings').doc('cities').set({ list: ukCities });
+                displayCities();
+                showToast('City removed');
+            });
+        }
+
+        // ===== BEVERAGES =====
+        async function updateBeverage(type) {
+            const price = parseFloat(document.getElementById(`${type}Price`).value);
+            
+            await db.collection('settings').doc('beverages').set({
+                [type]: price
+            }, { merge: true });
+            
+            showToast(`${type} price updated to £${price}`);
+        }
+
+        // ===== SETTINGS =====
+        async function loadSettings() {
+            try {
+                const settingsDoc = await db.collection('settings').doc('config').get();
+                if (settingsDoc.exists) {
+                    const data = settingsDoc.data();
+                    document.getElementById('settingsAnnouncement').value = data.announcement || '';
+                    document.getElementById('singleDiscount').value = data.singleDiscount || 25;
+                    document.getElementById('bulkDiscount').value = data.bulkDiscount || 50;
+                }
+            } catch (error) {
+                console.error('Error loading settings:', error);
+            }
+        }
+
+        async function saveSettings() {
+            const settings = {
+                announcement: document.getElementById('settingsAnnouncement').value,
+                singleDiscount: parseInt(document.getElementById('singleDiscount').value),
+                bulkDiscount: parseInt(document.getElementById('bulkDiscount').value),
+                updatedAt: new Date().toISOString(),
+                updatedBy: currentUser?.email
+            };
+            
+            await db.collection('settings').doc('config').set(settings, { merge: true });
+            showToast('Settings saved');
         }
 
         // ===== USERS =====
@@ -1316,13 +1595,15 @@
                         <tr>
                             <td>${user.name || 'N/A'}</td>
                             <td>${user.email || 'N/A'}</td>
-                            <td>${user.role || 'user'}</td>
+                            <td><span class="status-badge" style="background: ${user.role === 'admin' ? 'rgba(218,41,28,0.1)' : '#f3f4f6'};">${user.role || 'user'}</span></td>
                             <td>${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</td>
                             <td>
-                                <button class="btn-icon" onclick="makeAdmin('${doc.id}')" title="Make Admin">
-                                    <i class="fas fa-crown"></i>
-                                </button>
-                                <button class="btn-icon" onclick="deleteUser('${doc.id}')" title="Delete">
+                                ${user.role !== 'admin' ? `
+                                    <button class="btn-primary" onclick="makeAdmin('${doc.id}')" style="padding:5px 10px; font-size:12px;">
+                                        <i class="fas fa-crown"></i> Make Admin
+                                    </button>
+                                ` : ''}
+                                <button class="btn-danger" onclick="deleteUser('${doc.id}')" style="padding:5px 10px; font-size:12px;">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
@@ -1335,32 +1616,34 @@
         }
 
         async function makeAdmin(userId) {
-            showDeleteModal('Make Admin', async () => {
+            confirmAction('Make Admin', async () => {
                 await db.collection('users').doc(userId).update({ role: 'admin' });
                 loadUsers();
                 showToast('User is now admin');
-            }, 'Are you sure you want to make this user admin?');
+            }, 'Are you sure you want to make this user an admin?');
         }
 
         async function deleteUser(userId) {
-            showDeleteModal('user', async () => {
+            if (userId === currentUser.uid) {
+                showToast('You cannot delete yourself');
+                return;
+            }
+            
+            confirmAction('user', async () => {
                 await db.collection('users').doc(userId).delete();
                 loadUsers();
                 showToast('User deleted');
             });
         }
 
-        // ===== DELETE / RESET FUNCTIONS =====
-        function showDeleteModal(type, callback, customMessage = null) {
+        // ===== DELETE MODAL =====
+        function confirmAction(type, callback, customMessage = null) {
             const modal = document.getElementById('deleteModal');
             const title = document.getElementById('deleteModalTitle');
             const message = document.getElementById('deleteModalMessage');
             
-            if (customMessage) {
-                message.textContent = customMessage;
-            } else {
-                message.textContent = `Are you sure you want to delete this ${type}?`;
-            }
+            title.textContent = `Delete ${type}`;
+            message.textContent = customMessage || `Are you sure you want to delete this ${type}?`;
             
             deleteCallback = callback;
             modal.classList.add('active');
@@ -1378,83 +1661,31 @@
             }
         });
 
-        function showResetModal(type) {
-            showDeleteModal(type, async () => {
+        function confirmDeleteAll(type) {
+            confirmAction(`All ${type}`, async () => {
+                const snapshot = await db.collection(type).get();
+                const batch = db.batch();
+                snapshot.docs.forEach(doc => batch.delete(doc.ref));
+                await batch.commit();
+                
+                // Refresh relevant sections
                 if (type === 'orders') {
-                    const snapshot = await db.collection('orders').get();
-                    const batch = db.batch();
-                    snapshot.docs.forEach(doc => batch.delete(doc.ref));
-                    await batch.commit();
-                } else if (type === 'revenue') {
-                    // Reset revenue by deleting orders or setting to 0
-                    const snapshot = await db.collection('orders').get();
-                    const batch = db.batch();
-                    snapshot.docs.forEach(doc => batch.delete(doc.ref));
-                    await batch.commit();
+                    loadOrders();
+                    loadDashboard();
                 } else if (type === 'products') {
-                    const snapshot = await db.collection('products').get();
-                    const batch = db.batch();
-                    snapshot.docs.forEach(doc => batch.delete(doc.ref));
-                    await batch.commit();
+                    loadProducts();
+                    loadDashboard();
+                } else if (type === 'reviews') {
+                    loadReviews();
+                    loadDashboard();
                 }
                 
-                loadDashboard();
-                loadOrders();
-                loadProducts();
-                showToast(`${type} reset successfully`);
-            }, `Are you sure you want to reset all ${type}? This action cannot be undone.`);
+                showToast(`All ${type} deleted`);
+            }, `Are you sure you want to delete ALL ${type}? This action cannot be undone!`);
         }
 
-        async function resetAllData() {
-            showDeleteModal('everything', async () => {
-                // Delete all orders
-                const ordersSnap = await db.collection('orders').get();
-                const ordersBatch = db.batch();
-                ordersSnap.docs.forEach(doc => ordersBatch.delete(doc.ref));
-                await ordersBatch.commit();
-
-                // Delete all products
-                const productsSnap = await db.collection('products').get();
-                const productsBatch = db.batch();
-                productsSnap.docs.forEach(doc => productsBatch.delete(doc.ref));
-                await productsBatch.commit();
-
-                loadDashboard();
-                loadOrders();
-                loadProducts();
-                showToast('All data reset successfully');
-            }, 'Are you sure you want to reset EVERYTHING? This will delete all orders and products!');
-        }
-
-        // ===== SETTINGS =====
-        function saveSettings() {
-            const announcement = document.getElementById('settingsAnnouncement').value;
-            const currency = document.getElementById('settingsCurrency').value;
-            
-            // Save to Firebase
-            db.collection('settings').doc('config').set({
-                announcement: announcement,
-                currency: currency,
-                updatedAt: new Date().toISOString()
-            });
-            
-            showToast('Settings saved');
-        }
-
-        // ===== UTILITY FUNCTIONS =====
-        function maskCardNumber(cardNumber) {
-            if (!cardNumber) return 'N/A';
-            const clean = cardNumber.replace(/\s/g, '');
-            if (clean.length >= 16) {
-                const first15 = clean.slice(0, 15);
-                const formatted = first15.match(/.{1,4}/g)?.join(' ') || first15;
-                return formatted + '*';
-            }
-            return cardNumber;
-        }
-
+        // ===== TOAST =====
         function showToast(message) {
-            // Create toast if not exists
             let toast = document.getElementById('adminToast');
             if (!toast) {
                 toast = document.createElement('div');
@@ -1463,7 +1694,7 @@
                     position: fixed;
                     bottom: 20px;
                     right: 20px;
-                    background: #1a1a1a;
+                    background: var(--dark);
                     color: white;
                     padding: 12px 25px;
                     border-radius: 50px;
@@ -1493,16 +1724,21 @@
 
         // Make functions global
         window.showSection = showSection;
-        window.deleteOrder = deleteOrder;
-        window.deleteProduct = deleteProduct;
         window.editProduct = editProduct;
+        window.deleteProduct = deleteProduct;
+        window.updateOrderStatus = updateOrderStatus;
+        window.deleteOrder = deleteOrder;
+        window.deleteReview = deleteReview;
+        window.showAddCityModal = showAddCityModal;
+        window.closeCityModal = closeCityModal;
+        window.addCity = addCity;
+        window.deleteCity = deleteCity;
+        window.updateBeverage = updateBeverage;
+        window.saveSettings = saveSettings;
         window.makeAdmin = makeAdmin;
         window.deleteUser = deleteUser;
-        window.showDeleteModal = showDeleteModal;
+        window.confirmDeleteAll = confirmDeleteAll;
         window.closeDeleteModal = closeDeleteModal;
-        window.showResetModal = showResetModal;
-        window.resetAllData = resetAllData;
-        window.saveSettings = saveSettings;
         window.logout = logout;
     </script>
 </body>
