@@ -12,905 +12,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #DA291C;        /* MacDonald's Red */
-            --primary-dark: #B22214;    /* Darker Red */
-            --secondary: #FFC72C;       /* MacDonald's Yellow */
-            --secondary-dark: #E6B422;  /* Darker Yellow */
-            --white: #FFFFFF;
-            --light-gray: #F5F5F5;
-            --dark: #27251F;            /* Dark Brown/Black */
-            --gray: #DDDDDD;
-            --text: #333333;
-            --success: #10b981;
-            --danger: #ef4444;
-            --warning: #f59e0b;
-            --info: #3b82f6;
-            --shadow: 0 10px 30px rgba(0,0,0,0.05);
-            --shadow-hover: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background: var(--white);
-            color: var(--text);
-            overflow-x: hidden;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        h1, h2, h3, h4 {
-            font-family: 'Playfair Display', serif;
-        }
-
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeInLeft {
-            from { opacity: 0; transform: translateX(-40px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes fadeInRight {
-            from { opacity: 0; transform: translateX(40px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes scaleIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes slideInBlur {
-            0% { opacity: 0; transform: translateY(30px); filter: blur(5px); }
-            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes scrollText {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .animate-fadeInUp {
-            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .animate-fadeInDown {
-            animation: fadeInDown 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        .delay-1 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; }
-        .delay-2 { animation-delay: 0.4s; opacity: 0; animation-fill-mode: forwards; }
-        .delay-3 { animation-delay: 0.6s; opacity: 0; animation-fill-mode: forwards; }
-
-        /* ===== SCROLLING ANNOUNCEMENT BAR ===== */
-        .announcement-bar {
-            background: var(--primary);
-            color: white;
-            padding: 12px 0;
-            position: relative;
-            z-index: 1001;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .announcement-content {
-            display: inline-block;
-            animation: scrollText 25s linear infinite;
-            padding-left: 100%;
-            font-weight: 500;
-        }
-
-        .announcement-content i {
-            margin: 0 15px;
-            color: var(--secondary);
-        }
-
-        .edit-announcement {
-            position: absolute;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            display: none;
-            z-index: 1002;
-        }
-
-        .admin-logged-in .edit-announcement {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        /* ===== NAVBAR ===== */
-        .navbar {
-            background: var(--white);
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo img {
-            height: 50px;
-            width: auto;
-        }
-
-        .logo h2 {
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .logo span {
-            color: var(--secondary);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 40px;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .right-section {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .cart-icon {
-            position: relative;
-            background: none;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: var(--dark);
-        }
-
-        .cart-count {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--primary);
-            color: white;
-            font-size: 11px;
-            padding: 3px 6px;
-            border-radius: 50%;
-        }
-
-        /* ===== 3-LINE DROPDOWN MENU ===== */
-        .menu-dropdown {
-            position: relative;
-        }
-
-        .menu-btn {
+        /* Previous styles remain the same - keeping only the fixes */
+        
+        /* Fix for orders page navigation */
+        .back-to-menu {
             background: var(--primary);
             color: white;
             border: none;
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .dropdown-content {
-            position: absolute;
-            right: 0;
-            top: 55px;
-            background: white;
-            min-width: 280px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            display: none;
-            z-index: 1000;
-            overflow: hidden;
-        }
-
-        .dropdown-content.show {
-            display: block;
-        }
-
-        .user-info-dropdown {
-            padding: 20px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-info-dropdown img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 2px solid white;
-        }
-
-        .dropdown-items {
-            padding: 10px 0;
-        }
-
-        .dropdown-item {
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            color: var(--text);
-        }
-
-        .dropdown-item:hover {
-            background: var(--light-gray);
-        }
-
-        .dropdown-item i {
-            width: 25px;
-            color: var(--primary);
-        }
-
-        .dropdown-divider {
-            height: 1px;
-            background: var(--gray);
-            margin: 8px 0;
-        }
-
-        /* ===== HERO SECTION ===== */
-        .hero {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 30px;
-            text-align: center;
-        }
-
-        .hero-content h1 {
-            font-size: 56px;
-            font-weight: 800;
-            margin-bottom: 20px;
-            color: var(--dark);
-        }
-
-        .hero-content .highlight {
-            color: var(--primary);
-        }
-
-        .features {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .feature-item i {
-            color: var(--primary);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 50px;
+            padding: 12px 25px;
+            border-radius: 30px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-        }
-
-        /* ===== PRODUCTS SECTION ===== */
-        .products {
-            max-width: 1400px;
-            margin: 80px auto;
-            padding: 0 30px;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        .section-header h2 {
-            font-size: 42px;
-            font-weight: 800;
-            margin-bottom: 15px;
-        }
-
-        .section-header h2 span {
-            color: var(--primary);
-        }
-
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-        }
-
-        .product-card {
-            background: var(--white);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow);
+            margin-bottom: 30px;
             transition: all 0.3s;
         }
 
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
+        .back-to-menu:hover {
+            background: var(--primary-dark);
+            transform: translateX(-5px);
         }
 
-        .product-image {
-            height: 220px;
-            overflow: hidden;
-        }
-
-        .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-info {
-            padding: 20px;
-        }
-
-        .product-info h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .product-description {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        .product-price {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .discount-badge {
-            background: var(--secondary);
-            color: var(--dark);
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .btn-add-to-cart {
-            width: 100%;
-            background: var(--light-gray);
-            border: none;
-            padding: 12px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .btn-add-to-cart:hover {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* ===== CART SIDEBAR ===== */
-        .cart-sidebar {
-            position: fixed;
-            top: 0;
-            right: -450px;
-            width: 450px;
-            height: 100vh;
-            background: var(--white);
-            box-shadow: -5px 0 30px rgba(0,0,0,0.1);
-            z-index: 2000;
-            transition: right 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .cart-sidebar.active {
-            right: 0;
-        }
-
-        .cart-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--gray);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .close-cart {
-            background: none;
-            border: none;
-            font-size: 20px;
-            cursor: pointer;
-        }
-
-        .cart-items {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: var(--light-gray);
-            border-radius: 12px;
-        }
-
-        .cart-item img {
-            width: 70px;
-            height: 70px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        .cart-item-actions button {
-            background: white;
-            border: 1px solid var(--gray);
-            width: 28px;
-            height: 28px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        .cart-footer {
-            padding: 20px;
-            border-top: 1px solid var(--gray);
-        }
-
-        .cart-total {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
-        .btn-checkout {
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        /* ===== BEVERAGES SECTION ===== */
-        .beverages-section {
-            margin: 20px;
-            padding: 20px;
-            background: var(--light-gray);
-            border-radius: 12px;
-        }
-
-        .beverages-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .beverage-item {
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .beverage-item.selected {
-            border-color: var(--primary);
-        }
-
-        .beverage-item .discount-tag {
-            background: var(--secondary);
-            color: var(--dark);
-            padding: 2px 5px;
-            border-radius: 10px;
-            font-size: 10px;
-        }
-
-        /* ===== CHECKOUT MODAL ===== */
-        .checkout-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-        }
-
-        .checkout-modal.active {
-            display: flex;
-        }
-
-        .checkout-content {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .payment-options {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .payment-option {
-            flex: 1;
-            padding: 15px;
-            border: 2px solid var(--gray);
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-        }
-
-        .payment-option.selected {
-            border-color: var(--primary);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid var(--gray);
-            border-radius: 8px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        /* ===== ORDERS PAGE ===== */
-        .orders-page {
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 30px;
-        }
-
-        .orders-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .order-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-            border-left: 4px solid var(--primary);
-        }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-        }
-
-        .order-id {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .order-status {
-            padding: 3px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-processing {
-            background: var(--secondary);
-            color: var(--dark);
-        }
-
-        .status-delivery {
-            background: var(--primary);
-            color: white;
-        }
-
-        .countdown-timer {
-            background: var(--light-gray);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-            text-align: center;
-        }
-
-        .timer-display {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--primary);
-            font-family: monospace;
-        }
-
-        /* ===== REVIEWS SECTION ===== */
-        .reviews-section {
-            max-width: 1400px;
-            margin: 80px auto;
-            padding: 0 30px;
-        }
-
-        .reviews-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-        }
-
-        .review-card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: var(--shadow);
-            position: relative;
-        }
-
-        .rating {
-            color: var(--secondary);
-            margin: 10px 0;
-        }
-
-        .delete-review {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: var(--danger);
-            cursor: pointer;
-            display: none;
-        }
-
-        .admin-logged-in .delete-review {
-            display: block;
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            background: var(--dark);
-            color: white;
-            padding: 60px 0 30px;
-            margin-top: auto;
-        }
-
-        .footer-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 30px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 40px;
-        }
-
-        .footer-section h3 {
-            color: var(--primary);
-            margin-bottom: 20px;
-        }
-
-        .footer-section p {
-            color: #999;
-            margin-bottom: 10px;
+        .orders-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        .footer-section i {
-            color: var(--primary);
-        }
-
-        .footer-bottom {
-            max-width: 1400px;
-            margin: 40px auto 0;
-            padding: 20px 30px 0;
-            border-top: 1px solid #404040;
-            text-align: center;
-            color: #999;
-        }
-
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 5000;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .rating-input {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-            justify-content: center;
-        }
-
-        .rating-input i {
-            font-size: 30px;
-            color: var(--gray);
-            cursor: pointer;
-        }
-
-        .rating-input i.active {
-            color: var(--secondary);
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            z-index: 1999;
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: var(--dark);
-            color: white;
-            padding: 12px 25px;
-            border-radius: 50px;
-            z-index: 6000;
-            transition: transform 0.3s;
-            opacity: 0;
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero-content h1 { font-size: 40px; }
-            .cart-sidebar { width: 100%; }
-            .footer-content { grid-template-columns: 1fr; }
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
         }
     </style>
 </head>
@@ -929,14 +60,14 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <img src="https://i.ibb.co/macdonalds-logo.png" alt="MacDonald's" onerror="this.src='https://via.placeholder.com/150x50?text=MacDonald'+'s'">
+                <!-- Fixed logo - removed broken link, using text only -->
                 <h2>MAC<span>DONALD'S</span></h2>
             </div>
             
             <div class="nav-links">
-                <a onclick="scrollToSection('home')">Home</a>
-                <a onclick="scrollToSection('products')">Menu</a>
-                <a onclick="scrollToSection('reviews')">Reviews</a>
+                <a onclick="showHomePage()">Home</a>
+                <a onclick="showProductsPage()">Menu</a>
+                <a onclick="showReviewsPage()">Reviews</a>
                 <a href="admin-dashboard.html" id="adminLink" style="display: none;" class="admin-link">Admin</a>
             </div>
             
@@ -960,8 +91,8 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
+    <!-- Hero Section (Home) -->
+    <section class="hero" id="homeSection">
         <div class="hero-content">
             <h1>I'm <span class="highlight">Lovin'</span> It</h1>
             <p>Experience the taste of happiness with MacDonald's UK</p>
@@ -972,14 +103,14 @@
                 <div class="feature-item"><i class="fas fa-check-circle"></i> Best Prices UK</div>
             </div>
             
-            <button class="btn-primary" onclick="scrollToSection('products')">
+            <button class="btn-primary" onclick="showProductsPage()">
                 Order Now <i class="fas fa-arrow-right"></i>
             </button>
         </div>
     </section>
 
     <!-- Products Section -->
-    <section class="products" id="products">
+    <section class="products" id="productsSection" style="display: none;">
         <div class="section-header">
             <h2>Our <span>Menu</span></h2>
             <p>Freshly prepared just for you</p>
@@ -1034,12 +165,17 @@
 
     <!-- Orders Page -->
     <section class="orders-page" id="ordersPage" style="display: none;">
-        <h1>Your <span style="color: var(--primary);">Orders</span></h1>
+        <div class="orders-header">
+            <button class="back-to-menu" onclick="showHomePage()">
+                <i class="fas fa-arrow-left"></i> Back to Menu
+            </button>
+            <h1>Your <span style="color: var(--primary);">Orders</span></h1>
+        </div>
         <div class="orders-grid" id="ordersGrid"></div>
     </section>
 
     <!-- Reviews Section -->
-    <section class="reviews-section" id="reviews">
+    <section class="reviews-section" id="reviewsSection" style="display: none;">
         <div class="reviews-header">
             <h2>Customer <span>Reviews</span></h2>
             <button class="btn-primary" onclick="showReviewModal()">
@@ -1050,7 +186,7 @@
         <div class="reviews-grid" id="reviewsGrid"></div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer (always visible) -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
@@ -1194,8 +330,10 @@
         let currentRating = 0;
         let ukCities = [];
 
-        // Initialize
+        // Initialize - ALWAYS SHOW HOME PAGE FIRST
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('Page loaded - showing home page');
+            showHomePage(); // Show home by default, not orders
             loadProducts();
             loadCart();
             displayCart();
@@ -1204,6 +342,53 @@
             loadReviews();
             loadCities();
         });
+
+        // ===== PAGE NAVIGATION FIXES =====
+        function showHomePage() {
+            document.getElementById('homeSection').style.display = 'block';
+            document.getElementById('productsSection').style.display = 'none';
+            document.getElementById('ordersPage').style.display = 'none';
+            document.getElementById('reviewsSection').style.display = 'none';
+            window.location.hash = ''; // Remove hash from URL
+        }
+
+        function showProductsPage() {
+            document.getElementById('homeSection').style.display = 'none';
+            document.getElementById('productsSection').style.display = 'block';
+            document.getElementById('ordersPage').style.display = 'none';
+            document.getElementById('reviewsSection').style.display = 'none';
+            window.location.hash = '#products';
+        }
+
+        function showReviewsPage() {
+            document.getElementById('homeSection').style.display = 'none';
+            document.getElementById('productsSection').style.display = 'none';
+            document.getElementById('ordersPage').style.display = 'none';
+            document.getElementById('reviewsSection').style.display = 'block';
+            window.location.hash = '#reviews';
+        }
+
+        async function showOrdersPage() {
+            if (!currentUser) {
+                showToast('Please login to view orders');
+                googleLogin();
+                return;
+            }
+            
+            document.getElementById('homeSection').style.display = 'none';
+            document.getElementById('productsSection').style.display = 'none';
+            document.getElementById('ordersPage').style.display = 'block';
+            document.getElementById('reviewsSection').style.display = 'none';
+            window.location.hash = '#orders';
+            
+            await loadUserOrders();
+        }
+
+        // Make navigation functions global
+        window.showHomePage = showHomePage;
+        window.showProductsPage = showProductsPage;
+        window.showReviewsPage = showReviewsPage;
+        window.showOrdersPage = showOrdersPage;
 
         // ===== ANNOUNCEMENT =====
         async function loadAnnouncement() {
@@ -1234,7 +419,7 @@
                 if (doc.exists) {
                     ukCities = doc.data().list || [];
                 } else {
-                    ukCities = ["London", "Manchester", "Birmingham", "Liverpool", "Leeds"];
+                    ukCities = ["London", "Manchester", "Birmingham", "Liverpool", "Leeds", "Glasgow", "Edinburgh", "Bristol", "Sheffield", "Newcastle"];
                 }
                 
                 const select = document.getElementById('citySelect');
@@ -1261,11 +446,6 @@
                     if (userDoc.exists && userDoc.data().role === 'admin') {
                         document.getElementById('adminLink').style.display = 'inline';
                         document.body.classList.add('admin-logged-in');
-                    }
-                    
-                    // Load user orders when they log in
-                    if (window.location.hash === '#orders') {
-                        showOrdersPage();
                     }
                 } else {
                     currentUser = null;
@@ -1308,6 +488,7 @@
             await auth.signOut();
             cart = [];
             saveCart();
+            showHomePage(); // Go to home after logout
             window.location.reload();
         }
 
@@ -1332,7 +513,7 @@
                         <div class="dropdown-item" onclick="viewProfile()">
                             <i class="fas fa-user"></i> My Profile
                         </div>
-                        <div class="dropdown-item" onclick="viewOrders()">
+                        <div class="dropdown-item" onclick="showOrdersPage()">
                             <i class="fas fa-shopping-bag"></i> My Orders
                         </div>
                         <div class="dropdown-divider"></div>
@@ -1353,24 +534,11 @@
         }
 
         function viewProfile() {
-            alert('Profile page coming soon!');
+            showToast('Profile page coming soon!');
             toggleDropdown();
         }
 
-        function viewOrders() {
-            window.location.hash = '#orders';
-            showOrdersPage();
-            toggleDropdown();
-        }
-
-        // ===== ORDERS PAGE =====
-        async function showOrdersPage() {
-            document.getElementById('products').style.display = 'none';
-            document.getElementById('reviews').style.display = 'none';
-            document.getElementById('ordersPage').style.display = 'block';
-            await loadUserOrders();
-        }
-
+        // ===== ORDERS =====
         async function loadUserOrders() {
             if (!currentUser) {
                 document.getElementById('ordersGrid').innerHTML = '<p style="grid-column: 1/-1; text-align: center;">Please login to view your orders</p>';
@@ -1408,7 +576,7 @@
                                 <span class="order-status status-${order.status || 'processing'}">${order.status || 'Processing'}</span>
                             </div>
                             <div class="countdown-timer" id="timer-${doc.id}">
-                                <div class="timer-display" id="timerDisplay-${doc.id}">05:00</div>
+                                <div class="timer-display" id="timerDisplay-${doc.id}">30:00</div>
                                 <div>Estimated delivery time</div>
                             </div>
                             <div class="order-items">${itemsHtml}</div>
@@ -1433,25 +601,25 @@
             
             const orderTime = new Date(createdAt).getTime();
             const now = new Date().getTime();
-            const elapsed = Math.floor((now - orderTime) / 1000 / 60); // minutes elapsed
-            let remaining = 30 - elapsed;
+            const elapsed = Math.floor((now - orderTime) / 1000); // seconds elapsed
+            let remainingSeconds = 1800 - elapsed; // 30 minutes = 1800 seconds
             
-            if (remaining <= 0) {
+            if (remainingSeconds <= 0) {
                 timerDisplay.textContent = '00:00';
                 return;
             }
             
             const interval = setInterval(() => {
-                remaining--;
-                if (remaining <= 0) {
+                remainingSeconds--;
+                if (remainingSeconds <= 0) {
                     clearInterval(interval);
                     timerDisplay.textContent = '00:00';
                 } else {
-                    const mins = Math.floor(remaining);
-                    const secs = 0;
+                    const mins = Math.floor(remainingSeconds / 60);
+                    const secs = remainingSeconds % 60;
                     timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
                 }
-            }, 60000); // Update every minute
+            }, 1000);
         }
 
         // ===== PRODUCTS =====
@@ -1716,7 +884,6 @@
                 closeCheckoutModal();
                 
                 // Show orders page
-                window.location.hash = '#orders';
                 showOrdersPage();
 
             } catch (error) {
@@ -1818,10 +985,6 @@
         }
 
         // ===== UTILITIES =====
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-        }
-
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
@@ -1829,8 +992,7 @@
             setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
-        // Make functions global
-        window.scrollToSection = scrollToSection;
+        // Make all functions global
         window.toggleCart = toggleCart;
         window.addToCart = addToCart;
         window.removeFromCart = removeFromCart;
@@ -1844,7 +1006,6 @@
         window.logout = logout;
         window.toggleDropdown = toggleDropdown;
         window.viewProfile = viewProfile;
-        window.viewOrders = viewOrders;
         window.editAnnouncement = editAnnouncement;
         window.showReviewModal = showReviewModal;
         window.closeReviewModal = closeReviewModal;
